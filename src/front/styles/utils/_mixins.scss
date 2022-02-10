@@ -1,0 +1,31 @@
+/*----- Mixins Sass -----*/
+
+/*---------- Breakpoints ----------*/
+$breakpoints: (
+    "small": 35em,
+    "medium": 65em,
+    "large": 90em,
+);
+
+@mixin mq($key) {
+    $size: map-get($breakpoints, $key);
+
+    @media only screen and (min-width: $size) {
+        @content;
+    }
+}
+
+// En cualuquier momento puedes escribir algo como esto y funcionará:
+
+// @use "mixins" as *;
+
+.btn {
+    margin-top: 2rem;
+    background-color: blue;
+    @include mq(small) {
+        background-color: red;
+    }
+    @include mq(medium) {
+        background-color: yellow;
+    }
+}

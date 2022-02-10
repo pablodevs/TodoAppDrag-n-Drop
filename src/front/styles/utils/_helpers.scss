@@ -1,0 +1,14 @@
+/*----- Clases reutilizables -----*/
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+$columns: 12;
+
+@for $i from 1 through $columns {
+    .col-#{$i} {
+        flex: 0 0 calc(100% / calc($columns / $i));
+    }
+}

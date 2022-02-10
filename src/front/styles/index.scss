@@ -1,0 +1,69 @@
+/*----- Archivo principal de estilos -----*/
+
+/*---------- Imports por orden de preferencia ----------*/
+@import "base/reset";
+@import "base/fonts";
+@import "base/colors";
+
+@import "utils/variables";
+@import "utils/functions";
+@import "utils/mixins";
+@import "utils/helpers";
+
+@import "layout/navbar";
+@import "layout/footer";
+@import "layout/grid";
+
+@import "components/buttons";
+@import "components/cards";
+@import "components/dropdown";
+@import "components/forms";
+
+@import "pages/home";
+
+@import "themes/theme";
+@import "themes/admin";
+
+/*---------- Colors & Font-size Root ----------*/
+:root {
+    @each $color, $shades in $colors {
+        @each $shade, $value in $shades {
+            --clr-#{$color}-#{$shade}: #{$value};
+        }
+    }
+
+    @each $screen-size, $font-size in $font-sizes {
+        @if $screen-size == small {
+            @each $size, $value in $font-size {
+                --fs-#{$size}: #{$value};
+            }
+        } @else {
+            @include mq(small) {
+                @each $size, $value in $font-size {
+                    --fs-#{$size}: #{$value};
+                }
+            }
+        }
+    }
+}
+
+// Si quiero crear clases para cada color por ejemplo:
+
+@each $color, $shades in $colors {
+    @each $shade, $value in $shades {
+        .text-#{$color}-#{$shade} {
+            color: $value;
+        }
+        .bg-#{$color}-#{$shade} {
+            background-color: $value;
+        }
+    }
+}
+
+/*---------- Estilos globales ----------*/
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
