@@ -1,10 +1,13 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
-            counterEnd: false,
+            counterEnd: localStorage.getItem("end") || "",
         },
         actions: {
-            endCounter: () => setStore({ counterEnd: true }),
+            endCounter: () => {
+                localStorage.setItem("end", true);
+                setStore({ counterEnd: true });
+            },
         },
     };
 };

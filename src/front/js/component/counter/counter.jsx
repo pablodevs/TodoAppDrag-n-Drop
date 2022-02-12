@@ -46,9 +46,11 @@ export const Counter = props => {
         return () => clearInterval(timer);
     }, []);
 
-    useEffect(() => {
-        console.log(`${clock.length} && ${clock.every(e => !e)}`);
-    }, [clock]);
+    const timeOut = () => {
+        setTimeout(() => {
+            actions.endCounter();
+        }, 1000);
+    };
 
     return (
         <div className="counter center bg-dark-500">
@@ -59,13 +61,15 @@ export const Counter = props => {
                         <img src={gusinette} alt="gusinette" />
                     </div>
                     <h1 className="greetings__msg">¡Feliz Gusiversario!</h1>
-                    <button className="btn btn--secondary">Continuar</button>
+                    <button className="btn btn--secondary" onClick={timeOut}>
+                        Continuar
+                    </button>
                 </div>
             ) : (
                 <div className="container">
                     <div className="row">
                         {clock.map((value, index) => (
-                            <div className="time">
+                            <div className="time" key={index}>
                                 {`${value}${
                                     index !== clock.length - 1 ? ":" : ""
                                 }`}
