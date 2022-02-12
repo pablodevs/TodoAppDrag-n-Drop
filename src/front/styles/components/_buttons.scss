@@ -1,1 +1,40 @@
 /*----- Botones -----*/
+.btn {
+    background-color: transparent;
+    border-radius: 100vh;
+    outline: none;
+    padding: 0.7rem 1.5rem;
+    border: 3px solid;
+    font-weight: 600;
+
+    &.btn--primary {
+        color: var(--clr-primary-400);
+    }
+    &.btn--secondary {
+        color: var(--clr-secondary-400);
+    }
+    &.btn--dark {
+        color: var(--clr-dark-400);
+    }
+    &.btn--danger {
+        color: var(--clr-danger-400);
+    }
+    &:active {
+        transform: translateY(2px);
+    }
+    &:hover,
+    &:focus-visible {
+        &.btn--primary {
+            color: var(--clr-primary-200);
+        }
+        &.btn--secondary {
+            color: var(--clr-secondary-200);
+        }
+        &.btn--dark {
+            color: var(--clr-dark-200);
+        }
+        &.btn--danger {
+            color: var(--clr-danger-200);
+        }
+    }
+}

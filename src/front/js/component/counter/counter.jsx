@@ -3,11 +3,11 @@ import React, { useEffect, useState, useContext } from "react";
 import gusine from "../../../img/gusine.png";
 import gusinette from "../../../img/gusinette.png";
 import { Context } from "../../store/appContext";
-import { Number } from "./number.jsx";
 
 export const Counter = props => {
     const { store, actions } = useContext(Context);
     const [clock, setClock] = useState([]);
+    const [end, setEnd] = useState(props.date.getTime() < new Date().getTime());
 
     // const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -20,6 +20,7 @@ export const Counter = props => {
 
             if (seg < 0) {
                 // stop timer
+                setEnd(true);
                 clearInterval(timer);
             } else {
                 // update timer
@@ -30,7 +31,13 @@ export const Counter = props => {
                 let mins = Math.floor(seg / 60);
                 seg = seg - mins * 60;
 
-                setClock([days, hours, mins, seg]);
+                setClock(
+                    [days, hours, mins, seg].map(num => {
+                        num = num.toString();
+                        if (num.length === 2) return num;
+                        else return "0" + num;
+                    })
+                );
             }
         };
 
@@ -39,19 +46,34 @@ export const Counter = props => {
         return () => clearInterval(timer);
     }, []);
 
+    useEffect(() => {
+        console.log(`${clock.length} && ${clock.every(e => !e)}`);
+    }, [clock]);
+
     return (
-        <div className="counter center bg-primary-500">
-            <div className="counter__images center">
-                {/* <img src={gusine} alt="gusine" />
-                <img src={gusinette} alt="gusinette" /> */}
-            </div>
-            <div className="container">
-                <div className="row">
-                    {clock.map((value, index) => (
-                        <Number label={value} key={index} />
-                    ))}
+        <div className="counter center bg-dark-500">
+            {end ? (
+                <div className="greetings center">
+                    <div className="greetings__images center">
+                        <img src={gusine} alt="gusine" />
+                        <img src={gusinette} alt="gusinette" />
+                    </div>
+                    <h1 className="greetings__msg">¡Feliz Gusiversario!</h1>
+                    <button className="btn btn--secondary">Continuar</button>
                 </div>
-            </div>
+            ) : (
+                <div className="container">
+                    <div className="row">
+                        {clock.map((value, index) => (
+                            <div className="time">
+                                {`${value}${
+                                    index !== clock.length - 1 ? ":" : ""
+                                }`}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
