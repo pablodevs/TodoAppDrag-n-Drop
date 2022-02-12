@@ -1,11 +1,33 @@
 /*----- Clases reutilizables -----*/
 
+/*---------- FLEX ----------*/
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+}
+
 .row {
     display: flex;
     flex-wrap: wrap;
 }
 
 $columns: 12;
+
+.col-auto {
+    flex: 1 0 0%;
+}
 
 @for $i from 1 through $columns {
     .col-#{$i} {

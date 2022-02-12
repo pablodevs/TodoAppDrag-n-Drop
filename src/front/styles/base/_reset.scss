@@ -19,6 +19,7 @@ h1,
 h2,
 h3,
 h4,
+h5,
 p,
 ul[class],
 ol[class],
@@ -37,6 +38,12 @@ body {
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */

@@ -1,7 +1,11 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
-        store: {},
-        actions: {},
+        store: {
+            counterEnd: false,
+        },
+        actions: {
+            endCounter: () => setStore({ counterEnd: true }),
+        },
     };
 };
 

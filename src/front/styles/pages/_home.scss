@@ -1,8 +1,52 @@
 /*----- Estilos específicos para la página de inicio -----*/
+@import url(//db.onlinewebfonts.com/c/84cb021d5f9af287ffff84b61beef6dc?family=clockicons);
+@font-face {
+    font-family: "clockicons";
+    src: url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.eot");
+    src: url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.eot?#iefix")
+            format("embedded-opentype"),
+        url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.woff2")
+            format("woff2"),
+        url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.woff")
+            format("woff"),
+        url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.ttf")
+            format("truetype"),
+        url("//db.onlinewebfonts.com/t/84cb021d5f9af287ffff84b61beef6dc.svg#clockicons")
+            format("svg");
+}
 
 .home {
-    .row > * {
-        padding-block: 0.3em;
+    background-color: rgba(238, 255, 0, 0.63);
+    flex: auto;
+}
+
+.counter {
+    position: absolute;
+    flex-direction: column;
+    gap: 2rem;
+    inset: 0;
+    line-height: 1;
+    font-family: clockicons, sans-serif;
+    font-size: clamp(1rem, 5vw, 4rem);
+
+    &__images {
+        gap: 2rem;
+        & > img {
+            object-fit: contain;
+            width: 35%;
+        }
+    }
+
+    .row {
+        gap: 1rem;
+        justify-content: space-between;
         text-align: center;
+        padding-inline: 2rem;
+        flex-wrap: nowrap;
+    }
+
+    .col-auto {
+        max-width: 200px;
+        aspect-ratio: 1;
     }
 }
