@@ -35,14 +35,11 @@
         font-weight: bold;
         color: var(--clr-dark-500);
     }
-    &__widgets {
-        flex: auto;
-        flex-direction: column;
+    &__cards {
+        // flex: auto;
+        flex-wrap: wrap;
+        align-items: stretch;
         gap: 1rem;
-        & > * {
-            flex: 1;
-            width: 100%;
-        }
     }
 }
 

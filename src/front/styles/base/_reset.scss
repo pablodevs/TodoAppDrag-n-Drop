@@ -76,8 +76,13 @@ select {
     font: inherit;
 }
 
+/* Reset buttons and anchors */
 button {
+    cursor: pointer;
     outline: none;
+}
+a {
+    text-decoration: none;
 }
 
 /* Remove all animations and transitions for people that prefer not to see them */
