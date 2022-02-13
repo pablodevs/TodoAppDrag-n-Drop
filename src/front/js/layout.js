@@ -24,8 +24,8 @@ const Layout = () => {
                         {store.counterEnd ? (
                             <Home />
                         ) : (
-                            <Counter date={new Date(2022, 1, 12, 17, 58, 15)} />
-                            // <Counter date={new Date(2022, 1, 20, 18, 0, 0)} />
+                            // <Counter date={new Date(2022, 1, 12, 17, 58, 15)} />
+                            <Counter date={new Date(2022, 1, 20, 18, 0, 0)} />
                         )}
                     </Route>
                     <Route exact path="/nicknames">
