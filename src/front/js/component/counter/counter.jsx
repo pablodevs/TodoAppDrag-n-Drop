@@ -10,9 +10,9 @@ export const Counter = props => {
     const [clock, setClock] = useState([]);
     const [end, setEnd] = useState(props.date.getTime() < new Date().getTime());
 
-    // const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
     useEffect(() => {
+        let timer = null;
+
         const updateClock = () => {
             let currentTime = new Date().getTime();
 
@@ -42,9 +42,27 @@ export const Counter = props => {
             }
         };
 
-        const timer = setInterval(updateClock, 1000);
+        timer = setInterval(updateClock, 1000);
 
         return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        let keys = "";
+
+        const handleKeyDown = e => {
+            if (e.key === "Backspace") {
+                keys = "";
+            } else {
+                keys += e.key;
+                if (keys === "admin") {
+                    actions.exitCounter();
+                }
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
     }, []);
 
     const exit = () => {
