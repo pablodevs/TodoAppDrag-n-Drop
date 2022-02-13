@@ -13,24 +13,11 @@ export const Home = () => {
         <div
             className="home"
             style={{ backgroundImage: "url(gusine.png), url(gusinette.png)" }}>
-            <h1 className="home__title">¡Bienvenid@!</h1>
+            <h1 className="home__title">Welcome!</h1>
             <div className="home__cards center">
                 <Link
-                    to="/motes"
+                    to="/nicknames"
                     className="center home-card home-card--primary"
-                    onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${threeWorms})`;
-                        e.target.style.backgroundSize = "cover";
-                        e.target.style.backgroundPosition = "bottom";
-                    }}
-                    onMouseLeave={e => {
-                        e.target.style.backgroundImage = "none";
-                    }}>
-                    Motes
-                </Link>
-                <Link
-                    to="/perfil"
-                    className="center home-card home-card--dark"
                     onMouseEnter={e => {
                         e.target.style.backgroundImage = `url(${dramaWorm})`;
                         e.target.style.backgroundSize = "cover";
@@ -39,7 +26,20 @@ export const Home = () => {
                     onMouseLeave={e => {
                         e.target.style.backgroundImage = "none";
                     }}>
-                    Perfil
+                    Nicknames
+                </Link>
+                <Link
+                    to="/profile"
+                    className="center home-card home-card--dark"
+                    onMouseEnter={e => {
+                        e.target.style.backgroundImage = `url(${cats})`;
+                        e.target.style.backgroundSize = "cover";
+                        e.target.style.backgroundPosition = "center";
+                    }}
+                    onMouseLeave={e => {
+                        e.target.style.backgroundImage = "none";
+                    }}>
+                    Profile
                 </Link>
                 <Link
                     to="/todo-list"
@@ -52,20 +52,20 @@ export const Home = () => {
                     onMouseLeave={e => {
                         e.target.style.backgroundImage = "none";
                     }}>
-                    Todo list
+                    Todo List
                 </Link>
                 <Link
-                    to="/calendario"
+                    to="/calendar"
                     className="center home-card home-card--danger"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${cats})`;
+                        e.target.style.backgroundImage = `url(${threeWorms})`;
                         e.target.style.backgroundSize = "cover";
-                        e.target.style.backgroundPosition = "center";
+                        e.target.style.backgroundPosition = "bottom";
                     }}
                     onMouseLeave={e => {
                         e.target.style.backgroundImage = "none";
                     }}>
-                    Calendario
+                    Calendar
                 </Link>
             </div>
         </div>

@@ -31,9 +31,10 @@
     &__title {
         text-align: center;
         margin-bottom: 1.5rem;
-        font-size: var(--fs-700);
+        font-size: var(--fs-800);
         font-weight: bold;
-        color: var(--clr-dark-500);
+        color: var(--clr-dark-100);
+        text-shadow: 3px 3px 6px var(--clr-dark-500);
     }
     &__cards {
         // flex: auto;
@@ -43,50 +44,12 @@
     }
 }
 
+// Opacity for backgroud
 .home::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-color: var(--clr-dark-300);
+    background-color: var(--clr-dark-500);
     opacity: 0.5;
-}
-
-/*---------- Counter Styles ----------*/
-.counter {
-    position: absolute;
-    flex-direction: column;
-    gap: 2rem;
-    inset: 0;
-    line-height: 1;
-    color: var(--clr-secondary-100);
-
-    .greetings {
-        flex-direction: column;
-        &__images {
-            gap: 2rem;
-            & > img {
-                object-fit: contain;
-                width: 35%;
-            }
-        }
-
-        &__msg {
-            text-align: center;
-            margin-block: 2rem;
-        }
-    }
-
-    .row {
-        // gap: 1rem;
-        justify-content: center;
-        text-align: center;
-        padding-inline: 2rem;
-        flex-wrap: nowrap;
-    }
-
-    .time {
-        font-family: clockicons, sans-serif;
-        font-size: 14vw;
-    }
 }

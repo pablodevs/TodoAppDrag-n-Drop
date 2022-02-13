@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import gusine from "../../../img/gusine.png";
 import gusinette from "../../../img/gusinette.png";
 import { Context } from "../../store/appContext";
+import "../../../styles/components/counter.scss";
 
 export const Counter = props => {
     const { store, actions } = useContext(Context);
@@ -60,7 +61,9 @@ export const Counter = props => {
                         <img src={gusine} alt="gusine" />
                         <img src={gusinette} alt="gusinette" />
                     </div>
-                    <h1 className="greetings__msg">¡Feliz Gusiversario!</h1>
+                    <h1 className="greetings__msg">
+                        🎉 ¡Feliz Gusiversario! 🎊
+                    </h1>
                     <button className="btn btn--secondary" onClick={exit}>
                         Continuar
                     </button>

@@ -1,5 +1,5 @@
 import React from "react";
 
 export const TodoList = () => {
-    return <div>TodoList</div>;
+    return <div>Todo List</div>;
 };

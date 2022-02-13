@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Counter } from "./component/counter/counter.jsx";
-import { Navbar } from "./component/navbar";
 // Components
 import ScrollToTop from "./component/scrollToTop";
-import { Calendario } from "./pages/calendario.jsx";
 // Pages
 import { Home } from "./pages/home";
-import { Motes } from "./pages/motes.jsx";
-import { Perfil } from "./pages/perfil.jsx";
+import { Nicknames } from "./pages/nicknames.jsx";
+import { Profile } from "./pages/profile.jsx";
 import { TodoList } from "./pages/todolist.jsx";
+import { Calendar } from "./pages/calendar.jsx";
 // Context
 import injectContext, { Context } from "./store/appContext";
 
@@ -29,17 +28,17 @@ const Layout = () => {
                             // <Counter date={new Date(2022, 1, 20, 18, 0, 0)} />
                         )}
                     </Route>
-                    <Route exact path="/motes">
-                        <Motes />
+                    <Route exact path="/nicknames">
+                        <Nicknames />
                     </Route>
-                    <Route exact path="/perfil">
-                        <Perfil />
+                    <Route exact path="/profile">
+                        <Profile />
                     </Route>
                     <Route exact path="/todo-list">
                         <TodoList />
                     </Route>
-                    <Route exact path="/calendario">
-                        <Calendario />
+                    <Route exact path="/calendar">
+                        <Calendar />
                     </Route>
                     <Route>
                         <h1>Not found!</h1>
