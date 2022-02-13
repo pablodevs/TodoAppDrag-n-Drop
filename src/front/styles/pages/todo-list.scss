@@ -1,0 +1,10 @@
+.todo-list {
+    &__form {
+        display: flex;
+        gap: 0.7rem;
+        &__submit {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

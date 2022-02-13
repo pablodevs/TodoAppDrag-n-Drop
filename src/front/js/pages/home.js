@@ -14,10 +14,10 @@ export const Home = () => {
             className="home"
             style={{ backgroundImage: "url(gusine.png), url(gusinette.png)" }}>
             <h1 className="home__title">Welcome!</h1>
-            <div className="home__cards center">
+            <div className="home__links center">
                 <Link
                     to="/nicknames"
-                    className="center home-card home-card--primary"
+                    className="center home-link home-link--primary"
                     onMouseEnter={e => {
                         e.target.style.backgroundImage = `url(${dramaWorm})`;
                         e.target.style.backgroundSize = "cover";
@@ -30,7 +30,7 @@ export const Home = () => {
                 </Link>
                 <Link
                     to="/profile"
-                    className="center home-card home-card--dark"
+                    className="center home-link home-link--dark"
                     onMouseEnter={e => {
                         e.target.style.backgroundImage = `url(${cats})`;
                         e.target.style.backgroundSize = "cover";
@@ -43,7 +43,7 @@ export const Home = () => {
                 </Link>
                 <Link
                     to="/todo-list"
-                    className="center home-card home-card--secondary"
+                    className="center home-link home-link--secondary"
                     onMouseEnter={e => {
                         e.target.style.backgroundImage = `url(${dancingWorms})`;
                         e.target.style.backgroundSize = "cover";
@@ -56,7 +56,7 @@ export const Home = () => {
                 </Link>
                 <Link
                     to="/calendar"
-                    className="center home-card home-card--danger"
+                    className="center home-link home-link--danger"
                     onMouseEnter={e => {
                         e.target.style.backgroundImage = `url(${threeWorms})`;
                         e.target.style.backgroundSize = "cover";

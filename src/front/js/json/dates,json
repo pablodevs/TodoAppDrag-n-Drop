@@ -1,0 +1,32 @@
+{
+    "month_text": [
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre"
+    ],
+    "day_text": ["D", "L", "M", "X", "J", "V", "S"],
+    "pretty_weekday": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+    "pretty_month": [
+        "Ene.",
+        "Feb.",
+        "Mar.",
+        "Abr.",
+        "May.",
+        "Jun.",
+        "Jul.",
+        "Ago.",
+        "Sep.",
+        "Oct.",
+        "Nov.",
+        "Dic."
+    ]
+}
