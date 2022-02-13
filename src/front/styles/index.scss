@@ -59,6 +59,9 @@
         .bg-#{$color}-#{$shade} {
             background-color: $value;
         }
+        .border-#{$color}-#{$shade} {
+            border: 3px solid $value;
+        }
     }
 }
 

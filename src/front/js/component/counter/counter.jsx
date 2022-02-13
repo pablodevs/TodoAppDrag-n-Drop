@@ -46,9 +46,9 @@ export const Counter = props => {
         return () => clearInterval(timer);
     }, []);
 
-    const timeOut = () => {
+    const exit = () => {
         setTimeout(() => {
-            actions.endCounter();
+            actions.exitCounter();
         }, 1000);
     };
 
@@ -61,7 +61,7 @@ export const Counter = props => {
                         <img src={gusinette} alt="gusinette" />
                     </div>
                     <h1 className="greetings__msg">¡Feliz Gusiversario!</h1>
-                    <button className="btn btn--secondary" onClick={timeOut}>
+                    <button className="btn btn--secondary" onClick={exit}>
                         Continuar
                     </button>
                 </div>

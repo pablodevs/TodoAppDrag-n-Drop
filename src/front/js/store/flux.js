@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             counterEnd: localStorage.getItem("end") || "",
         },
         actions: {
-            endCounter: () => {
+            exitCounter: () => {
                 localStorage.setItem("end", true);
                 setStore({ counterEnd: true });
             },
