@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import threeWorms from "../../img/gifs/three-dancing-worms.gif";
-import dramaWorm from "../../img/gifs/drama.gif";
-import dancingWorms from "../../img/gifs/dancing-worms.gif";
-import cats from "../../img/gifs/cute-cats.gif";
+// import threeWorms from "../../img/gifs/three-dancing-worms.gif";
+// import dramaWorm from "../../img/gifs/drama.gif";
+// import dancingWorms from "../../img/gifs/dancing-worms.gif";
+// import cats from "../../img/gifs/cute-cats.gif";
 
 export const Home = () => {
     const { store, actions } = useContext(Context);
@@ -19,7 +19,7 @@ export const Home = () => {
                     to="/nicknames"
                     className="center home-link home-link--primary"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${dramaWorm})`;
+                        // e.target.style.backgroundImage = `url(${dramaWorm})`;
                         e.target.style.backgroundSize = "cover";
                         e.target.style.backgroundPosition = "bottom";
                     }}
@@ -32,7 +32,7 @@ export const Home = () => {
                     to="/profile"
                     className="center home-link home-link--dark"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${cats})`;
+                        // e.target.style.backgroundImage = `url(${cats})`;
                         e.target.style.backgroundSize = "cover";
                         e.target.style.backgroundPosition = "center";
                     }}
@@ -45,7 +45,7 @@ export const Home = () => {
                     to="/todo-list"
                     className="center home-link home-link--secondary"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${dancingWorms})`;
+                        // e.target.style.backgroundImage = `url(${dancingWorms})`;
                         e.target.style.backgroundSize = "cover";
                         e.target.style.backgroundPosition = "center";
                     }}
@@ -58,7 +58,7 @@ export const Home = () => {
                     to="/calendar"
                     className="center home-link home-link--danger"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${threeWorms})`;
+                        // e.target.style.backgroundImage = `url(${threeWorms})`;
                         e.target.style.backgroundSize = "cover";
                         e.target.style.backgroundPosition = "bottom";
                     }}
