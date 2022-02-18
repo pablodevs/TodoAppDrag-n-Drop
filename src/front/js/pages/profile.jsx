@@ -14,7 +14,8 @@ export const Profile = () => {
                 {/* <CloudinaryUploadWidget preset="gusinette" /> */}
             </div>
             <img
-                src="https://res.cloudinary.com/peibol888/image/upload/v1645038943/gusinet/aq6ih7mstgwgbopmpyuc.jpg"
+                src="https://res.cloudinary.com/peibol888/image/upload/v1645200689/gusinettes/gusinet/vofcwzrienu8rxak5q8i.jpg"
+                // src="https://res.cloudinary.com/peibol888/image/upload/v1645200648/gusinettes/gusinet/xvsnklzl4hakgkduog2f.jpg"
                 width="300"
                 alt="random profile image"
                 className="profile_img"

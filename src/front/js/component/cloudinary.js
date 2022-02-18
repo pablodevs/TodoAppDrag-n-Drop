@@ -16,10 +16,11 @@ class CloudinaryUploadWidget extends Component {
             },
             (error, result) => {
                 if (!error && result && result.event === "success") {
-                    actions.saveImageInfo(
-                        result.info.url,
-                        result.info.public_id
-                    );
+                    console.log(result);
+                    // actions.saveImageInfo(
+                    //     result.info.url,
+                    //     result.info.public_id
+                    // );
                 }
             }
         );
