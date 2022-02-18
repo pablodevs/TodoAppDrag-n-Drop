@@ -6,8 +6,6 @@ export const TodoList = () => {
     const [list, setList] = useState([]);
     const [data, setData] = useState("");
 
-    useEffect(() => console.log(data), [data]);
-
     const handleSubmit = e => {
         e.preventDefault();
         setList([...list, data]);
