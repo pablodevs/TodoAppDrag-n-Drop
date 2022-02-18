@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BsPlusSquareFill } from "react-icons/bs";
 import nicknamesData from "../json/nicknames.json";
+import "../../styles/pages/nicknames.scss";
 
 export const Nicknames = () => {
     const [nickname, setNickname] = useState("");
@@ -34,11 +35,13 @@ export const Nicknames = () => {
     return (
         <div className="nicknames center flex-col">
             <h1 className="nicknames__title">Nicknames</h1>
-            <button className="nicknames__toggle" onClick={nicknameGenerator}>
+            <button
+                className="btn btn--danger nnicknames__toggle"
+                onClick={nicknameGenerator}>
                 Generate
             </button>
             <br />
-            <form onSubmit={handleSubmit}>
+            <form className="nicknames__form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     id="nickname-input"
@@ -48,13 +51,17 @@ export const Nicknames = () => {
                 />
                 <button
                     type="submit"
-                    className="btn-icon nicknames__toggle"
+                    className="btn-icon"
                     onClick={handleSubmit}>
                     <BsPlusSquareFill />
                 </button>
             </form>
             <br />
             <span className="nicknames__nickname">{nickname}</span>
+            <br />
+            <button className="btn btn--secondary nicknames__add-nickname">
+                Add Nickname
+            </button>
         </div>
     );
 };

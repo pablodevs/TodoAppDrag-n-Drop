@@ -1,0 +1,22 @@
+.nicknames {
+    flex: 1;
+
+    &__title {
+        margin-bottom: 1rem;
+    }
+    &__form {
+        display: flex;
+        gap: 0.7rem;
+    }
+    &__nickname {
+        text-align: center;
+        min-height: 75px;
+        min-width: 300px;
+        padding: 1.5rem 2rem;
+        background-color: var(--clr-danger-300);
+        font-size: 3rem;
+        line-height: 1;
+        color: var(--clr-dark-100);
+        border-radius: 100vw;
+    }
+}
