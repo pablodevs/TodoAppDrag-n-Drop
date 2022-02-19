@@ -76,6 +76,12 @@ select {
     font: inherit;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    box-shadow: inset 0 0 1000px 0px white !important;
+    -webkit-box-shadow: inset 0 0 1000px 0px white !important;
+}
+
 /* Reset buttons and anchors */
 button {
     cursor: pointer;

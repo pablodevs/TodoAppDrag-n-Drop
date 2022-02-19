@@ -1,18 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import cats from "../../img/gifs/cute-cats.gif";
 import dancingWorms from "../../img/gifs/dancing-worms.gif";
 import dramaWorm from "../../img/gifs/drama.gif";
 import threeWorms from "../../img/gifs/three-dancing-worms.gif";
+import { Login } from "../component/login.jsx";
 import { Context } from "../store/appContext";
 
 export const Home = () => {
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        let userToken = store.token || localStorage.getItem("token");
+        if (userToken) actions.getProfileData(userToken);
+        else history.push("/");
+    }, [store.token]);
+
     return (
         <div
             className="home"
-            style={{ backgroundImage: "url(gusine.png), url(gusinette.png)" }}>
+            style={{ backgroundImage: "url(gusinet.png), url(gusinette.png)" }}>
+            {store.token ? "" : <Login />}
             <h1 className="home__title">Welcome!</h1>
             <div className="home__links center">
                 <Link

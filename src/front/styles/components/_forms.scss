@@ -1,1 +1,65 @@
 /*----- Formularios -----*/
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 100px;
+    padding: 0.5rem 0.2rem;
+    & > label,
+    & > input,
+    & > textarea,
+    & > select,
+    &.select-wrapper::after {
+        transition: all 0.2s ease-out;
+    }
+    & > label {
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 1.25rem;
+        font-size: 0.75em;
+        font-weight: bold;
+        color: var(--clr-danger-200);
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0.2em -0.5em;
+            z-index: -1;
+            background-color: white;
+            border-radius: 100vw;
+        }
+    }
+    & > input,
+    & > textarea,
+    & > select {
+        width: 100%;
+        padding: 0.6rem 1.05rem;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        border: 1px solid var(--clr-danger-200);
+        border-radius: $--br-global;
+        &:focus-visible {
+            outline: none;
+            border-color: var(--clr-danger-300);
+            box-shadow: 0 0 3px 0 var(--clr-danger-100);
+            & ~ label,
+            & ~ span {
+                color: var(--clr-danger-300);
+            }
+        }
+    }
+    &.select-wrapper::after {
+        z-index: -1;
+        content: "";
+        position: absolute;
+        right: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top: 0.4em solid var(--clr-danger-200);
+        border-right: 0.4em solid transparent;
+        border-left: 0.4em solid transparent;
+    }
+    &.select-wrapper:hover::after {
+        border-top: 0.4em solid var(--clr-danger-300);
+    }
+}

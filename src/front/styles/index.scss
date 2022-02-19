@@ -10,22 +10,6 @@
 @import "utils/mixins";
 @import "utils/helpers";
 
-@import "layout/navbar";
-@import "layout/footer";
-@import "layout/grid";
-
-@import "components/buttons";
-@import "components/cards";
-@import "components/dropdown";
-@import "components/forms";
-
-@import "pages/home";
-
-@import "themes/theme";
-@import "themes/admin";
-
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Poppins&display=swap");
-
 /*---------- Colors & Font-size Root ----------*/
 :root {
     @each $color, $shades in $colors {
@@ -64,6 +48,23 @@
         }
     }
 }
+
+@import "layout/navbar";
+@import "layout/footer";
+@import "layout/grid";
+
+@import "components/buttons";
+@import "components/popup";
+@import "components/cards";
+@import "components/dropdown";
+@import "components/forms";
+
+@import "pages/home";
+
+@import "themes/theme";
+@import "themes/admin";
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Poppins&display=swap");
 
 /*---------- Estilos globales ----------*/
 body {

@@ -1,0 +1,19 @@
+.home > .bg-cover,
+.bg-cover {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.555);
+}
+
+.popup {
+    justify-content: center;
+    min-width: 350px;
+    padding: 2rem;
+    background-color: white;
+    border-radius: $--br-global;
+}

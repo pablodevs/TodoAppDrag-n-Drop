@@ -1,0 +1,11 @@
+.login {
+    &__title {
+        margin-bottom: 1.5rem;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+    }
+}
