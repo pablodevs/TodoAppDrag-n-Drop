@@ -46,13 +46,13 @@ def generate_token():
 # Protect a route with jwt_required, which will kick out requests without a valid JWT present.
 @api.route('/user', methods=['PUT', 'GET'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
-def handle_single_user():
+def getUserInfo():
     """
     Single user
     """
 
-    current_user_id = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
-    user = User.query.get(current_user_id)
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
 
     # Data validation
     if user is None:

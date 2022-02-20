@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import cats from "../../img/gifs/cute-cats.gif";
 import dancingWorms from "../../img/gifs/dancing-worms.gif";
 import dramaWorm from "../../img/gifs/drama.gif";
@@ -9,6 +9,8 @@ import { Context } from "../store/appContext";
 
 export const Home = () => {
     const { store, actions } = useContext(Context);
+
+    let history = useHistory();
 
     useEffect(() => {
         let userToken = store.token || localStorage.getItem("token");

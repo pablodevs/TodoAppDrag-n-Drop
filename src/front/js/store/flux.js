@@ -34,7 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     } else {
                         setStore({ token: data.token });
                         localStorage.setItem("token", data.token);
-                        actions.getProfileData(store.token);
+                        actions.getProfileData(data.token);
                         return data;
                     }
                 } catch (error) {
@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 };
                 try {
                     const response = await fetch(
-                        process.env.BACKEND_URL + "/user",
+                        process.env.BACKEND_URL + "/api/user",
                         options
                     );
                     const data = await response.json();
