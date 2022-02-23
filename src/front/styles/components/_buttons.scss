@@ -47,6 +47,27 @@
     line-height: 1;
 }
 
+.btn-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--clr-dark-300);
+    border-radius: $--br-small;
+    
+    svg {
+        transition: color 1s linear;
+    }
+
+    &:hover {
+        border-color: var(--clr-primary-300);
+        color: var(--clr-primary-300);
+        path {
+            color: var(--clr-primary-300);
+        }
+    }
+}
+
 .home-link {
     position: relative;
 

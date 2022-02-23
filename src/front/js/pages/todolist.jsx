@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { BsPlusSquareFill } from "react-icons/bs";
 import "../../styles/pages/todo-list.scss";
+import { Context } from "../store/appContext";
 
 export const TodoList = () => {
+    const { store, actions } = useContext(Context);
+
     const [list, setList] = useState([]);
     const [data, setData] = useState("");
 
@@ -16,7 +19,13 @@ export const TodoList = () => {
     return (
         <div className="todo-list center flex-col">
             <h1 className="todo-list__title">Todo List</h1>
-            <form onSubmit={handleSubmit} className="todo-list__form">
+            <button
+                className="btn-with-icon"
+                onClick={() => actions.setPopup()}>
+                <BsPlusSquareFill />
+                New List
+            </button>
+            {/* <form onSubmit={handleSubmit} className="todo-list__form">
                 <input
                     autoFocus
                     type="text"
@@ -29,7 +38,7 @@ export const TodoList = () => {
                     className="btn-icon todo-list__form__submit">
                     <BsPlusSquareFill />
                 </button>
-            </form>
+            </form> */}
             <ul className="todo-list__items">
                 {list.map((item, index) => (
                     <li key={index}>{item}</li>

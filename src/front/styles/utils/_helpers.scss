@@ -39,3 +39,7 @@ $columns: 12;
         flex: 0 0 calc(100% / calc($columns / $i));
     }
 }
+
+.gap-1 {
+    gap: 1.5rem
+}

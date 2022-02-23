@@ -35,11 +35,6 @@ export const Nicknames = () => {
     return (
         <div className="nicknames center flex-col">
             <h1 className="nicknames__title">Nicknames</h1>
-            <button
-                className="btn btn--danger nnicknames__toggle"
-                onClick={nicknameGenerator}>
-                Generate
-            </button>
             <br />
             <form className="nicknames__form" onSubmit={handleSubmit}>
                 <input
@@ -59,9 +54,16 @@ export const Nicknames = () => {
             <br />
             <span className="nicknames__nickname">{nickname}</span>
             <br />
-            <button className="btn btn--secondary nicknames__add-nickname">
-                Add Nickname
-            </button>
+            <div className="flex gap-1">
+                {nickname ? <button className="btn btn--secondary nicknames__add-nickname">
+                    Add Nickname
+                </button> : ""}
+                <button
+                    className="btn btn--danger nnicknames__toggle"
+                    onClick={nicknameGenerator}>
+                    Generate
+                </button>
+            </div>
         </div>
     );
 };

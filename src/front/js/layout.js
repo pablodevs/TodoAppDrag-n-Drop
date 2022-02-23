@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Counter } from "./component/counter/counter.jsx";
 // Components
 import ScrollToTop from "./component/scrollToTop";
+import { Popup } from "./component/popup.jsx";
 // Pages
 import { Home } from "./pages/home";
 import { Nicknames } from "./pages/nicknames.jsx";
@@ -19,6 +20,7 @@ const Layout = () => {
     return (
         <BrowserRouter basename={basename}>
             <ScrollToTop>
+                <Popup />
                 <Switch>
                     <Route exact path="/">
                         {store.counterEnd ? (

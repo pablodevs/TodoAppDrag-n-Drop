@@ -6,8 +6,14 @@ export const Profile = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        if (!store.randomImage) actions.getImagesByTag("gusinet");
+        let userToken = store.token || localStorage.getItem("token");
+        if (userToken) actions.getProfileData(userToken)
+        else actions.setPopup(<Login />, false);
     }, []);
+
+    useEffect(() => {
+        if (store.user && store.user.name && !store.randomImage) actions.getImagesByTag()
+    }, [store.user])
 
     return (
         <div className="profile center flex-col">
@@ -25,8 +31,15 @@ export const Profile = () => {
                     />
                 </button>
             ) : (
-                "LOADING..."
+                "Loading..."
             )}
+            {store.randomImage ? <button className="btn btn--secondary profile__set-image" onClick={() => {
+                actions.setProfileImage;
+                setTimeout(() => actions.cleanMessage(), 5000);
+            }}>
+                Set image
+            </button> : ""}
+            {store.message && store.message.message ? <span className="profile__message text-secondary-400">{store.message.message}</span> : ""}
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import getState from "./flux.js";
+import { Login } from "../component/login.jsx"
 
 // Don't change, here is where we initialize our context, by default it's just going to be null.
 export const Context = React.createContext(null);
@@ -21,7 +22,11 @@ const injectContext = PassedComponent => {
             })
         );
 
-        useEffect(() => {}, []);
+        useEffect(() => {
+            let userToken = state.store.token || localStorage.getItem("token");
+            if (userToken) state.actions.getProfileData(userToken);
+            else state.actions.setPopup(<Login />, false);
+        }, []);
 
         return (
             <Context.Provider value={state}>

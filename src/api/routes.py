@@ -44,7 +44,7 @@ def generate_token():
 
 # GET, MODIFY OR DELETE A USER
 # Protect a route with jwt_required, which will kick out requests without a valid JWT present.
-@api.route('/user', methods=['PUT', 'GET'])
+@api.route('/user', methods=['GET'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
 def getUserInfo():
     """
@@ -59,6 +59,28 @@ def getUserInfo():
         raise APIException('User not found in data base.', status_code=404)
 
     return jsonify(user.serialize()), 200
+
+@api.route('/user', methods=['PUT'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def setUserImg():
+    """
+    Single user
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+
+    # Query body
+    request_body = request.json
+
+    user.profile_image_url = request_body.get("profile_image_url", None)
+
+    db.session.commit()
+    return jsonify({"message": "Image changed!", "status": "success"}), 200
 
 # Obtiene todas las imágenes con el tag 'gusinette' o 'gusinet' de Cloudinary
 @api.route('/images/<string:tag>')
