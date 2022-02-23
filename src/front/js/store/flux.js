@@ -130,7 +130,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         });
                         throw Error(response);
                     }
-                    console.log(data);
                     setStore({
                         message: {
                             message: data.message,

@@ -34,7 +34,7 @@ export const Profile = () => {
                 "Loading..."
             )}
             {store.randomImage ? <button className="btn btn--secondary profile__set-image" onClick={() => {
-                actions.setProfileImage;
+                actions.setProfileImage();
                 setTimeout(() => actions.cleanMessage(), 5000);
             }}>
                 Set image

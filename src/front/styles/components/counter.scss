@@ -1,6 +1,7 @@
 /*---------- Counter Styles ----------*/
 .counter {
     position: absolute;
+    z-index: 10000;
     flex-direction: column;
     gap: 2rem;
     inset: 0;
