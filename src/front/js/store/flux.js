@@ -2,20 +2,25 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             popup: {},
-            counterEnd: localStorage.getItem("end") || "",
             token: localStorage.getItem("token") || "",
+            todoLists: [
+                { color: "#5300eb", name: "Lista 1" },
+                { color: "#008b02", name: "Lista 2" },
+                { color: "#b80000", name: "Lista 3" }
+            ]
         },
         actions: {
-            cleanMessage: () => setStore({ message: { message: "", status: "" } }),
-
-            // End counter
-            exitCounter: () => {
-                localStorage.setItem("end", true);
-                setStore({ counterEnd: true });
+            // Esta función dejará de servir y se borrará:
+            setNewList: (data) => {
+                const store = getStore();
+                setStore({ todoLists: [...store.todoLists, data] })
             },
 
+            // Remove message from store
+            cleanMessage: () => setStore({ message: { message: "", status: "" } }),
+
             // Open Popup
-            setPopup: (reactComponent, closable) => {
+            setPopup: (reactComponent, closable = true) => {
                 setStore({
                     popup: {
                         component: reactComponent,

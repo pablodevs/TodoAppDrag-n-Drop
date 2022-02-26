@@ -1,3 +1,5 @@
+@use "../utils/variables.scss" as *;
+
 .todo-list {
     flex: 1;
     display: flex;
@@ -9,9 +11,61 @@
     &__form {
         display: flex;
         gap: 0.7rem;
+
         &__submit {
             display: flex;
             align-items: center;
+        }
+    }
+
+    &__add-btn {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+
+    .plus-icon {
+        color: white;
+        padding: 0.8rem;
+        background-color: var(--clr-danger-300);
+        &:active {
+            background-color: var(--clr-danger-200);
+        }
+    }
+
+    &__lists {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+        width: 100%;
+        max-height: 68vh;
+        font-size: 1.2rem;
+        overflow-y: scroll;
+
+        li {
+            display: flex;
+            align-items: center;
+            width: min(320px, 100%);
+            padding: 0.5rem 0.7rem;
+            border-radius: $br-small;
+            border: 1px solid;
+        }
+        .color-mark {
+            width: 12px;
+            height: 12px;
+            margin-right: 0.8rem;
+            border-radius: 50%;
+        }
+        span:last-child {
+            display: flex;
+            margin-left: auto;
+            .del-icon {
+                color: var(--clr-dark-300);
+                &:hover {
+                    color: red;
+                }
+            }
         }
     }
 }

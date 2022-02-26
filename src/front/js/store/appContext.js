@@ -23,9 +23,7 @@ const injectContext = PassedComponent => {
         );
 
         useEffect(() => {
-            let userToken = state.store.token || localStorage.getItem("token");
-            if (userToken) state.actions.getProfileData(userToken);
-            else state.actions.setPopup(<Login />, false);
+            localStorage.removeItem("end");
         }, []);
 
         return (

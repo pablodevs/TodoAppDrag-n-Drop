@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Counter } from "./component/counter/counter.jsx";
 // Components
 import ScrollToTop from "./component/scrollToTop";
 import { Popup } from "./component/popup.jsx";
+import { Navbar } from "./component/navbar.js";
 // Pages
 import { Home } from "./pages/home";
 import { Nicknames } from "./pages/nicknames.jsx";
@@ -21,13 +21,10 @@ const Layout = () => {
         <BrowserRouter basename={basename}>
             <ScrollToTop>
                 <Popup />
+                <Navbar />
                 <Switch>
                     <Route exact path="/">
-                        {store.counterEnd ? (
-                            <Home />
-                        ) : (
-                            <Counter date={new Date(2022, 1, 23, 21, 30, 0)} />
-                        )}
+                        <Home />
                     </Route>
                     <Route exact path="/nicknames">
                         <Nicknames />

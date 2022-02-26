@@ -1,0 +1,14 @@
+.add-list {
+    gap: 1rem;
+
+    &__title {
+        font-size: 1.5rem;
+    }
+
+    .form {
+        gap: 1rem;
+        &__color-picker {
+            margin-inline: auto;
+        }
+    }
+}

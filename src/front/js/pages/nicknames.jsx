@@ -18,8 +18,8 @@ export const Nicknames = () => {
             randomNumber < 0.333
                 ? [prefixes, suffixes].map(randomElement).join("")
                 : randomNumber < 0.666
-                ? [adjectives, names].map(randomElement).join("")
-                : [adjectives, prefixes, suffixes].map(randomElement).join("");
+                    ? [adjectives, names].map(randomElement).join("")
+                    : [adjectives, prefixes, suffixes].map(randomElement).join("");
 
         setNickname(randomNickname);
     };
@@ -35,7 +35,6 @@ export const Nicknames = () => {
     return (
         <div className="nicknames center flex-col">
             <h1 className="nicknames__title">Nicknames</h1>
-            <br />
             <form className="nicknames__form" onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -46,14 +45,12 @@ export const Nicknames = () => {
                 />
                 <button
                     type="submit"
-                    className="btn-icon"
+                    className="icon"
                     onClick={handleSubmit}>
                     <BsPlusSquareFill />
                 </button>
             </form>
-            <br />
             <span className="nicknames__nickname">{nickname}</span>
-            <br />
             <div className="flex gap-1">
                 {nickname ? <button className="btn btn--secondary nicknames__add-nickname">
                     Add Nickname

@@ -13,25 +13,29 @@
     opacity: 0;
 }
 
-.popup {    
+.popup {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -65%);
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    
+
     width: fit-content;
     min-width: calc(min(100%, 350px));
     padding: 1.5rem;
-    border-radius: $--br-global;
+    border-radius: $br-global;
     background-color: white;
-    box-shadow: -1px 1px 3px 0 rgba(0,0,0,0.2);
-    
+    box-shadow: -1px 1px 3px 0 rgba(0, 0, 0, 0.2);
+
     opacity: 0;
+
+    & > *:not(.popup-close) {
+        width: 100%;
+    }
 }
 
 .bg-cover-show {

@@ -1,5 +1,11 @@
 /*----- Barras de navegación -----*/
 
 /*---------- Barra principal de navegación ----------*/
+.navbar {
+    position: fixed;
+    inset: auto 0;
+    z-index: 9999;
+    padding: 0.7rem 1rem;
+}
 
 /*---------- Barra secundaria de navegación ----------*/

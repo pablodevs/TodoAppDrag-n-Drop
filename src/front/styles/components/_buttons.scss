@@ -31,7 +31,7 @@
             color: var(--clr-primary-200);
         }
         &.btn--secondary {
-            color: var(--clr-secondary-200);
+            color: var(--clr-secondary-300);
         }
         &.btn--dark {
             color: var(--clr-dark-200);
@@ -42,7 +42,7 @@
     }
 }
 
-.btn-icon {
+.icon {
     font-size: 1.5rem;
     line-height: 1;
 }
@@ -53,8 +53,8 @@
     gap: 0.5rem;
     padding: 0.4rem 0.8rem;
     border: 1px solid var(--clr-dark-300);
-    border-radius: $--br-small;
-    
+    border-radius: $br-small;
+
     svg {
         transition: color 1s linear;
     }
@@ -80,8 +80,8 @@
     text-transform: uppercase;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.33);
 
-    border-radius: $--br-global;
-    box-shadow: $--bs-global;
+    border-radius: $br-global;
+    box-shadow: $bs-global;
     border: 3px solid;
     overflow: hidden;
 
@@ -114,5 +114,19 @@
 
     @include mq(small) {
         min-width: 250px;
+    }
+}
+
+.btn-icon {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.45rem;
+    font-size: 2rem;
+    color: var(--clr-primary-400);
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: $bs-icon;
+    &:active {
+        background-color: var(--clr-dark-100);
     }
 }

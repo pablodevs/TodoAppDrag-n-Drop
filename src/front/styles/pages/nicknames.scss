@@ -1,9 +1,7 @@
 .nicknames {
     flex: 1;
+    gap: 1.5rem;
 
-    &__title {
-        margin-bottom: 1rem;
-    }
     &__form {
         display: flex;
         gap: 0.7rem;
