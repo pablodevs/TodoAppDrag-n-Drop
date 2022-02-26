@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
 import "../../styles/pages/profile.scss";
+import { Login } from "../component/login.jsx";
+import { Context } from "../store/appContext";
 
 export const Profile = () => {
     const { store, actions } = useContext(Context);
