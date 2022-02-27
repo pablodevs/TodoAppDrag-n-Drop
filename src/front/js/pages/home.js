@@ -4,6 +4,8 @@ import cats from "../../img/gifs/cute-cats.gif";
 import dancingWorms from "../../img/gifs/dancing-worms.gif";
 // import dramaWorm from "../../img/gifs/drama.gif";
 import threeWorms from "../../img/gifs/three-dancing-worms.gif";
+import gusinet from "../../img/gusinet.png"
+import gusinette from "../../img/gusinette.png"
 import "../../styles/pages/home.scss";
 
 export const Home = () => {
@@ -11,7 +13,7 @@ export const Home = () => {
     return (
         <div
             className="home"
-            style={{ backgroundImage: "url(gusinet.png), url(gusinette.png)" }}
+            style={{ backgroundImage: `url(${gusinet}), url(${gusinette})` }}
         >
             <h1 className="home__title">Welcome!</h1>
             <div className="home__links center">
