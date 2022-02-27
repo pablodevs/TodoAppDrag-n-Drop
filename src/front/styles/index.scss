@@ -59,8 +59,6 @@
 @import "components/dropdown";
 @import "components/forms";
 
-@import "pages/home";
-
 @import "themes/theme";
 @import "themes/admin";
 
@@ -74,6 +72,8 @@ body {
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, .h5, h5, .h4, .h5 {
     font-family: "Poppins", sans-serif;
 }
-*, *::after, *::before {
+*,
+*::after,
+*::before {
     transition: all 0.3s ease-out;
 }

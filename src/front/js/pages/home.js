@@ -1,23 +1,25 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import cats from "../../img/gifs/cute-cats.gif";
 import dancingWorms from "../../img/gifs/dancing-worms.gif";
-import dramaWorm from "../../img/gifs/drama.gif";
-// import threeWorms from "../../img/gifs/three-dancing-worms.gif";
+// import dramaWorm from "../../img/gifs/drama.gif";
+import threeWorms from "../../img/gifs/three-dancing-worms.gif";
+import "../../styles/pages/home.scss";
 
 export const Home = () => {
 
     return (
         <div
             className="home"
-            style={{ backgroundImage: "url(gusinet.png), url(gusinette.png)" }}>
+            style={{ backgroundImage: "url(gusinet.png), url(gusinette.png)" }}
+        >
             <h1 className="home__title">Welcome!</h1>
             <div className="home__links center">
                 <Link
                     to="/nicknames"
                     className="center home-link home-link--primary"
                     onMouseEnter={e => {
-                        e.target.style.backgroundImage = `url(${dramaWorm})`;
+                        e.target.style.backgroundImage = `url(${threeWorms})`;
                         e.target.style.backgroundSize = "cover";
                         e.target.style.backgroundPosition = "bottom";
                     }}
