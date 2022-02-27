@@ -129,4 +129,13 @@
     &:active {
         background-color: var(--clr-dark-100);
     }
+
+    &--plus {
+        color: white;
+        padding: 0.8rem;
+        background-color: var(--clr-danger-300);
+        &:active {
+            background-color: var(--clr-danger-200);
+        }
+    }
 }

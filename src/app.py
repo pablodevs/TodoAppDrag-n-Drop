@@ -2,18 +2,19 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
-from flask_migrate import Migrate
-from flask_swagger import swagger
-from flask_cors import CORS
-from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
-from api.admin import setup_admin
 from datetime import timedelta
 
+from flask import Flask, jsonify, send_from_directory #, url_for, request
+# from flask_swagger import swagger
+from flask_cors import CORS
 # Para la autenticación 
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
+
+from api.admin import setup_admin
+from api.models import db
+from api.routes import api
+from api.utils import APIException, generate_sitemap
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')

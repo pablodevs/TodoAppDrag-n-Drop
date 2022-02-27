@@ -34,7 +34,7 @@ export const AddList = () => {
             <h1 className="add-list__title">New List</h1>
             <form className='form flex-col' onSubmit={handleSubmit}>
                 <div className="input-wrapper">
-                    <input type="text" name="name" id="todo-list-name" placeholder='Write a name' value={data.name} onChange={handleChange} className="form__name" />
+                    <input type="text" name="name" id="todo-list-name" placeholder='Write a name' value={data.name} onChange={handleChange} className="form__name" required />
                     <label htmlFor="">
                         Name
                     </label>

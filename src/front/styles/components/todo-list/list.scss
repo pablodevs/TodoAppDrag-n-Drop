@@ -1,0 +1,48 @@
+@use "../../utils/variables" as *;
+
+// Reset some styles inherit from popup.scss
+.popup > .list {
+    padding: 0;
+
+    & ~ .popup-close {
+        color: var(--clr-dark-100);
+    }
+}
+
+// Main styles
+.list {
+    position: relative;
+    z-index: -1;
+    min-height: 450px;
+
+    &__header {
+        border-top-left-radius: $br-global;
+        border-top-right-radius: $br-global;
+        padding: 1rem 1.5rem;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        color: var(--clr-dark-100);
+    }
+
+    &__todos {
+        display: flex;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    &__img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        border-radius: 50%;
+    }
+
+    &__add-btn {
+        position: absolute;
+        inset: auto 1.2rem 1.2rem auto;
+    }
+}

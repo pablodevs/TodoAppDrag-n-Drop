@@ -8,7 +8,7 @@ import { Navbar } from "./component/navbar.js";
 import { Home } from "./pages/home";
 import { Nicknames } from "./pages/nicknames.jsx";
 import { Profile } from "./pages/profile.jsx";
-import { TodoList } from "./pages/todolist.jsx";
+import { TodoLists } from "./pages/todolists.jsx";
 import { Calendar } from "./pages/calendar.jsx";
 // Context
 import injectContext, { Context } from "./store/appContext";
@@ -33,7 +33,7 @@ const Layout = () => {
                         <Profile />
                     </Route>
                     <Route exact path="/todo-list">
-                        <TodoList />
+                        <TodoLists />
                     </Route>
                     <Route exact path="/calendar">
                         <Calendar />

@@ -5,10 +5,10 @@ import { BsPlusLg } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import "../../styles/pages/todo-list.scss";
 import { AddList } from "../component/todo-list/add-list.jsx";
-// import { List } from "../component/todo-list/list.jsx";
+import { List } from "../component/todo-list/list.jsx";
 import { Context } from "../store/appContext";
 
-export const TodoList = () => {
+export const TodoLists = () => {
     const { store, actions } = useContext(Context);
 
     const [listOfLists, setListOfLists] = useState([]);
@@ -17,11 +17,11 @@ export const TodoList = () => {
 
     useEffect(() => {
         setListOfLists(store.todoLists.length ?
-            <ul className="todo-list__lists">
+            <ul className="todo-lists__lists">
                 {store.todoLists.map((list, index) => (
                     <li key={index} style={{ borderColor: list.color }}>
                         <button onClick={() => {
-                            // Open list
+                            actions.setPopup(<List list={list} />)
                             return;
                         }}>
                             <span style={{ backgroundColor: list.color }} className="color-mark">
@@ -47,16 +47,16 @@ export const TodoList = () => {
     };
 
     return (
-        <div className="todo-list center flex-col">
-            <h1 className="todo-list__title">Todo List</h1>
-            <button className="todo-list__add-btn" onClick={() => actions.setPopup(<AddList />)}>
-                <IconContext.Provider value={{ className: "btn-icon plus-icon" }}>
-                    <div>
+        <div className="todo-lists center flex-col">
+            <h1 className="todo-lists__title">Todo List</h1>
+            <button className="todo-lists__add-btn" onClick={() => actions.setPopup(<AddList />)}>
+                <IconContext.Provider value={{ className: "btn-icon btn-icon--plus" }}>
+                    <div className="flex">
                         <BsPlusLg />
                     </div>
                 </IconContext.Provider>
             </button>
-            {/* <form onSubmit={handleSubmit} className="todo-list__form">
+            {/* <form onSubmit={handleSubmit} className="todo-lists__form">
                 <input
                     autoFocus
                     type="text"
@@ -66,11 +66,11 @@ export const TodoList = () => {
                 />
                 <button
                     type="submit"
-                    className="btn-icon todo-list__form__submit">
+                    className="btn-icon todo-lists__form__submit">
                     <BsPlusSquareFill />
                 </button>
             </form> */}
-            {/* <ul className="todo-list__items">
+            {/* <ul className="todo-lists__items">
                 {list.map((item, index) => (
                     <li key={index}>{item}</li>
                 ))}

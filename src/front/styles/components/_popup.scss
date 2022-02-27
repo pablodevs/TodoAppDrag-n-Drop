@@ -26,7 +26,6 @@
 
     width: fit-content;
     min-width: calc(min(100%, 350px));
-    padding: 1.5rem;
     border-radius: $br-global;
     background-color: white;
     box-shadow: -1px 1px 3px 0 rgba(0, 0, 0, 0.2);
@@ -34,6 +33,8 @@
     opacity: 0;
 
     & > *:not(.popup-close) {
+        border-radius: $br-global;
+        padding: 1.5rem;
         width: 100%;
     }
 }
@@ -51,7 +52,7 @@
 
 .popup-close {
     position: absolute;
-    top: 1.5rem;
+    top: 1rem;
     right: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
 }

@@ -1,6 +1,6 @@
-@use "../utils/variables.scss" as *;
+@use "../utils/variables" as *;
 
-.todo-list {
+.todo-lists {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -24,15 +24,6 @@
         right: 1.5rem;
     }
 
-    .plus-icon {
-        color: white;
-        padding: 0.8rem;
-        background-color: var(--clr-danger-300);
-        &:active {
-            background-color: var(--clr-danger-200);
-        }
-    }
-
     &__lists {
         display: flex;
         flex-wrap: wrap;
@@ -49,7 +40,7 @@
             width: min(320px, 100%);
             padding-right: 0.7rem;
             border-radius: $br-small;
-            border: 1px solid;
+            border: 3px solid;
         }
         button:first-child {
             flex: auto;
