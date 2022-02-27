@@ -26,7 +26,7 @@ export const List = props => {
                 labelEl.current.classList.add("visited");
             }
         }
-        else {
+        else if (e.type === "blur" && !data) {
             labelEl.current.classList.remove("visited");
         }
     }
