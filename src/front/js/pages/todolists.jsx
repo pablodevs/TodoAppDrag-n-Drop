@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IconContext } from "react-icons";
-// import { BsPlusSquareFill } from "react-icons/bs";
 import { BsPlusLg } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import "../../styles/pages/todo-list.scss";
@@ -12,8 +11,6 @@ export const TodoLists = () => {
     const { store, actions } = useContext(Context);
 
     const [listOfLists, setListOfLists] = useState([]);
-    const [list, setList] = useState([]);
-    const [data, setData] = useState("");
 
     useEffect(() => {
         setListOfLists(store.todoLists.length ?
@@ -39,13 +36,6 @@ export const TodoLists = () => {
             : <p>Todavía no tienes ninguna lista</p>)
     }, [store.todoLists])
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        setList([...list, data]);
-        setData("");
-        document.querySelector("#todo-input").focus();
-    };
-
     return (
         <div className="todo-lists center flex-col">
             <h1 className="todo-lists__title">Todo List</h1>
@@ -56,25 +46,6 @@ export const TodoLists = () => {
                     </div>
                 </IconContext.Provider>
             </button>
-            {/* <form onSubmit={handleSubmit} className="todo-lists__form">
-                <input
-                    autoFocus
-                    type="text"
-                    id="todo-input"
-                    value={data}
-                    onChange={e => setData(e.target.value)}
-                />
-                <button
-                    type="submit"
-                    className="btn-icon todo-lists__form__submit">
-                    <BsPlusSquareFill />
-                </button>
-            </form> */}
-            {/* <ul className="todo-lists__items">
-                {list.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
-            </ul> */}
             {listOfLists}
         </div>
     );

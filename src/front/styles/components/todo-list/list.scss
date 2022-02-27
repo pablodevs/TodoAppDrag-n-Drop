@@ -28,6 +28,7 @@
 
     &__todos {
         display: flex;
+        flex-direction: column;
         max-height: 70vh;
         overflow-y: auto;
     }
@@ -39,6 +40,16 @@
         transform: translate(-50%, -50%);
         width: 100px;
         border-radius: 50%;
+    }
+
+    &__form {
+        display: flex;
+        gap: 0.7rem;
+
+        &__submit {
+            display: flex;
+            align-items: center;
+        }
     }
 
     &__add-btn {
