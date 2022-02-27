@@ -10,10 +10,18 @@ const getState = ({ getStore, getActions, setStore }) => {
             ]
         },
         actions: {
-            // Esta función dejará de servir y se borrará:
-            setNewList: (data) => {
+            // Estas funciones dejará de servir y se borrará:
+            addNewList: (data) => {
                 const store = getStore();
                 setStore({ todoLists: [...store.todoLists, data] })
+            },
+
+            deleteTodoList: (indexToDelete) => {
+                const store = getStore();
+                const restOfItems = store.todoLists.filter((item, index) => index !== indexToDelete);
+                setStore({
+                    todoLists: restOfItems
+                })
             },
 
             // Remove message from store

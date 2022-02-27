@@ -20,13 +20,18 @@ export const TodoList = () => {
             <ul className="todo-list__lists">
                 {store.todoLists.map((list, index) => (
                     <li key={index} style={{ borderColor: list.color }}>
-                        <span style={{ backgroundColor: list.color }} className="color-mark">
-                        </span>
-                        {list.name}
-                        <IconContext.Provider value={{ className: "del-icon" }}>
-                            <span>
-                                <FaTrash />
+                        <button onClick={() => {
+                            // Open list
+                            return;
+                        }}>
+                            <span style={{ backgroundColor: list.color }} className="color-mark">
                             </span>
+                            {list.name}
+                        </button>
+                        <IconContext.Provider value={{ className: "del-icon" }}>
+                            <button className="btn-delete-list" onClick={() => actions.deleteTodoList(index)}>
+                                <FaTrash />
+                            </button>
                         </IconContext.Provider>
                     </li>
                 ))}
