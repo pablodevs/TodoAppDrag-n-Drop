@@ -88,7 +88,6 @@
     transition: all 0.3s ease-out;
 
     &:hover {
-        z-index: 1;
         transform: scale(1.1);
         box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
         border-color: var(--clr-dark-100);
@@ -126,16 +125,29 @@
     border-radius: 50%;
     background-color: white;
     box-shadow: $bs-icon;
-    &:active {
+    &:active,
+    &:hover {
         background-color: var(--clr-dark-100);
     }
 
     &--plus {
-        color: white;
         padding: 0.8rem;
+        color: white;
         background-color: var(--clr-danger-300);
-        &:active {
+        &:active,
+        &:hover {
             background-color: var(--clr-danger-200);
+        }
+    }
+
+    &--check {
+        padding: 0.5rem;
+        color: var(--clr-secondary-400);
+        // background-color: var(--clr-secondary-400);
+        &:active,
+        &:hover {
+            color: var(--clr-dark-100);
+            background-color: var(--clr-secondary-400);
         }
     }
 }

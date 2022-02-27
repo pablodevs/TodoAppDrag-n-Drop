@@ -1,14 +1,23 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import "../../styles/components/login.scss";
 import { Context } from "../store/appContext";
 
 export const Login = () => {
+    const location = useLocation();
+    const history = useHistory();
     const { store, actions } = useContext(Context);
 
     const [data, setData] = useState({
         name: "",
         password: "",
     });
+
+    useEffect(() => {
+        // Check if somebody is trying to access the web without login in
+        if (location.pathname.split("/").pop())
+            history.push("/");
+    }, [location])
 
     const handleOnChange = e => {
         setData({

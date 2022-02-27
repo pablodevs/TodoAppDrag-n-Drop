@@ -6,11 +6,11 @@ import { Context } from "../store/appContext";
 export const Profile = () => {
     const { store, actions } = useContext(Context);
 
-    useEffect(() => {
-        let userToken = store.token || localStorage.getItem("token");
-        if (userToken) actions.getProfileData(userToken)
-        else actions.setPopup(<Login />, false);
-    }, []);
+    // useEffect(() => {
+    //     let userToken = store.token || localStorage.getItem("token");
+    //     if (userToken) actions.getProfileData(userToken)
+    //     else actions.setPopup(<Login />, false);
+    // }, []);
 
     useEffect(() => {
         if (store.user && store.user.name && !store.randomImage) actions.getImagesByTag()

@@ -1,8 +1,10 @@
+@use "../utils/mixins" as mix;
+
 .home > .bg-cover,
 .bg-cover {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,18 +26,24 @@
     justify-content: center;
     flex-direction: column;
 
-    width: fit-content;
-    min-width: calc(min(100%, 350px));
-    border-radius: $br-global;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
     background-color: white;
     box-shadow: -1px 1px 3px 0 rgba(0, 0, 0, 0.2);
 
     opacity: 0;
 
-    & > *:not(.popup-close) {
+    @include mix.mq(small) {
+        height: 450px;
+        width: 350px;
         border-radius: $br-global;
-        padding: 1.5rem;
+    }
+    & > *:not(.popup-close) {
+        flex: 1;
         width: 100%;
+        padding: 1.5rem;
+        border-radius: $br-global;
     }
 }
 
