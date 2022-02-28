@@ -1,5 +1,5 @@
-@use "../../utils/variables" as *;
-@use "../../utils/mixins" as mix;
+@use '../../utils/variables' as *;
+@use '../../utils/mixins' as mix;
 
 // Reset some styles inherit from popup.scss
 .popup > .list {
@@ -19,8 +19,11 @@
     background-color: var(--clr-dark-100);
 
     &__header {
+        position: relative;
+        z-index: 1;
         padding: 1rem 1.5rem;
         border-radius: 0;
+        box-shadow: $bs-header-short;
 
         @include mix.mq(small) {
             border-top-left-radius: $br-global;
@@ -38,7 +41,6 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        padding: 0.7rem;
     }
 
     &__img {
@@ -71,8 +73,7 @@
 
         border-radius: 0;
         background-color: white;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-            rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        box-shadow: $bs-header;
         opacity: 0;
 
         @include mix.mq(small) {

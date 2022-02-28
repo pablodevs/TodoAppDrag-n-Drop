@@ -2,39 +2,42 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             popup: {},
-            token: localStorage.getItem("token") || "",
+            token: localStorage.getItem('token') || '',
             todoLists: [
-                { color: "#5300eb", name: "Lista 1" },
-                { color: "#008b02", name: "Lista 2" },
-                { color: "#b80000", name: "Lista 3" }
-            ]
+                { color: '#5300eb', name: 'Lista 1' },
+                { color: '#008b02', name: 'Lista 2' },
+                { color: '#b80000', name: 'Lista 3' },
+            ],
         },
         actions: {
             // Estas funciones dejará de servir y se borrará:
-            addNewList: (data) => {
+            addNewList: data => {
                 const store = getStore();
-                setStore({ todoLists: [...store.todoLists, data] })
+                setStore({ todoLists: [...store.todoLists, data] });
             },
 
-            deleteTodoList: (indexToDelete) => {
+            deleteTodoList: indexToDelete => {
                 const store = getStore();
-                const restOfItems = store.todoLists.filter((item, index) => index !== indexToDelete);
+                const restOfItems = store.todoLists.filter(
+                    (item, index) => index !== indexToDelete
+                );
                 setStore({
-                    todoLists: restOfItems
-                })
+                    todoLists: restOfItems,
+                });
             },
 
             // Remove message from store
-            cleanMessage: () => setStore({ message: { message: "", status: "" } }),
+            cleanMessage: () =>
+                setStore({ message: { message: '', status: '' } }),
 
             // Open Popup
             setPopup: (reactComponent, closable = true) => {
                 setStore({
                     popup: {
                         component: reactComponent,
-                        icClosable: closable
-                    }
-                })
+                        icClosable: closable,
+                    },
+                });
                 return;
             },
             // Close Popup
@@ -45,15 +48,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const actions = getActions();
                 try {
                     const response = await fetch(
-                        process.env.BACKEND_URL + "/api/token",
+                        process.env.BACKEND_URL + '/api/token',
                         {
-                            method: "POST",
+                            method: 'POST',
                             body: JSON.stringify({
                                 name: name,
                                 password: password,
                             }),
                             headers: {
-                                "Content-type": "application/json",
+                                'Content-type': 'application/json',
                             },
                         }
                     );
@@ -62,16 +65,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                         setStore({
                             message: {
                                 message: data.message,
-                                status: "danger",
+                                status: 'danger',
                             },
                         });
                         throw Error(response);
                     } else {
                         setStore({
                             token: data.token,
-                            message: null
+                            message: null,
                         });
-                        localStorage.setItem("token", data.token);
+                        localStorage.setItem('token', data.token);
                         actions.getProfileData(data.token);
                         return data;
                     }
@@ -84,14 +87,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             getProfileData: async token => {
                 const actions = getActions();
                 const options = {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                        Authorization: "Bearer " + token,
+                        Authorization: 'Bearer ' + token,
                     },
                 };
                 try {
                     const response = await fetch(
-                        process.env.BACKEND_URL + "/api/user",
+                        process.env.BACKEND_URL + '/api/user',
                         options
                     );
                     const data = await response.json();
@@ -99,7 +102,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         setStore({
                             message: {
                                 message: data.message,
-                                status: "danger",
+                                status: 'danger',
                             },
                         });
                         throw Error(response);
@@ -121,16 +124,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             setProfileImage: async () => {
                 const store = getStore();
                 const options = {
-                    method: "PUT",
+                    method: 'PUT',
                     body: JSON.stringify({ imageUrl: store.randomImage }),
                     headers: {
-                        Authorization: "Bearer " + store.token,
-                        "Content-Type": "application/json"
-                    }
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-Type': 'application/json',
+                    },
                 };
                 try {
                     const response = await fetch(
-                        process.env.BACKEND_URL + "/api/user",
+                        process.env.BACKEND_URL + '/api/user',
                         options
                     );
                     const data = await response.json();
@@ -138,7 +141,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         setStore({
                             message: {
                                 message: data.message,
-                                status: "danger",
+                                status: 'danger',
                             },
                         });
                         throw Error(response);
@@ -147,19 +150,20 @@ const getState = ({ getStore, getActions, setStore }) => {
                         message: {
                             message: data.message,
                             status: data.status,
-                        }
+                        },
                     });
                     return data;
                 } catch (error) {
                     console.error(error);
                 }
-
             },
 
             // Get images from Cloudinary by tag using admin api
             getImagesByTag: () => {
                 let store = getStore();
-                fetch(`${process.env.BACKEND_URL}/api/images/${store.user.name}`)
+                fetch(
+                    `${process.env.BACKEND_URL}/api/images/${store.user.name}`
+                )
                     .then(response => response.json())
                     .then(data => {
                         let actions = getActions();
@@ -175,7 +179,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({
                     randomImage:
                         store.images[
-                        Math.floor(Math.random() * store.images.length)
+                            Math.floor(Math.random() * store.images.length)
                         ],
                 });
             },
