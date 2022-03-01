@@ -21,7 +21,9 @@ class User(db.Model):
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    todos = db.relationship('Todo', backref='list')
+    name = db.Column(db.String(120), nullable=False)
+    color = db.Column(db.String(7), nullable=False)
+    todos = db.relationship('Todo', cascade="all, delete-orphan", backref='list')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -30,8 +32,9 @@ class List(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "name": self.name,
+            "color": self.color,
             "user_id": self.user_id,
-            "todos": self.todos
         }
 
 class Todo(db.Model):

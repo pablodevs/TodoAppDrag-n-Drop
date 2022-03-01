@@ -35,14 +35,14 @@
             transition: unset;
         }
         &--complete .outline-effect {
-            outline-width: 8px;
+            outline-width: 16px;
             outline-color: transparent;
 
             // Pulse effect
             transition: outline-width 0.2s ease-out,
-                outline-color 0.15s ease-out 0.1s;
+                outline-color 0.15s ease-out 0.15s;
             -moz-transition: outline-width 0.2s ease-out,
-                outline-color 0.15s ease-out 0.1s;
+                outline-color 0.15s ease-out 0.15s;
             & > svg {
                 color: var(--clr-secondary-400);
             }

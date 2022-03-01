@@ -3,36 +3,103 @@ const getState = ({ getStore, getActions, setStore }) => {
         store: {
             popup: {},
             token: localStorage.getItem('newtoken') || '',
-            user: {
-                todoLists: [
-                    { color: '#5300eb', name: 'Lista 1' },
-                    { color: '#008b02', name: 'Lista 2' },
-                    { color: '#b80000', name: 'Lista 3' },
-                ],
-            },
         },
         actions: {
-            // ⚠️Backlog: Estas 2 funciones dejarán de servir y se reemplazarán por llamadas a la base de datos
+            // Create a new list
             addNewList: newList => {
                 const store = getStore();
-                setStore({
-                    user: {
-                        ...store.user,
-                        todoLists: [...store.user.todoLists, newList],
-                    },
-                });
-            },
-            deleteTodoList: indexToDelete => {
-                const store = getStore();
 
-                let restOfItems = [...store.user.todoLists];
-                restOfItems.splice(indexToDelete, 1);
-                setStore({
-                    user: {
-                        ...store.user,
-                        todoLists: restOfItems,
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(newList),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
                     },
-                });
+                };
+                fetch(`${process.env.BACKEND_URL}/api/list`, options)
+                    .then(response => response.json())
+                    .then(list => {
+                        setStore({
+                            user: {
+                                ...store.user,
+                                todoLists: [...store.user.todoLists, list],
+                            },
+                        });
+                    })
+                    .catch(error => console.error(error));
+            },
+
+            // Delete list in db
+            deleteTodoList: listId => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                    },
+                };
+
+                fetch(`${process.env.BACKEND_URL}/api/list/${listId}`, options)
+                    .then(response => response.json())
+                    .then(message => {
+                        setStore({
+                            message: { message: message, status: 'success' },
+                        });
+                        actions.user.getTodoListsOfUser();
+                    })
+                    .catch(error => console.error(error));
+            },
+
+            // Create a new todo
+            addTodo: (newTodo, listId) => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(newTodo),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
+                    },
+                };
+                fetch(
+                    `${process.env.BACKEND_URL}/api/lists/${listId}/todo`,
+                    options
+                )
+                    .then(response => response.json())
+                    .then(todo => actions.getTodos(listId))
+                    .catch(error => console.error(error));
+            },
+
+            // Get all Todos linked to a TodoList
+            getTodos: listId => {
+                const store = getStore();
+                fetch(`${process.env.BACKEND_URL}/api/lists/${listId}/todos`, {
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                    },
+                })
+                    .then(response => response.json())
+                    .then(todos => {
+                        let todoListsAux = [...store.user.todoLists];
+                        todoListsAux.map(element => {
+                            if (element.id === listId) {
+                                element.todos = todos;
+                            }
+                        });
+
+                        setStore({
+                            user: {
+                                ...store.user,
+                                todoLists: todoListsAux,
+                            },
+                        });
+                    })
+                    .catch(error => console.error(error));
             },
 
             // Remove message from store
@@ -124,7 +191,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                         setStore({
                             user: {
-                                // ⚠️Backlog: Esto no será así, las todolist también vendrán del back
                                 ...store.user,
                                 id: data.id,
                                 name: data.name,
@@ -140,7 +206,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 // Set profile image
                 setProfileImage: async () => {
                     const store = getStore();
-                    const actions = getActions();
                     const options = {
                         method: 'PUT',
                         body: JSON.stringify({ imageUrl: store.randomImage }),
@@ -172,8 +237,28 @@ const getState = ({ getStore, getActions, setStore }) => {
                         });
                         return data;
                     } catch (error) {
-                        return false;
+                        console.error(error);
                     }
+                },
+
+                // Get all TodoLists linked to the current user
+                getTodoListsOfUser: () => {
+                    const store = getStore();
+                    fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
+                        headers: {
+                            Authorization: 'Bearer ' + store.token,
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(todoLists => {
+                            setStore({
+                                user: {
+                                    ...store.user,
+                                    todoLists: todoLists,
+                                },
+                            });
+                        })
+                        .catch(error => console.error(error));
                 },
             },
 

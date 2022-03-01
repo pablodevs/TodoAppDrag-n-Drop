@@ -1,23 +1,46 @@
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
-// import todoList from "../../../img/todo-list.png";
+import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/todo-list/list.scss';
+import { Context } from '../../store/appContext';
 import { Todo } from './todo.jsx';
 
 export const List = props => {
+    const { store, actions } = useContext(Context);
+
     const labelEl = useRef(null);
     const inputEl = useRef(null);
 
-    const [listOfTodos, setListOfTodos] = useState([
-        { task: 'Task 1', complete: false },
-        { task: 'Task 2', complete: true },
-        { task: 'Task 3', complete: false },
-    ]);
+    const [listOfTodos, setListOfTodos] = useState([]);
     const [data, setData] = useState('');
     const [form, setForm] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
+    const [content, setContent] = useState(
+        <p className='list__img'>Loading...</p>
+    );
+
+    useEffect(() => {
+        actions.getTodos(props.list.id);
+    }, []);
+
+    useEffect(() => {
+        let list = store.user.todoLists.find(
+            element => element.id === props.list.id
+        );
+        if (list.todos) {
+            if (!list.todos.length)
+                setContent(
+                    <img
+                        src={todoList}
+                        alt='empty todo list'
+                        className='list__img'
+                    />
+                );
+            setListOfTodos(list.todos);
+        }
+    }, [store.user.todoLists]);
 
     const toggleLabelEffect = e => {
         if ((data || e.type === 'focus') && !labelEl.current.classList.length) {
@@ -35,7 +58,9 @@ export const List = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        setListOfTodos([...listOfTodos, { task: data, complete: false }]);
+        // Agarrar el todo del back!
+        // setListOfTodos([...listOfTodos, { task: data, complete: false }]);
+        actions.addTodo(data, props.list.id);
         setData('');
         setForm(false);
     };
@@ -110,11 +135,7 @@ export const List = props => {
                         ))}
                     </ul>
                 ) : (
-                    <img
-                        src={todoList}
-                        alt='empty todo list'
-                        className='list__img'
-                    />
+                    content
                 )}
             </main>
             <button

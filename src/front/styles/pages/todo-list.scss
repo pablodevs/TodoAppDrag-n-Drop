@@ -1,4 +1,4 @@
-@use "../utils/variables" as *;
+@use '../utils/variables' as *;
 
 .todo-lists {
     flex: 1;
@@ -34,15 +34,18 @@
         }
         button:first-child {
             flex: auto;
+            display: flex;
+            align-items: center;
             text-align: start;
             padding: 0.5rem 0.7rem;
         }
         .color-mark {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
+            display: flex;
             margin-right: 0.8rem;
-            border-radius: 50%;
+        }
+        .completed-tasks {
+            margin-left: auto;
+            color: var(--clr-dark-400);
         }
         .btn-delete-list {
             display: flex;

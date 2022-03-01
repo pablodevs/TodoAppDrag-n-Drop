@@ -1,20 +1,20 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
-from api.utils import generate_sitemap, APIException
+
+import os
 
 # Cloudinary
 import cloudinary
-import cloudinary.uploader
 import cloudinary.api
-import os
-
+import cloudinary.uploader
+from flask import Blueprint, Flask, jsonify, request, url_for
 # para la autenticación y generar el token
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import (create_access_token, get_jwt_identity,
+                                jwt_required)
+
+from api.models import List, Todo, User, db
+from api.utils import APIException, generate_sitemap
 
 api = Blueprint('api', __name__)
 app = Flask(__name__)
@@ -57,6 +57,8 @@ def getUserInfo():
     # Data validation
     if user is None:
         raise APIException('User not found in data base.', status_code=404)
+    
+    
 
     return jsonify(user.serialize()), 200
 
@@ -89,3 +91,110 @@ def getImages(tag):
     resourcesByTag = cloudinary.api.resources_by_tag(tag, max_results=100)["resources"]
     images = [key["url"].replace('http', 'https') for key in resourcesByTag]
     return jsonify(images), 200
+
+# Crea una nueva TodoList y la asocia al usuario
+@api.route('/list', methods=['POST'])
+@jwt_required()
+def createNewList():
+    """
+    Create new list and link it to the user
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    listToCreate = request.json
+
+    newList = List(name = listToCreate.get("name", None), color = listToCreate.get("color", None), user_id = currentUserId)
+    db.session.add(newList)
+    db.session.commit()
+
+    return jsonify(newList.serialize()), 200
+
+# Elimina una TodoList asociada al usuario
+@api.route('/list/<int:list_id>', methods=['DELETE'])
+@jwt_required()
+def deleteList(list_id):
+    """
+    Delete new list and link it to the user
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    listToDelete = List.query.get(list_id)
+
+    db.session.delete(listToDelete)
+    db.session.commit()
+    return jsonify({"message": "La lista se ha eliminado correctamente."}), 200
+
+# Obtiene todas las listas del usuario logeado
+@api.route('/user/lists')
+@jwt_required()
+def getAllLists():
+    """
+    Get all Lists liked to current user
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    allLists = List.query.filter_by(user_id = currentUserId).all()
+    allLists = [list.serialize() for list in allLists]
+
+    return jsonify(allLists), 200
+
+# Crea un nuevo Todo y lo asocia a una lista
+@api.route('/lists/<int:list_id>/todo', methods=['POST'])
+@jwt_required()
+def createNewTodo(list_id):
+    """
+    Create new todo and link it to the list
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation (Se podría chequear que exista la lista)
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    task = request.json
+
+    newTodo = Todo(task = task, list_id = list_id)
+    db.session.add(newTodo)
+    db.session.commit()
+
+    return jsonify(newTodo.serialize()), 200
+
+# Obtiene todas las tareas de la lista asiciada a list_id
+@api.route('/lists/<int:list_id>/todos')
+@jwt_required()
+def getAllTodos(list_id):
+    """
+    Get all Lists liked to current user
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    allTodos = Todo.query.filter_by(list_id = list_id).all()
+    allTodos = [todo.serialize() for todo in allTodos]
+
+    return jsonify(allTodos), 200
