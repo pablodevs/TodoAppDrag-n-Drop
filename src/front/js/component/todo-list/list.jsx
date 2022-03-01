@@ -47,12 +47,12 @@ export const List = props => {
         setListOfTodos(newListOfTodos);
     };
 
-    const deleteTodo = id => {
-        // Delete a task from the list
-        let newListOfTodos = [...listOfTodos];
-        newListOfTodos.splice(id, 1);
-        setListOfTodos(newListOfTodos);
-    };
+    // const deleteTodo = id => {
+    //     // Delete a task from the list
+    //     let newListOfTodos = [...listOfTodos];
+    //     newListOfTodos.splice(id, 1);
+    //     setListOfTodos(newListOfTodos);
+    // };
 
     return (
         <div className='list'>
