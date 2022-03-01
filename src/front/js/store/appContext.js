@@ -24,8 +24,10 @@ const injectContext = PassedComponent => {
 
         useEffect(() => {
             localStorage.removeItem('end');
+            localStorage.removeItem('token');
 
-            let userToken = state.store.token || localStorage.getItem('token');
+            let userToken =
+                state.store.token || localStorage.getItem('newtoken');
             if (userToken) state.actions.user.getProfileData(userToken);
             else state.actions.popup.setPopup(<Login />, false);
         }, []);

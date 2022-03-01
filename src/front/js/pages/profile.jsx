@@ -1,16 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import '../../styles/pages/profile.scss';
-import { Login } from '../component/login.jsx';
 import { Context } from '../store/appContext';
 
 export const Profile = () => {
     const { store, actions } = useContext(Context);
-
-    // useEffect(() => {
-    //     let userToken = store.token || localStorage.getItem("token");
-    //     if (userToken) actions.user.getProfileData(userToken)
-    //     else actions.popup.setPopup(<Login />, false);
-    // }, []);
 
     useEffect(() => {
         if (store.user && store.user.name && !store.randomImage)

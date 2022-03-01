@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             popup: {},
-            token: localStorage.getItem('token') || '',
+            token: localStorage.getItem('newtoken') || '',
             user: {
                 todoLists: [
                     { color: '#5300eb', name: 'Lista 1' },
@@ -88,7 +88,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 token: data.token,
                                 message: null,
                             });
-                            localStorage.setItem('token', data.token);
+                            localStorage.setItem('newtoken', data.token);
                             actions.user.getProfileData(data.token);
                             return data;
                         }
@@ -140,6 +140,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 // Set profile image
                 setProfileImage: async () => {
                     const store = getStore();
+                    const actions = getActions();
                     const options = {
                         method: 'PUT',
                         body: JSON.stringify({ imageUrl: store.randomImage }),
@@ -171,7 +172,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         });
                         return data;
                     } catch (error) {
-                        console.error(error);
+                        return false;
                     }
                 },
             },
