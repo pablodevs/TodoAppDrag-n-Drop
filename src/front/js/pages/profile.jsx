@@ -14,7 +14,7 @@ export const Profile = () => {
 
     useEffect(() => {
         if (store.user && store.user.name && !store.randomImage)
-            actions.getImagesByTag();
+            actions.getImagesByTag(store.user.name);
     }, [store.user]);
 
     return (
