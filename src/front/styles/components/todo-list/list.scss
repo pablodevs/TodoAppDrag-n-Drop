@@ -41,6 +41,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
     }
 
     &__img {
@@ -53,7 +54,8 @@
     }
 
     &__todos {
-        flex: 1;
+        // flex-grow: 0.8;
+        max-height: 85%;
         overflow-y: auto;
     }
 

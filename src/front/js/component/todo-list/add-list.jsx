@@ -25,7 +25,7 @@ export const AddList = () => {
             name: '',
             color: '',
         });
-        actions.closePopup();
+        actions.popup.closePopup();
     };
 
     return (

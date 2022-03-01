@@ -42,7 +42,7 @@ def generate_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({"message": "Acceso correcto.", "status": "success", "token": access_token, "id": user.id, "name": user.name})
 
-# GET, MODIFY OR DELETE A USER
+# GET INFO OF USER
 # Protect a route with jwt_required, which will kick out requests without a valid JWT present.
 @api.route('/user', methods=['GET'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
@@ -60,6 +60,7 @@ def getUserInfo():
 
     return jsonify(user.serialize()), 200
 
+# MODIFY INFO OF USER
 @api.route('/user', methods=['PUT'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
 def setUserImg():

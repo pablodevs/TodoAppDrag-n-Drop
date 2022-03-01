@@ -1,4 +1,4 @@
-@use "../utils/mixins" as mix;
+@use '../utils/mixins' as mix;
 
 .home > .bg-cover,
 .bg-cover {
@@ -42,6 +42,7 @@
     & > *:not(.popup-close) {
         flex: 1;
         width: 100%;
+        max-height: 100%;
         padding: 1.5rem;
         border-radius: $br-global;
     }
