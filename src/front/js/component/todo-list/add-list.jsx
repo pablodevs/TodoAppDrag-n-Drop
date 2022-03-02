@@ -16,14 +16,12 @@ export const AddList = () => {
 
     useEffect(() => {
         if (isMounted.current) {
-            actions.popup.closePopup();
-        } else {
-            isMounted.current = true;
-        }
-        return () =>
             actions.popup.setPopup(
                 <List list={store.user.todoLists.slice(-1)[0]} />
             );
+        } else {
+            isMounted.current = true;
+        }
     }, [store.user]);
 
     const handleChange = e => {

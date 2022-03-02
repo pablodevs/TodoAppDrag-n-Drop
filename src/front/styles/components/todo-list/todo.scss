@@ -3,9 +3,6 @@
     align-items: center;
     border-bottom: 1px solid var(--clr-dark-200);
 
-    // background-color: red;
-    // border: 1px solid blue;
-
     &--complete {
         opacity: 0.6;
         & > .todo__task {
@@ -16,7 +13,6 @@
     &__color-decoration {
         align-self: stretch;
         width: 10px;
-        // background-color: cyan;
     }
     &__btn-check {
         & svg {

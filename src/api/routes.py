@@ -234,3 +234,24 @@ def updateTodo(todo_id):
 
     db.session.commit()
     return jsonify({"message": "Todo changed!", "status": "success"}), 200
+
+# Elimina una TodoList asociada al usuario
+@api.route('/todo/<int:todo_id>', methods=['DELETE'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def deleteTodo(todo_id):
+    """
+    Delete todo
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+    
+    todoToDelete = Todo.query.get(todo_id)
+
+    db.session.delete(todoToDelete)
+    db.session.commit()
+    return jsonify({"message": "La tarea ha sido eliminada correctamente."}), 200

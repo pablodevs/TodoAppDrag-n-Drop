@@ -30,7 +30,9 @@ export const Todo = props => {
             <button
                 className='todo__task'
                 onClick={() => {
-                    // Open task editor
+                    // 🟣 Backlog: Open task editor
+                    // -- Edit task
+                    // -- Delete task
                 }}
             >
                 {props.todo.task}
@@ -43,7 +45,6 @@ export const Todo = props => {
 };
 
 Todo.propTypes = {
-    id: PropTypes.number.isRequired,
     todo: PropTypes.object.isRequired,
     checkTodo: PropTypes.func.isRequired,
     color: PropTypes.string.isRequired,
