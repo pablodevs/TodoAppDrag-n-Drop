@@ -145,5 +145,9 @@
     &__btn-toggle-form {
         position: absolute;
         inset: auto 1.2rem 1.2rem auto;
+
+        .active {
+            transform: rotate(45deg);
+        }
     }
 }

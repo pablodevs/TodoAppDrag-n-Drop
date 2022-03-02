@@ -40,6 +40,7 @@ export const Login = () => {
                         name='name'
                         value={data.name}
                         autoComplete='off'
+                        autoCapitalize='none'
                         onChange={handleOnChange}
                     />
                     <label htmlFor='name'>Name</label>

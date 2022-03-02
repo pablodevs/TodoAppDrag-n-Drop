@@ -208,7 +208,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const store = getStore();
                     const options = {
                         method: 'PUT',
-                        body: JSON.stringify({ imageUrl: store.randomImage }),
+                        body: JSON.stringify({
+                            profile_image_url: store.randomImage,
+                        }),
                         headers: {
                             Authorization: 'Bearer ' + store.token,
                             'Content-Type': 'application/json',

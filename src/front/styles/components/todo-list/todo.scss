@@ -64,6 +64,6 @@
     &__task {
         flex-grow: 1;
         text-align: start;
-        line-height: 3;
+        min-height: 4rem;
     }
 }

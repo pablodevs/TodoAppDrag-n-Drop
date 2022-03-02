@@ -143,13 +143,19 @@ export const List = props => {
                 onClick={() => {
                     setForm(!form);
                     setFirstTime(true);
-                    setTimeout(() => {
-                        inputEl.current.focus();
-                    }, 300);
+                    if (!form) {
+                        setTimeout(() => {
+                            inputEl.current.focus();
+                        }, 300);
+                    }
                 }}
             >
                 <IconContext.Provider
-                    value={{ className: 'btn-icon btn-icon--plus' }}
+                    value={{
+                        className: `btn-icon btn-icon--plus ${
+                            form ? 'active' : ''
+                        }`,
+                    }}
                 >
                     <div className='flex'>
                         <BsPlusLg

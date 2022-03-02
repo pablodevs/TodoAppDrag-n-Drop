@@ -7,7 +7,7 @@ class User(db.Model):
     name = db.Column(db.String(120), unique=True, nullable=False)
     profile_image_url = db.Column(db.String(200), unique=True, nullable=True)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    lists = db.relationship('List', backref='user')
+    lists = db.relationship('List', cascade="all, delete-orphan", backref='user')
 
     def __repr__(self):
         return '<User %r>' % self.name
