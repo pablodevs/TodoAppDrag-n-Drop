@@ -65,11 +65,13 @@ export const List = props => {
         setForm(false);
     };
 
-    const checkTodo = id => {
+    const checkTodo = updatedTodo => {
         // Toggle between check and unchecked state
-        let newListOfTodos = [...listOfTodos];
-        newListOfTodos[id].complete = !newListOfTodos[id].complete;
-        setListOfTodos(newListOfTodos);
+        // let newListOfTodos = [...listOfTodos];
+        // newListOfTodos[id].complete = !newListOfTodos[id].complete;
+        // setListOfTodos(newListOfTodos);
+
+        actions.updateTodo(updatedTodo, props.list.id);
     };
 
     // const deleteTodo = id => {
@@ -127,7 +129,6 @@ export const List = props => {
                         {listOfTodos.map((item, index) => (
                             <Todo
                                 key={index}
-                                id={index}
                                 todo={item}
                                 color={props.list.color}
                                 checkTodo={checkTodo}
@@ -141,6 +142,7 @@ export const List = props => {
             <button
                 className='list__btn-toggle-form'
                 onClick={() => {
+                    setData('');
                     setForm(!form);
                     setFirstTime(true);
                     if (!form) {

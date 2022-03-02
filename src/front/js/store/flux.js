@@ -53,28 +53,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .catch(error => console.error(error));
             },
 
-            // Create a new todo
-            addTodo: (newTodo, listId) => {
-                const store = getStore();
-                const actions = getActions();
-
-                const options = {
-                    method: 'POST',
-                    body: JSON.stringify(newTodo),
-                    headers: {
-                        Authorization: 'Bearer ' + store.token,
-                        'Content-type': 'application/json',
-                    },
-                };
-                fetch(
-                    `${process.env.BACKEND_URL}/api/lists/${listId}/todo`,
-                    options
-                )
-                    .then(response => response.json())
-                    .then(todo => actions.getTodos(listId))
-                    .catch(error => console.error(error));
-            },
-
             // Get all Todos linked to a TodoList
             getTodos: listId => {
                 const store = getStore();
@@ -99,6 +77,50 @@ const getState = ({ getStore, getActions, setStore }) => {
                             },
                         });
                     })
+                    .catch(error => console.error(error));
+            },
+
+            // Create a new todo
+            addTodo: (newTodo, listId) => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(newTodo),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
+                    },
+                };
+                fetch(
+                    `${process.env.BACKEND_URL}/api/lists/${listId}/todo`,
+                    options
+                )
+                    .then(response => response.json())
+                    .then(todo => actions.getTodos(listId))
+                    .catch(error => console.error(error));
+            },
+
+            // Modify a todo
+            updateTodo: (updatedTodo, listId) => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedTodo),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
+                    },
+                };
+                fetch(
+                    `${process.env.BACKEND_URL}/api/todo/${updatedTodo.id}`,
+                    options
+                )
+                    .then(response => response.json())
+                    .then(todo => actions.getTodos(listId))
                     .catch(error => console.error(error));
             },
 

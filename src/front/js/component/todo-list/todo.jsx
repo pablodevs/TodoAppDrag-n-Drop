@@ -12,7 +12,12 @@ export const Todo = props => {
                 style={{ backgroundColor: props.color }}
             ></span>
             <button
-                onClick={() => props.checkTodo(props.id)}
+                onClick={() =>
+                    props.checkTodo({
+                        id: props.todo.id,
+                        complete: !props.todo.complete,
+                    })
+                }
                 className={
                     'todo__btn-check' +
                     (props.todo.complete ? ' todo__btn-check--complete' : '')

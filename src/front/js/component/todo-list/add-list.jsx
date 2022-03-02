@@ -1,14 +1,30 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { CirclePicker } from 'react-color';
 import '../../../styles/components/todo-list/add-list.scss';
 import { Context } from '../../store/appContext';
+import { List } from './list.jsx';
 
 export const AddList = () => {
+    // to prevent useEffect from runnning on mount we'll use useRef:
+    const isMounted = useRef(false);
+
     const { store, actions } = useContext(Context);
     const [data, setData] = useState({
         name: '',
         color: '#f5463d',
     });
+
+    useEffect(() => {
+        if (isMounted.current) {
+            actions.popup.closePopup();
+        } else {
+            isMounted.current = true;
+        }
+        return () =>
+            actions.popup.setPopup(
+                <List list={store.user.todoLists.slice(-1)[0]} />
+            );
+    }, [store.user]);
 
     const handleChange = e => {
         setData({ ...data, name: e.target.value });
@@ -19,13 +35,11 @@ export const AddList = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // Enviar data al backend, por ahora lo enviamos a la store
         actions.addNewList(data);
         setData({
             name: '',
             color: '',
         });
-        actions.popup.closePopup();
     };
 
     return (

@@ -30,7 +30,6 @@ export const TodoLists = () => {
                                         actions.popup.setPopup(
                                             <List list={list} />
                                         );
-                                        return;
                                     }}
                                 >
                                     <div

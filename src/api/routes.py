@@ -197,4 +197,40 @@ def getAllTodos(list_id):
     allTodos = Todo.query.filter_by(list_id = list_id).all()
     allTodos = [todo.serialize() for todo in allTodos]
 
+    # Esto no será lo mejor si queremos ordenar a mano con drag & drop
+    allTodos = sorted(allTodos, key=lambda todo: todo["id"])
+
     return jsonify(allTodos), 200
+
+# Modifica el todo
+@api.route('/todo/<int:todo_id>', methods=['PUT'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def updateTodo(todo_id):
+    """
+    Single todo
+    """
+
+    print("--------------->", todo_id)
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+
+    todo = Todo.query.get(todo_id)
+
+    # Query body
+    request_body = request.json
+
+    print(request_body)
+    print(todo.serialize())
+
+    if 'complete' in request_body:
+        todo.complete = request_body['complete']
+    if "task" in request_body:
+        todo.task = request_body["task"]
+
+    db.session.commit()
+    return jsonify({"message": "Todo changed!", "status": "success"}), 200
