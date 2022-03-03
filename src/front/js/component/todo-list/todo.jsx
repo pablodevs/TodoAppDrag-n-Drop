@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { IconContext } from 'react-icons';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsCheck2, BsCheckCircleFill, BsCircle } from 'react-icons/bs';
 import { FaTrash } from 'react-icons/fa';
 import { MdDragIndicator } from 'react-icons/md';
@@ -105,14 +104,14 @@ export const Todo = props => {
                     {data}
                 </button>
             )}
-            <IconContext.Provider value={{ className: 'icon-delete' }}>
-                <button
-                    className={'todo__btn-delete' + (editing ? ' show' : '')}
-                    onClick={() => props.deleteTodo(props.id)}
-                >
-                    <FaTrash />
-                </button>
-            </IconContext.Provider>
+            <button
+                className={
+                    'btn-icon todo__btn-delete' + (editing ? ' show' : '')
+                }
+                onClick={() => props.deleteTodo(props.id)}
+            >
+                <FaTrash />
+            </button>
             <button className='todo__btn-drag'>
                 <MdDragIndicator />
             </button>

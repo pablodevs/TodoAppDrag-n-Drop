@@ -78,21 +78,31 @@
 
     &__btn-delete,
     &__submit {
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0.25em;
+        margin-block: auto;
+        box-shadow: none;
+
         visibility: hidden;
         opacity: 0;
         transition: none;
     }
 
     &__submit {
-        width: 2.5rem;
-        height: 2.5rem;
-        padding: 0.25em;
-        margin-block: auto;
         border: 1px solid var(--clr-secondary-300);
-        box-shadow: none;
-
         & path {
             stroke-width: 0.6px;
+        }
+    }
+
+    &__btn-delete {
+        margin-left: 0.5rem;
+        padding: 0.37em;
+        color: var(--clr-dark-300);
+        border: 1px solid;
+        &:hover {
+            color: var(--clr-danger-300);
         }
     }
 

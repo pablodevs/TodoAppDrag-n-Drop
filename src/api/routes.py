@@ -36,7 +36,7 @@ def generate_token():
     user = User.query.filter_by(name=name_received, password=password_received).first()
     if user is None:
         # the user was not found on the database
-        return jsonify({"message": "Usuario o contraseña incorrectos."}), 401
+        return jsonify({"message": "Usuario o contraseña incorrectos.", "status": "danger"}), 401
     
     # create a new token with the user id inside
     access_token = create_access_token(identity=user.id)
@@ -134,7 +134,7 @@ def deleteList(list_id):
 
     db.session.delete(listToDelete)
     db.session.commit()
-    return jsonify({"message": "La lista se ha eliminado correctamente."}), 200
+    return jsonify({"message": "La lista se ha eliminado correctamente.", "status": "success"}), 200
 
 # Obtiene todas las listas del usuario logeado
 @api.route('/user/lists')
@@ -249,4 +249,4 @@ def deleteTodo(todo_id):
 
     db.session.delete(todoToDelete)
     db.session.commit()
-    return jsonify({"message": "La tarea ha sido eliminada correctamente."}), 200
+    return jsonify({"message": "La tarea ha sido eliminada correctamente.", "status": "success"}), 200

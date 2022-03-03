@@ -10,6 +10,7 @@ import { Context } from '../store/appContext';
 export const TodoLists = () => {
     const { store, actions } = useContext(Context);
 
+    const [todosFetch, setTodosFetch] = useState(false);
     const [listOfLists, setListOfLists] = useState([]);
 
     useEffect(() => {
@@ -19,12 +20,27 @@ export const TodoLists = () => {
     }, [store.user]);
 
     useEffect(() => {
+        if (
+            !todosFetch &&
+            store.user &&
+            store.user.todoLists &&
+            store.user.todoLists.length
+        ) {
+            store.user.todoLists.forEach(list => actions.getTodos(list.id));
+            setTodosFetch(true);
+        }
+    }, [store.user]);
+
+    useEffect(() => {
         setListOfLists(
             store.user && store.user.todoLists ? (
-                store.user.todoLists.length ? (
+                store.user.todoLists.length && store.user.todoLists[0].todos ? (
                     <ul className='todo-lists__lists'>
-                        {store.user.todoLists.map((list, index) => (
-                            <li key={index} style={{ borderColor: list.color }}>
+                        {store.user.todoLists.map(list => (
+                            <li
+                                key={list.id}
+                                style={{ borderColor: list.color }}
+                            >
                                 <button
                                     onClick={() => {
                                         actions.popup.setPopup(
@@ -39,15 +55,30 @@ export const TodoLists = () => {
                                         <FaListUl />
                                     </div>
                                     {list.name}
+                                    {list.todos && list.todos.length ? (
+                                        <small className='completed-tasks'>
+                                            {
+                                                list.todos.filter(
+                                                    element => element.complete
+                                                ).length
+                                            }
+                                            /{list.todos.length}
+                                        </small>
+                                    ) : (
+                                        <small className='completed-tasks'>
+                                            0/0
+                                        </small>
+                                    )}
                                 </button>
                                 <IconContext.Provider
                                     value={{ className: 'icon-delete' }}
                                 >
                                     <button
                                         className='btn-delete'
-                                        onClick={() =>
-                                            actions.deleteTodoList(list.id)
-                                        }
+                                        onClick={() => {
+                                            setTodosFetch(false);
+                                            actions.deleteTodoList(list.id);
+                                        }}
                                     >
                                         <FaTrash />
                                     </button>

@@ -42,7 +42,7 @@ export const List = props => {
             setListOfTodos(
                 list.todos.map((item, index) => (
                     <Todo
-                        key={index}
+                        key={item.id}
                         id={item.id}
                         task={item.task}
                         complete={item.complete}
@@ -78,17 +78,9 @@ export const List = props => {
         setForm(false);
     };
 
-    const updateTodo = updatedTodo => {
-        actions.updateTodo(updatedTodo, props.list.id);
-    };
-
-    const deleteTodo = todoId => {
-        // Delete a task from the list
-        console.log('Deleting', todoId);
-        // let newListOfTodos = [...listOfTodos];
-        // newListOfTodos.splice(id, 1);
-        // setListOfTodos(newListOfTodos);
-    };
+    // Todo's functions
+    const updateTodo = todo => actions.updateTodo(todo, props.list.id);
+    const deleteTodo = todoId => actions.deleteTodo(todoId, props.list.id);
 
     return (
         <div className='list'>

@@ -46,7 +46,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .then(response => response.json())
                     .then(message => {
                         setStore({
-                            message: { message: message, status: 'success' },
+                            message: {
+                                message: message.message,
+                                status: message.status,
+                            },
                         });
                         actions.user.getTodoListsOfUser();
                     })
@@ -121,6 +124,32 @@ const getState = ({ getStore, getActions, setStore }) => {
                 )
                     .then(response => response.json())
                     .then(todo => actions.getTodos(listId))
+                    .catch(error => console.error(error));
+            },
+
+            // Delete todo
+            deleteTodo: (todoId, listId) => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                    },
+                };
+
+                fetch(`${process.env.BACKEND_URL}/api/todo/${todoId}`, options)
+                    .then(response => response.json())
+                    .then(message => {
+                        setStore({
+                            message: {
+                                message: message.message,
+                                status: message.status,
+                            },
+                        });
+                        actions.getTodos(listId);
+                    })
                     .catch(error => console.error(error));
             },
 
