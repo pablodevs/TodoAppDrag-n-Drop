@@ -41,10 +41,10 @@ export const TodoLists = () => {
                                     {list.name}
                                 </button>
                                 <IconContext.Provider
-                                    value={{ className: 'del-icon' }}
+                                    value={{ className: 'icon-delete' }}
                                 >
                                     <button
-                                        className='btn-delete-list'
+                                        className='btn-delete'
                                         onClick={() =>
                                             actions.deleteTodoList(list.id)
                                         }

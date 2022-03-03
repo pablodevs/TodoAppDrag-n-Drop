@@ -1,3 +1,5 @@
+@use '../../utils/variables' as *;
+
 .todo {
     display: flex;
     align-items: center;
@@ -5,14 +7,19 @@
 
     &--complete {
         opacity: 0.6;
-        & > .todo__task {
+        & .todo__task {
             text-decoration: line-through;
         }
     }
 
+    &--editing {
+        background-color: white;
+        box-shadow: $bs-header;
+    }
+
     &__color-decoration {
         align-self: stretch;
-        width: 10px;
+        min-width: 10px;
     }
     &__btn-check {
         & svg {
@@ -44,12 +51,24 @@
             }
         }
     }
+    &__form {
+        flex-grow: 1;
+        display: flex;
+    }
+
     &__btn-check,
-    &__btn-drag {
+    &__btn-drag,
+    &__btn-delete,
+    &__submit {
         align-self: stretch;
         display: flex;
         align-items: center;
         padding-inline: 0.6em;
+
+        &.show {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 
     &__btn-drag {
@@ -57,9 +76,39 @@
         color: var(--clr-dark-300);
     }
 
+    &__btn-delete,
+    &__submit {
+        visibility: hidden;
+        opacity: 0;
+        transition: none;
+    }
+
+    &__submit {
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0.25em;
+        margin-block: auto;
+        border: 1px solid var(--clr-secondary-300);
+        box-shadow: none;
+
+        & path {
+            stroke-width: 0.6px;
+        }
+    }
+
     &__task {
-        flex-grow: 1;
+        background: none;
+        border: none;
+        width: 100%;
         text-align: start;
-        min-height: 4rem;
+        padding: 1.3rem 0.7rem;
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        &.error {
+            background-color: var(--clr-danger-100);
+        }
     }
 }

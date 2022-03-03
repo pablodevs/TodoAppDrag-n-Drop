@@ -210,8 +210,6 @@ def updateTodo(todo_id):
     Single todo
     """
 
-    print("--------------->", todo_id)
-
     currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
     user = User.query.get(currentUserId)
 
@@ -223,9 +221,6 @@ def updateTodo(todo_id):
 
     # Query body
     request_body = request.json
-
-    print(request_body)
-    print(todo.serialize())
 
     if 'complete' in request_body:
         todo.complete = request_body['complete']

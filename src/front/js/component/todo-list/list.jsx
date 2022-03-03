@@ -38,7 +38,21 @@ export const List = props => {
                         className='list__img'
                     />
                 );
-            setListOfTodos(list.todos);
+
+            setListOfTodos(
+                list.todos.map((item, index) => (
+                    <Todo
+                        key={index}
+                        id={item.id}
+                        task={item.task}
+                        complete={item.complete}
+                        list_id={item.list_id}
+                        color={props.list.color}
+                        updateTodo={updateTodo}
+                        deleteTodo={deleteTodo}
+                    />
+                ))
+            );
         }
     }, [store.user.todoLists]);
 
@@ -59,27 +73,22 @@ export const List = props => {
     const handleSubmit = e => {
         e.preventDefault();
         // Agarrar el todo del back!
-        // setListOfTodos([...listOfTodos, { task: data, complete: false }]);
         actions.addTodo(data, props.list.id);
         setData('');
         setForm(false);
     };
 
-    const checkTodo = updatedTodo => {
-        // Toggle between check and unchecked state
-        // let newListOfTodos = [...listOfTodos];
-        // newListOfTodos[id].complete = !newListOfTodos[id].complete;
-        // setListOfTodos(newListOfTodos);
-
+    const updateTodo = updatedTodo => {
         actions.updateTodo(updatedTodo, props.list.id);
     };
 
-    // const deleteTodo = id => {
-    //     // Delete a task from the list
-    //     let newListOfTodos = [...listOfTodos];
-    //     newListOfTodos.splice(id, 1);
-    //     setListOfTodos(newListOfTodos);
-    // };
+    const deleteTodo = todoId => {
+        // Delete a task from the list
+        console.log('Deleting', todoId);
+        // let newListOfTodos = [...listOfTodos];
+        // newListOfTodos.splice(id, 1);
+        // setListOfTodos(newListOfTodos);
+    };
 
     return (
         <div className='list'>
@@ -125,16 +134,7 @@ export const List = props => {
                     </button>
                 </form>
                 {listOfTodos.length ? (
-                    <ul className='list__todos'>
-                        {listOfTodos.map((item, index) => (
-                            <Todo
-                                key={index}
-                                todo={item}
-                                color={props.list.color}
-                                checkTodo={checkTodo}
-                            />
-                        ))}
-                    </ul>
+                    <ul className='list__todos'>{listOfTodos}</ul>
                 ) : (
                     content
                 )}

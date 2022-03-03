@@ -47,15 +47,5 @@
             margin-left: auto;
             color: var(--clr-dark-400);
         }
-        .btn-delete-list {
-            display: flex;
-            margin-left: auto;
-            .del-icon {
-                color: var(--clr-dark-300);
-                &:hover {
-                    color: red;
-                }
-            }
-        }
     }
 }
