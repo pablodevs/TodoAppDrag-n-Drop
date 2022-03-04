@@ -23,6 +23,7 @@ class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     color = db.Column(db.String(7), nullable=False)
+    share = db.Column(db.Boolean(), nullable=True, default=False)
     todos = db.relationship('Todo', cascade="all, delete-orphan", backref='list')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
+import { AiFillEdit } from 'react-icons/ai';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -10,12 +11,15 @@ import { Todo } from './todo.jsx';
 export const List = props => {
     const { store, actions } = useContext(Context);
 
+    const titleEl = useRef(null);
     const labelEl = useRef(null);
     const inputEl = useRef(null);
 
     const [listOfTodos, setListOfTodos] = useState([]);
+    const [title, setTitle] = useState(props.list.name);
     const [data, setData] = useState('');
     const [form, setForm] = useState(false);
+    const [editing, setEditing] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
     const [content, setContent] = useState(
         <p className='list__img'>Loading...</p>
@@ -25,8 +29,9 @@ export const List = props => {
         let list = store.todoLists.find(
             element => element.id === props.list.id
         );
+
         if (list.todos) {
-            if (!list.todos.length)
+            if (!list.todos.length) {
                 setContent(
                     <img
                         src={todoList}
@@ -34,23 +39,62 @@ export const List = props => {
                         className='list__img'
                     />
                 );
+            } else
+                setListOfTodos(
+                    list.todos.map(item => (
+                        <Todo
+                            key={item.id}
+                            id={item.id}
+                            task={item.task}
+                            complete={item.complete}
+                            list_id={item.list_id}
+                            color={props.list.color}
+                            updateTodo={updateTodo}
+                            deleteTodo={deleteTodo}
+                        />
+                    ))
+                );
+        }
 
-            setListOfTodos(
-                list.todos.map((item, index) => (
-                    <Todo
-                        key={item.id}
-                        id={item.id}
-                        task={item.task}
-                        complete={item.complete}
-                        list_id={item.list_id}
-                        color={props.list.color}
-                        updateTodo={updateTodo}
-                        deleteTodo={deleteTodo}
-                    />
-                ))
-            );
+        if (list.name !== props.list.name) {
+            setTitle(list.name);
         }
     }, [store.todoLists]);
+
+    useEffect(() => {
+        if (editing) {
+            titleEl.current.focus();
+        }
+    }, [editing]);
+
+    const handleBlur = e => {
+        // currentTarget is the parent element, relatedTarget is the clicked element
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            console.log('YES');
+            titleEl.current.classList.remove('error');
+            setEditing(false);
+            if (!title || title !== props.list.name) {
+                setTitle(props.list.name);
+            }
+        }
+    };
+
+    const handleTitleSubmit = e => {
+        e.preventDefault();
+
+        if (title) {
+            if (title !== props.list.name) {
+                actions.updateTodoList({
+                    id: props.list.id,
+                    name: title,
+                });
+            }
+            setEditing(false);
+        } else {
+            titleEl.current.classList.add('error');
+            titleEl.current.focus();
+        }
+    };
 
     const toggleLabelEffect = e => {
         if ((data || e.type === 'focus') && !labelEl.current.classList.length) {
@@ -84,7 +128,34 @@ export const List = props => {
                 className='list__header'
                 style={{ backgroundColor: props.list.color }}
             >
-                <h1 className='list__title'>{props.list.name}</h1>
+                <h1 className='list__title flex'>
+                    {editing ? (
+                        <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
+                            <input
+                                className='input-title'
+                                type='text'
+                                value={title}
+                                ref={titleEl}
+                                onChange={e => {
+                                    titleEl.current.classList.remove('error');
+                                    setTitle(e.target.value);
+                                }}
+                            />
+                            <button>
+                                <BsCheck2 />
+                            </button>
+                        </form>
+                    ) : (
+                        title
+                    )}
+                    {editing ? (
+                        ''
+                    ) : (
+                        <button onClick={() => setEditing(true)}>
+                            <AiFillEdit />
+                        </button>
+                    )}
+                </h1>
             </header>
             <main>
                 <div

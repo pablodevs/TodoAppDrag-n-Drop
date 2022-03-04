@@ -29,10 +29,32 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .catch(error => console.error(error));
             },
 
+            // Update list in db
+            updateTodoList: data => {
+                const store = getStore();
+                const actions = getActions();
+
+                const options = {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
+                    },
+                };
+
+                return fetch(
+                    `${process.env.BACKEND_URL}/api/list/${data.id}`,
+                    options
+                )
+                    .then(response => response.json())
+                    .then(list => actions.user.getTodoListsOfUser())
+                    .catch(error => console.error(error));
+            },
+
             // Delete list in db
             deleteTodoList: listId => {
                 const store = getStore();
-                const actions = getActions();
 
                 const options = {
                     method: 'DELETE',
@@ -46,15 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     options
                 )
                     .then(response => response.json())
-                    .then(message => {
-                        // setStore({
-                        //     message: {
-                        //         message: message.message,
-                        //         status: message.status,
-                        //     },
-                        // });
-                        return true;
-                    })
+                    .then(message => true)
                     .catch(error => console.error(error));
             },
 

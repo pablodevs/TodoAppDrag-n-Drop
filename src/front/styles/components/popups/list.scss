@@ -39,8 +39,36 @@
     }
 
     &__title {
+        align-items: center;
+        gap: 0.5em;
+        margin-right: 3.5rem;
         font-size: 1.5rem;
         color: var(--clr-dark-100);
+
+        & button {
+            display: flex;
+            align-items: center;
+            color: inherit;
+        }
+        & > form {
+            display: flex;
+        }
+        & .input-title {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: start;
+            color: var(--clr-dark-100);
+            transition: none;
+
+            &:focus-visible {
+                outline: none;
+                border-bottom: 2px solid var(--clr-dark-100);
+            }
+            &.error {
+                background-color: var(--clr-danger-100);
+            }
+        }
     }
 
     main {

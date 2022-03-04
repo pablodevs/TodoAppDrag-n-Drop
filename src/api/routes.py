@@ -115,6 +115,35 @@ def createNewList():
 
     return jsonify(newList.serialize()), 200
 
+# Modifica la list
+@api.route('/list/<int:list_id>', methods=['PUT'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def updateList(list_id):
+    """
+    Single list
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+
+    list = List.query.get(list_id)
+
+    # Query body
+    request_body = request.json
+
+    if 'name' in request_body:
+        list.name = request_body['name']
+    if "color" in request_body:
+        list.color = request_body["color"]
+
+    db.session.commit()
+
+    return jsonify(list.serialize()), 200
+
 # Elimina una TodoList asociada al usuario
 @api.route('/list/<int:list_id>', methods=['DELETE'])
 @jwt_required()
