@@ -91,40 +91,48 @@ export const List = props => {
                 <h1 className='list__title'>{props.list.name}</h1>
             </header>
             <main>
-                <form
-                    onSubmit={handleSubmit}
-                    className={'list__form' + (form ? ' show-form' : '')}
-                >
-                    <button
-                        type='button'
-                        className='list__form__btn-close'
-                        onClick={() => {
-                            setFirstTime(true);
+                <div
+                    className={'list__form-bg' + (form ? ' show-form-bg' : '')}
+                    onClick={e => {
+                        if (e.target.classList[0] === 'list__form-bg')
                             setForm(false);
-                        }}
+                    }}
+                >
+                    <form
+                        onSubmit={handleSubmit}
+                        className={'list__form' + (form ? ' show-form' : '')}
                     >
-                        <BsArrowLeftShort />
-                    </button>
-                    <label htmlFor='todo-input'>
-                        <input
-                            ref={inputEl}
-                            type='text'
-                            id='todo-input'
-                            value={data}
-                            onFocus={toggleLabelEffect}
-                            onBlur={toggleLabelEffect}
-                            onChange={e => setData(e.target.value)}
-                            required
-                        />
-                        <span ref={labelEl}>New task</span>
-                    </label>
-                    <button
-                        type='submit'
-                        className='btn-icon btn-icon--check list__form__submit'
-                    >
-                        <BsCheck2 />
-                    </button>
-                </form>
+                        <button
+                            type='button'
+                            className='list__form__btn-close'
+                            onClick={() => {
+                                setFirstTime(true);
+                                setForm(false);
+                            }}
+                        >
+                            <BsArrowLeftShort />
+                        </button>
+                        <label htmlFor='todo-input'>
+                            <input
+                                ref={inputEl}
+                                type='text'
+                                id='todo-input'
+                                value={data}
+                                onFocus={toggleLabelEffect}
+                                onBlur={toggleLabelEffect}
+                                onChange={e => setData(e.target.value)}
+                                required
+                            />
+                            <span ref={labelEl}>New task</span>
+                        </label>
+                        <button
+                            type='submit'
+                            className='btn-icon btn-icon--check list__form__submit'
+                        >
+                            <BsCheck2 />
+                        </button>
+                    </form>
+                </div>
                 {listOfTodos.length ? (
                     <ul className='list__todos'>{listOfTodos}</ul>
                 ) : (
@@ -135,8 +143,8 @@ export const List = props => {
                 className='list__btn-toggle-form'
                 onClick={() => {
                     setData('');
-                    setForm(!form);
                     setFirstTime(true);
+                    setForm(!form);
                     if (!form) {
                         setTimeout(() => {
                             inputEl.current.focus();

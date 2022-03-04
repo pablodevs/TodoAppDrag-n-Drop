@@ -19,7 +19,7 @@
     width: 100%;
 
     @include mix.mq(small) {
-        min-height: 550px;
+        height: 550px;
         width: 400px;
     }
 
@@ -62,11 +62,23 @@
     }
 
     &__todos {
-        max-height: 85%;
+        max-height: 70vh;
         overflow-y: auto;
         box-shadow: inset 0 0 7px 0 rgba(0, 0, 0, 0.2);
     }
 
+    &__form-bg {
+        position: absolute;
+        inset: 0;
+        background-color: transparent;
+        opacity: 0;
+        visibility: hidden;
+
+        &.show-form-bg {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
     &__form {
         position: absolute;
         top: 0;
@@ -77,14 +89,13 @@
         flex-direction: column;
         justify-content: center;
         gap: 0.3rem;
-        width: calc(min(400px, 100%));
+        width: calc(min(420px, 100%));
         height: 130px;
         padding: 2.5rem;
 
         border-radius: 0;
         background-color: white;
         box-shadow: $bs-header;
-        opacity: 0;
 
         @include mix.mq(small) {
             border-bottom-left-radius: $br-global;
@@ -96,7 +107,6 @@
         }
 
         &.show-form {
-            opacity: 1;
             transform: translateY(0);
         }
 
