@@ -17,16 +17,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                         'Content-type': 'application/json',
                     },
                 };
-                fetch(`${process.env.BACKEND_URL}/api/list`, options)
+                return fetch(`${process.env.BACKEND_URL}/api/list`, options)
                     .then(response => response.json())
-                    .then(list => {
-                        setStore({
-                            user: {
-                                ...store.user,
-                                todoLists: [...store.user.todoLists, list],
-                            },
-                        });
-                    })
+                    .then(list => list)
                     .catch(error => console.error(error));
             },
 
@@ -42,7 +35,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                     },
                 };
 
-                fetch(`${process.env.BACKEND_URL}/api/list/${listId}`, options)
+                return fetch(
+                    `${process.env.BACKEND_URL}/api/list/${listId}`,
+                    options
+                )
                     .then(response => response.json())
                     .then(message => {
                         // setStore({
@@ -51,7 +47,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         //         status: message.status,
                         //     },
                         // });
-                        actions.user.getTodoListsOfUser();
+                        return true;
                     })
                     .catch(error => console.error(error));
             },
@@ -160,11 +156,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             // Popup functions
             popup: {
                 // Open Popup
-                setPopup: (reactComponent, closable = true) => {
+                setPopup: (reactComponent, closable = true, size = '') => {
                     setStore({
                         popup: {
                             component: reactComponent,
                             icClosable: closable,
+                            size: size,
                         },
                     });
                     return;
@@ -294,7 +291,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 // Get all TodoLists linked to the current user
                 getTodoListsOfUser: () => {
                     const store = getStore();
-                    fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
+                    return fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
                         headers: {
                             Authorization: 'Bearer ' + store.token,
                         },
@@ -307,6 +304,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                                     todoLists: todoLists,
                                 },
                             });
+                            return todoLists;
                         })
                         .catch(error => console.error(error));
                 },

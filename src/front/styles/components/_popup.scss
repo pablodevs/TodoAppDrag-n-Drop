@@ -3,7 +3,6 @@
 .home > .bg-cover,
 .bg-cover {
     position: fixed;
-    // inset: 0;
     top: 0;
     left: 0;
     width: 100%;
@@ -30,27 +29,20 @@
     justify-content: center;
     flex-direction: column;
 
-    width: 95%;
-    height: 95%;
+    width: 0;
+    min-height: 0;
+
     border-radius: $br-global;
     background-color: white;
     box-shadow: -1px 1px 3px 0 rgba(0, 0, 0, 0.2);
 
     opacity: 0;
 
-    @include mix.mq(small) {
-        height: 450px;
-        width: 350px;
-    }
-
     overflow: hidden;
 
     & > *:not(.popup-close) {
         flex: 1;
-        width: 100%;
-        max-height: 100%;
         padding: 1.5rem;
-        border-radius: $br-global;
     }
 }
 
@@ -62,7 +54,29 @@
 .popup-show {
     transform: translate(-50%, -50%);
     opacity: 1;
-    transition: all 0.3s ease-out;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, width 0s,
+        min-height 0s;
+
+    width: 95%;
+    min-height: 95%;
+
+    &--small {
+        width: 80%;
+        min-height: 30%;
+    }
+    &--medium {
+        width: 85%;
+        min-height: 60%;
+    }
+}
+
+.popup-show,
+.popup-show--small,
+.popup-show--medium {
+    @include mix.mq(small) {
+        min-height: fit-content;
+        width: fit-content;
+    }
 }
 
 .popup-close {

@@ -1,7 +1,7 @@
 @use '../../utils/variables' as *;
 @use '../../utils/mixins' as mix;
 
-// Reset some styles inherit from popup.scss
+// Reset some styles inherited from popup.scss
 .popup > .list {
     padding: 0;
 
@@ -16,6 +16,13 @@
     z-index: -1;
     display: flex;
     flex-direction: column;
+    width: 100%;
+
+    @include mix.mq(small) {
+        min-height: 550px;
+        width: 400px;
+    }
+
     background-color: var(--clr-dark-100);
 
     &__header {

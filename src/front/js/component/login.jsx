@@ -56,7 +56,9 @@ export const Login = () => {
                     />
                     <label htmlFor='password'>Password</label>
                 </div>
-                <button className='btn btn--primary'>Login</button>
+                <button className='btn btn--primary login__form__submit'>
+                    Login
+                </button>
             </form>
             {store.message && store.message.message ? (
                 <span className='login__message text-danger-400'>

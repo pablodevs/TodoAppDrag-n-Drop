@@ -23,30 +23,5 @@
         max-height: 68vh;
         font-size: 1.2rem;
         overflow-y: auto;
-
-        li {
-            display: flex;
-            align-items: center;
-            width: min(320px, 100%);
-            padding-right: 0.7rem;
-            border-radius: $br-small;
-            border: 3px solid;
-        }
-        button:first-child {
-            flex: auto;
-            display: flex;
-            align-items: center;
-            text-align: start;
-            padding: 0.5rem 0.7rem;
-        }
-        .color-mark {
-            display: flex;
-            margin-right: 0.8rem;
-        }
-
-        .completed-tasks {
-            margin-left: auto;
-            color: var(--clr-dark-400);
-        }
     }
 }

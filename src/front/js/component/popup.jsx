@@ -15,7 +15,8 @@ export const Popup = () => {
             <div
                 className={
                     'popup' +
-                    (Object.entries(store.popup).length ? ' popup-show' : '')
+                    (Object.entries(store.popup).length ? ' popup-show' : '') +
+                    (store.popup.size ? ` popup-show--${store.popup.size}` : '')
                 }
             >
                 {store.popup.component}

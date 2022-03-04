@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { CirclePicker } from 'react-color';
 import '../../../styles/components/popups/add-list.scss';
 import { Context } from '../../store/appContext';
 import { List } from './list.jsx';
 
-export const AddList = () => {
+export const AddList = props => {
     // to prevent useEffect from runnning on mount we'll use useRef:
     const isMounted = useRef(false);
 
@@ -31,19 +32,20 @@ export const AddList = () => {
         setData({ ...data, color: color.hex });
     };
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        actions.addNewList(data);
-        setData({
-            name: '',
-            color: '',
-        });
-    };
-
     return (
         <div className='add-list flex-col'>
             <h1 className='add-list__title'>New List</h1>
-            <form className='form flex-col' onSubmit={handleSubmit}>
+            <form
+                className='form flex-col'
+                onSubmit={e => {
+                    e.preventDefault();
+                    setData({
+                        name: '',
+                        color: '',
+                    });
+                    props.addList(data);
+                }}
+            >
                 <div className='input-wrapper'>
                     <input
                         type='text'
@@ -82,4 +84,8 @@ export const AddList = () => {
             </form>
         </div>
     );
+};
+
+AddList.propTypes = {
+    addList: PropTypes.func.isRequired,
 };
