@@ -19,7 +19,7 @@
     width: 100%;
 
     @include mix.mq(small) {
-        height: 550px;
+        min-height: 550px;
         width: 400px;
     }
 
@@ -73,6 +73,7 @@
         background-color: transparent;
         opacity: 0;
         visibility: hidden;
+        background-color: rgba(0, 0, 0, 0.2);
 
         &.show-form-bg {
             opacity: 1;

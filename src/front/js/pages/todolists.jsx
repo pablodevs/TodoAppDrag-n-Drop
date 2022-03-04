@@ -3,18 +3,47 @@ import { IconContext } from 'react-icons';
 import { BsPlusLg } from 'react-icons/bs';
 import '../../styles/pages/todo-list.scss';
 import { AddList } from '../component/todo-list/add-list.jsx';
+import { List } from '../component/todo-list/list.jsx';
 import { ListLi } from '../component/todo-list/list-li.jsx';
 import { Context } from '../store/appContext';
 
 export const TodoLists = () => {
     const { store, actions } = useContext(Context);
 
-    const [listOfLists, setListOfLists] = useState([<p>Loading...</p>]);
+    const [listOfLists, setListOfLists] = useState([<p key={0}>Loading...</p>]);
 
-    useEffect(() => getLists(), []);
+    useEffect(() => {
+        getLists();
+    }, []);
+
+    useEffect(() => {
+        if (store.todoLists.length) {
+            setListOfLists(
+                <ul className='todo-lists__lists'>
+                    {store.todoLists.map(list => (
+                        <ListLi
+                            key={list.id}
+                            list={list}
+                            deleteList={deleteList}
+                        />
+                    ))}
+                </ul>
+            );
+        }
+    }, [store.todoLists]);
+
+    const getLists = () => {
+        actions.user.getTodoListsOfUser().then(todoListsLength => {
+            if (!todoListsLength)
+                setListOfLists([<p key={-1}>Todavía no tienes listas.</p>]);
+        });
+    };
 
     const addList = data => {
-        actions.addNewList(data).then(list => getLists());
+        actions.addNewList(data).then(list => {
+            actions.popup.setPopup(<List list={list} />);
+            getLists();
+        });
     };
 
     const deleteList = listId => {
@@ -23,25 +52,6 @@ export const TodoLists = () => {
                 getLists();
                 actions.popup.closePopup();
             }
-        });
-    };
-
-    const getLists = () => {
-        actions.user.getTodoListsOfUser().then(todoLists => {
-            if (!todoLists.length)
-                setListOfLists([<p>Todavía no tienes listas.</p>]);
-            else
-                setListOfLists(
-                    <ul className='todo-lists__lists'>
-                        {todoLists.map(list => (
-                            <ListLi
-                                key={list.id}
-                                list={list}
-                                deleteList={deleteList}
-                            />
-                        ))}
-                    </ul>
-                );
         });
     };
 

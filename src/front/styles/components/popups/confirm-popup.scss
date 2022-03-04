@@ -1,9 +1,4 @@
-// @use '../../utils/variables' as *;
 @use '../../utils/mixins' as mix;
-
-.popup > .confirm-popup {
-    padding: 1rem 1.5rem;
-}
 
 .confirm-popup {
     gap: 1rem;

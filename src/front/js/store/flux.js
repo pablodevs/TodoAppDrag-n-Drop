@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         store: {
             popup: {},
             token: localStorage.getItem('newtoken') || '',
+            todoLists: [],
         },
         actions: {
             // Create a new list
@@ -19,7 +20,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                 };
                 return fetch(`${process.env.BACKEND_URL}/api/list`, options)
                     .then(response => response.json())
-                    .then(list => list)
+                    .then(list => {
+                        setStore({
+                            todoLists: [...store.todoLists, list],
+                        });
+                        return list;
+                    })
                     .catch(error => console.error(error));
             },
 
@@ -62,18 +68,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 })
                     .then(response => response.json())
                     .then(todos => {
-                        let todoListsAux = [...store.user.todoLists];
-                        todoListsAux.map(element => {
-                            if (element.id === listId) {
-                                element.todos = todos;
+                        let todoListsAux = [...store.todoLists];
+                        todoListsAux.map(list => {
+                            if (list.id === listId) {
+                                list.todos = todos;
                             }
                         });
-
                         setStore({
-                            user: {
-                                ...store.user,
-                                todoLists: todoListsAux,
-                            },
+                            todoLists: todoListsAux,
                         });
                     })
                     .catch(error => console.error(error));
@@ -291,6 +293,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 // Get all TodoLists linked to the current user
                 getTodoListsOfUser: () => {
                     const store = getStore();
+                    const actions = getActions();
                     return fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
                         headers: {
                             Authorization: 'Bearer ' + store.token,
@@ -299,12 +302,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                         .then(response => response.json())
                         .then(todoLists => {
                             setStore({
-                                user: {
-                                    ...store.user,
-                                    todoLists: todoLists,
-                                },
+                                todoLists: todoLists,
                             });
-                            return todoLists;
+                            todoLists.forEach(list =>
+                                actions.getTodos(list.id)
+                            );
+                            return todoLists.length;
                         })
                         .catch(error => console.error(error));
                 },

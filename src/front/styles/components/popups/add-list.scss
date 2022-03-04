@@ -1,5 +1,13 @@
+@use '../../utils/mixins' as mix;
+
 .add-list {
     gap: 1rem;
+    width: 100%;
+    min-height: 450px;
+
+    @include mix.mq(small) {
+        width: 380px;
+    }
 
     &__title {
         font-size: 1.5rem;

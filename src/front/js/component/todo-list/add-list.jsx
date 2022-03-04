@@ -1,29 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CirclePicker } from 'react-color';
 import '../../../styles/components/popups/add-list.scss';
-import { Context } from '../../store/appContext';
-import { List } from './list.jsx';
 
 export const AddList = props => {
-    // to prevent useEffect from runnning on mount we'll use useRef:
-    const isMounted = useRef(false);
-
-    const { store, actions } = useContext(Context);
     const [data, setData] = useState({
         name: '',
         color: '#f5463d',
     });
-
-    useEffect(() => {
-        if (isMounted.current) {
-            actions.popup.setPopup(
-                <List list={store.user.todoLists.slice(-1)[0]} />
-            );
-        } else {
-            isMounted.current = true;
-        }
-    }, [store.user]);
 
     const handleChange = e => {
         setData({ ...data, name: e.target.value });

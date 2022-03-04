@@ -22,11 +22,7 @@ export const List = props => {
     );
 
     useEffect(() => {
-        actions.getTodos(props.list.id);
-    }, []);
-
-    useEffect(() => {
-        let list = store.user.todoLists.find(
+        let list = store.todoLists.find(
             element => element.id === props.list.id
         );
         if (list.todos) {
@@ -54,7 +50,7 @@ export const List = props => {
                 ))
             );
         }
-    }, [store.user.todoLists]);
+    }, [store.todoLists]);
 
     const toggleLabelEffect = e => {
         if ((data || e.type === 'focus') && !labelEl.current.classList.length) {
