@@ -45,12 +45,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                 fetch(`${process.env.BACKEND_URL}/api/list/${listId}`, options)
                     .then(response => response.json())
                     .then(message => {
-                        setStore({
-                            message: {
-                                message: message.message,
-                                status: message.status,
-                            },
-                        });
+                        // setStore({
+                        //     message: {
+                        //         message: message.message,
+                        //         status: message.status,
+                        //     },
+                        // });
                         actions.user.getTodoListsOfUser();
                     })
                     .catch(error => console.error(error));
@@ -142,12 +142,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                 fetch(`${process.env.BACKEND_URL}/api/todo/${todoId}`, options)
                     .then(response => response.json())
                     .then(message => {
-                        setStore({
-                            message: {
-                                message: message.message,
-                                status: message.status,
-                            },
-                        });
+                        // setStore({
+                        //     message: {
+                        //         message: message.message,
+                        //         status: message.status,
+                        //     },
+                        // });
                         actions.getTodos(listId);
                     })
                     .catch(error => console.error(error));
@@ -202,10 +202,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             });
                             throw Error(response);
                         } else {
-                            setStore({
-                                token: data.token,
-                                message: null,
-                            });
+                            setStore({ token: data.token });
                             localStorage.setItem('newtoken', data.token);
                             actions.user.getProfileData(data.token);
                             return data;

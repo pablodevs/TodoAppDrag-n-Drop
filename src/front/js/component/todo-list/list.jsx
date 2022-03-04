@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
 import todoList from '../../../img/todo-list.png';
-import '../../../styles/components/todo-list/list.scss';
+import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
 import { Todo } from './todo.jsx';
 

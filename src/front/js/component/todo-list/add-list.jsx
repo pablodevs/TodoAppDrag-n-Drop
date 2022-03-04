@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { CirclePicker } from 'react-color';
-import '../../../styles/components/todo-list/add-list.scss';
+import '../../../styles/components/popups/add-list.scss';
 import { Context } from '../../store/appContext';
 import { List } from './list.jsx';
 

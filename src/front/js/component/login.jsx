@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import '../../styles/components/login.scss';
+import '../../styles/components/popups/login.scss';
 import { Context } from '../store/appContext';
 
 export const Login = () => {

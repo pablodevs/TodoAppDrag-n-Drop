@@ -98,20 +98,22 @@ export const Todo = props => {
                     >
                         <BsCheck2 />
                     </button>
+                    <button
+                        type='button'
+                        className={
+                            'btn-icon todo__btn-delete' +
+                            (editing ? ' show' : '')
+                        }
+                        onClick={() => props.deleteTodo(props.id)}
+                    >
+                        <FaTrash />
+                    </button>
                 </form>
             ) : (
                 <button className='todo__task' onClick={() => setEditing(true)}>
                     {data}
                 </button>
             )}
-            <button
-                className={
-                    'btn-icon todo__btn-delete' + (editing ? ' show' : '')
-                }
-                onClick={() => props.deleteTodo(props.id)}
-            >
-                <FaTrash />
-            </button>
             <button className='todo__btn-drag'>
                 <MdDragIndicator />
             </button>
