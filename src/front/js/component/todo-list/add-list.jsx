@@ -45,6 +45,7 @@ export const AddList = props => {
                         }}
                         className='form__name'
                         required
+                        autoComplete='off'
                     />
                     <label
                         htmlFor=''

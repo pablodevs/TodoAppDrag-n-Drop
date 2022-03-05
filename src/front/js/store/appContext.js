@@ -29,7 +29,7 @@ const injectContext = PassedComponent => {
             let userToken =
                 state.store.token || localStorage.getItem('newtoken');
             if (userToken) state.actions.user.getProfileData(userToken);
-            else state.actions.popup.setPopup(<Login />, false);
+            else state.actions.popup.setPopup(<Login />, false, 'medium');
         }, []);
 
         return (

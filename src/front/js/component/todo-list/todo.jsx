@@ -57,6 +57,7 @@ export const Todo = props => {
                 (props.complete ? ' todo--complete' : '') +
                 (editing ? ' todo--editing' : '')
             }
+            style={editing ? { zIndex: '1', position: 'relative' } : {}}
         >
             <span
                 className='todo__color-decoration'

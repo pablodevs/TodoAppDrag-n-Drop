@@ -43,10 +43,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     },
                 };
 
-                return fetch(
-                    `${process.env.BACKEND_URL}/api/list/${data.id}`,
-                    options
-                )
+                return fetch(`${process.env.BACKEND_URL}/api/list/${data.id}`, options)
                     .then(response => response.json())
                     .then(list => actions.user.getTodoListsOfUser())
                     .catch(error => console.error(error));
@@ -63,10 +60,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     },
                 };
 
-                return fetch(
-                    `${process.env.BACKEND_URL}/api/list/${listId}`,
-                    options
-                )
+                return fetch(`${process.env.BACKEND_URL}/api/list/${listId}`, options)
                     .then(response => response.json())
                     .then(message => true)
                     .catch(error => console.error(error));
@@ -108,10 +102,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         'Content-type': 'application/json',
                     },
                 };
-                fetch(
-                    `${process.env.BACKEND_URL}/api/lists/${listId}/todo`,
-                    options
-                )
+                fetch(`${process.env.BACKEND_URL}/api/lists/${listId}/todo`, options)
                     .then(response => response.json())
                     .then(todo => actions.getTodos(listId))
                     .catch(error => console.error(error));
@@ -130,10 +121,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         'Content-type': 'application/json',
                     },
                 };
-                fetch(
-                    `${process.env.BACKEND_URL}/api/todo/${updatedTodo.id}`,
-                    options
-                )
+                fetch(`${process.env.BACKEND_URL}/api/todo/${updatedTodo.id}`, options)
                     .then(response => response.json())
                     .then(todo => actions.getTodos(listId))
                     .catch(error => console.error(error));
@@ -166,8 +154,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             // Remove message from store
-            cleanMessage: () =>
-                setStore({ message: { message: '', status: '' } }),
+            cleanMessage: () => setStore({ message: { message: '', status: '' } }),
 
             // Popup functions
             popup: {
@@ -192,19 +179,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                 generateToken: async (name, password) => {
                     const actions = getActions();
                     try {
-                        const response = await fetch(
-                            process.env.BACKEND_URL + '/api/token',
-                            {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    name: name,
-                                    password: password,
-                                }),
-                                headers: {
-                                    'Content-type': 'application/json',
-                                },
-                            }
-                        );
+                        const response = await fetch(process.env.BACKEND_URL + '/api/token', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                name: name,
+                                password: password,
+                            }),
+                            headers: {
+                                'Content-type': 'application/json',
+                            },
+                        });
                         const data = await response.json();
                         if (!response.ok) {
                             setStore({
@@ -255,6 +239,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 ...store.user,
                                 id: data.id,
                                 name: data.name,
+                                profile_image_url: data.profile_image_url,
                             },
                         });
                         actions.popup.closePopup();
@@ -282,23 +267,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                             process.env.BACKEND_URL + '/api/user',
                             options
                         );
-                        const data = await response.json();
+                        const user = await response.json();
                         if (!response.ok) {
-                            setStore({
-                                message: {
-                                    message: data.message,
-                                    status: 'danger',
-                                },
-                            });
                             throw Error(response);
                         }
                         setStore({
-                            message: {
-                                message: data.message,
-                                status: data.status,
-                            },
+                            user: user,
                         });
-                        return data;
                     } catch (error) {
                         console.error(error);
                     }
@@ -318,9 +293,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             setStore({
                                 todoLists: todoLists,
                             });
-                            todoLists.forEach(list =>
-                                actions.getTodos(list.id)
-                            );
+                            todoLists.forEach(list => actions.getTodos(list.id));
                             return todoLists.length;
                         })
                         .catch(error => console.error(error));
@@ -330,14 +303,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             // Get images from Cloudinary by tag using admin api
             getImagesByTag: () => {
                 let store = getStore();
-                fetch(
-                    `${process.env.BACKEND_URL}/api/images/${store.user.name}`
-                )
+                fetch(`${process.env.BACKEND_URL}/api/images/${store.user.name}`)
                     .then(response => response.json())
                     .then(data => {
-                        let actions = getActions();
                         setStore({ images: data });
-                        actions.getRandomImage();
                     })
                     .catch(error => console.error(error));
             },
@@ -346,10 +315,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             getRandomImage: () => {
                 let store = getStore();
                 setStore({
-                    randomImage:
-                        store.images[
-                            Math.floor(Math.random() * store.images.length)
-                        ],
+                    randomImage: store.images[Math.floor(Math.random() * store.images.length)],
+                });
+            },
+
+            // Delete random image from the store
+            cleanRandomImage: () => {
+                setStore({
+                    randomImage: '',
                 });
             },
         },

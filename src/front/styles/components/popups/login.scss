@@ -1,4 +1,13 @@
+@use '../../utils/mixins' as mix;
+
 .login {
+    width: 100%;
+    min-height: 450px;
+
+    @include mix.mq(small) {
+        width: 380px;
+    }
+
     &__title {
         margin-bottom: 1.5rem;
     }

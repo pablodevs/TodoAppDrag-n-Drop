@@ -57,7 +57,7 @@ export const TodoLists = () => {
 
     return (
         <div className='todo-lists center flex-col'>
-            <h1 className='todo-lists__title'>Todo List</h1>
+            <h1 className='todo-lists__title'>Tus Listas</h1>
             <button
                 className='todo-lists__add-btn'
                 onClick={() =>

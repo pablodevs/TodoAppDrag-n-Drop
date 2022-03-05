@@ -83,7 +83,7 @@ def setUserImg():
     user.profile_image_url = request_body.get("profile_image_url", None)
 
     db.session.commit()
-    return jsonify({"message": "Image changed!", "status": "success"}), 200
+    return jsonify(user.serialize()), 200
 
 # Obtiene todas las imágenes con el tag 'gusinette' o 'gusinet' de Cloudinary
 @api.route('/images/<string:tag>')
