@@ -19,7 +19,11 @@
         display: flex;
         margin-right: 0.8rem;
     }
-
+    .share-icon {
+        display: flex;
+        margin-left: 0.4rem;
+        color: var(--clr-dark-400);
+    }
     .completed-tasks {
         margin-left: auto;
         color: var(--clr-dark-400);

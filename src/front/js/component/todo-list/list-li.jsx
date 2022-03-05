@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { IconContext } from 'react-icons';
-import { FaListUl, FaTrash } from 'react-icons/fa';
+import { FaListUl, FaTrash, FaUserFriends } from 'react-icons/fa';
 import '../../../styles/components/todo-list/list-li.scss';
 import { ConfirmPopup } from '../../component/confirm-popup.jsx';
 import { Context } from '../../store/appContext.js';
@@ -11,11 +11,7 @@ export const ListLi = props => {
     const { store, actions } = useContext(Context);
 
     return (
-        <li
-            className='list-li'
-            key={props.list.id}
-            style={{ borderColor: props.list.color }}
-        >
+        <li className='list-li' key={props.list.id} style={{ borderColor: props.list.color }}>
             <button
                 onClick={() => {
                     actions.popup.setPopup(<List list={props.list} />);
@@ -25,13 +21,17 @@ export const ListLi = props => {
                     <FaListUl />
                 </div>
                 {props.list.name}
+                {props.list.share ? (
+                    <small className='share-icon'>
+                        <FaUserFriends />
+                    </small>
+                ) : (
+                    ''
+                )}
                 {props.list.todos && props.list.todos.length ? (
                     <small className='completed-tasks'>
-                        {
-                            props.list.todos.filter(element => element.complete)
-                                .length
-                        }
-                        /{props.list.todos.length}
+                        {props.list.todos.filter(element => element.complete).length}/
+                        {props.list.todos.length}
                     </small>
                 ) : (
                     <small className='completed-tasks'>0/0</small>

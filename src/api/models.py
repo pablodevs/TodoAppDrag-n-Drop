@@ -35,6 +35,7 @@ class List(db.Model):
             "id": self.id,
             "name": self.name,
             "color": self.color,
+            "share": self.share,
             "user_id": self.user_id,
         }
 

@@ -1,0 +1,67 @@
+.bottom-tabs {
+    $duration: 0.4s;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    padding: 0.2rem 0 0.6rem 0;
+
+    background: var(--clr-dark-500);
+
+    & > .center {
+        width: 100%;
+    }
+
+    &__tab-container {
+        $size: 45px;
+        $fs: calc(#{$size}/ 2);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $size;
+        height: $size;
+
+        color: var(--clr-dark-100);
+        font-size: $fs;
+        border-radius: 50%;
+
+        transition: all $duration ease-in-out;
+        &.resized {
+            font-size: calc(#{$fs} + 8px);
+            &.active {
+                background-color: var(--clr-primary-400);
+            }
+        }
+
+        &.active {
+            transform-origin: bottom;
+            transform: scale(1.2) translateY(-3px);
+            background-color: var(--clr-secondary-400);
+        }
+    }
+
+    .svg-container {
+        width: 0;
+        height: 0;
+    }
+    &__border {
+        // Si cambia el width, cambiar el 5em del 'left' (a la mitad del width) y en bottom-tabs.jsx cambiarlo también!
+        $width: 10em;
+        $height: 1.7em;
+
+        position: absolute;
+        left: calc(25% - 5em);
+        top: -#{$height};
+        z-index: -1;
+
+        width: $width;
+        height: $height;
+        clip-path: url(#tab-effect);
+        will-change: transform;
+        background-color: var(--clr-dark-500);
+        transition: left $duration ease-in-out;
+    }
+}

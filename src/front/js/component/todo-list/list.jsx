@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
-import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
 import { AiFillEdit } from 'react-icons/ai';
+import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
+import { FaUserFriends } from 'react-icons/fa';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -11,6 +12,7 @@ import { Todo } from './todo.jsx';
 export const List = props => {
     const { store, actions } = useContext(Context);
 
+    const btnShareEl = useRef(null);
     const titleEl = useRef(null);
     const labelEl = useRef(null);
     const inputEl = useRef(null);
@@ -21,24 +23,15 @@ export const List = props => {
     const [form, setForm] = useState(false);
     const [editing, setEditing] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
-    const [content, setContent] = useState(
-        <p className='list__img'>Loading...</p>
-    );
+    const [share, setShare] = useState(props.list.share);
+    const [content, setContent] = useState(<p className='list__img'>Loading...</p>);
 
     useEffect(() => {
-        let list = store.todoLists.find(
-            element => element.id === props.list.id
-        );
+        let list = store.todoLists.find(element => element.id === props.list.id);
 
         if (list.todos) {
             if (!list.todos.length) {
-                setContent(
-                    <img
-                        src={todoList}
-                        alt='empty todo list'
-                        className='list__img'
-                    />
-                );
+                setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
             } else
                 setListOfTodos(
                     list.todos.map(item => (
@@ -62,6 +55,11 @@ export const List = props => {
     }, [store.todoLists]);
 
     useEffect(() => {
+        let thisList = store.todoLists.find(list => list.id === props.list.id);
+        setShare(thisList.share);
+    }, [store.todoLists]);
+
+    useEffect(() => {
         if (editing) {
             titleEl.current.focus();
         }
@@ -70,7 +68,6 @@ export const List = props => {
     const handleBlur = e => {
         // currentTarget is the parent element, relatedTarget is the clicked element
         if (!e.currentTarget.contains(e.relatedTarget)) {
-            console.log('YES');
             titleEl.current.classList.remove('error');
             setEditing(false);
             if (!title || title !== props.list.name) {
@@ -124,10 +121,7 @@ export const List = props => {
 
     return (
         <div className='list'>
-            <header
-                className='list__header'
-                style={{ backgroundColor: props.list.color }}
-            >
+            <header className='list__header' style={{ backgroundColor: props.list.color }}>
                 <h1 className='list__title flex'>
                     {editing ? (
                         <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
@@ -156,13 +150,28 @@ export const List = props => {
                         </button>
                     )}
                 </h1>
+                {editing ? (
+                    ''
+                ) : (
+                    <button
+                        className={'btn-share center' + (share ? ' active' : '')}
+                        ref={btnShareEl}
+                        onClick={() =>
+                            actions.updateTodoList({
+                                id: props.list.id,
+                                share: !share,
+                            })
+                        }
+                    >
+                        <FaUserFriends />
+                    </button>
+                )}
             </header>
             <main>
                 <div
                     className={'list__form-bg' + (form ? ' show-form-bg' : '')}
                     onClick={e => {
-                        if (e.target.classList[0] === 'list__form-bg')
-                            setForm(false);
+                        if (e.target.classList[0] === 'list__form-bg') setForm(false);
                     }}
                 >
                     <form
@@ -200,11 +209,7 @@ export const List = props => {
                         </button>
                     </form>
                 </div>
-                {listOfTodos.length ? (
-                    <ul className='list__todos'>{listOfTodos}</ul>
-                ) : (
-                    content
-                )}
+                {listOfTodos.length ? <ul className='list__todos'>{listOfTodos}</ul> : content}
             </main>
             <button
                 className='list__btn-toggle-form'
@@ -221,15 +226,11 @@ export const List = props => {
             >
                 <IconContext.Provider
                     value={{
-                        className: `btn-icon btn-icon--plus ${
-                            form ? 'active' : ''
-                        }`,
+                        className: `btn-icon btn-icon--plus ${form ? 'active' : ''}`,
                     }}
                 >
                     <div className='flex'>
-                        <BsPlusLg
-                            style={{ backgroundColor: props.list.color }}
-                        />
+                        <BsPlusLg style={{ backgroundColor: props.list.color }} />
                     </div>
                 </IconContext.Provider>
             </button>

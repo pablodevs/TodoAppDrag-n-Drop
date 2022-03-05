@@ -139,6 +139,8 @@ def updateList(list_id):
         list.name = request_body['name']
     if "color" in request_body:
         list.color = request_body["color"]
+    if "share" in request_body:
+        list.share = request_body["share"]
 
     db.session.commit()
 
