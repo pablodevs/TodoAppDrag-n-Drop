@@ -61,8 +61,9 @@ export const List = props => {
     }, [store.todoLists]);
 
     useEffect(() => {
-        let thisList = store.todoLists.find(list => list.id === list.id);
-        setShare(thisList.share);
+        let thisList = store.todoLists.find(list => props.list.id === list.id);
+        if (thisList) setShare(thisList.share);
+        else setShare(!share);
     }, [store.todoLists]);
 
     useEffect(() => {

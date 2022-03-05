@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { FaUser, FaUserFriends } from 'react-icons/fa';
-import '../../../styles/components/bottom-tabs.scss';
+import '../../../styles/components/todo-list/bottom-tabs.scss';
 import { Context } from '../../store/appContext';
 
 export const BottomTabs = () => {

@@ -50,11 +50,11 @@
     &__border {
         // Si cambia el width, cambiar el 5em del 'left' (a la mitad del width) y en bottom-tabs.jsx cambiarlo también!
         $width: 10em;
-        $height: 1.7em;
+        $height: 1.8em;
 
         position: absolute;
         left: calc(25% - 5em);
-        top: -#{$height};
+        top: calc(-#{$height} + 1px);
         z-index: -1;
 
         width: $width;
