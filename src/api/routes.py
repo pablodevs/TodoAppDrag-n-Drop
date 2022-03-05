@@ -167,10 +167,10 @@ def deleteList(list_id):
     db.session.commit()
     return jsonify({"message": "La lista se ha eliminado correctamente.", "status": "success"}), 200
 
-# Obtiene todas las listas del usuario logeado
-@api.route('/user/lists')
+# Obtiene todas las listas (compartidas o no)
+@api.route('/user/lists/<string:share>')
 @jwt_required()
-def getAllLists():
+def getAllLists(share):
     """
     Get all Lists liked to current user
     """
@@ -182,7 +182,11 @@ def getAllLists():
     if user is None:
         raise APIException('User not found in data base.', status_code=404)
     
-    allLists = List.query.filter_by(user_id = currentUserId).all()
+    if share == "false":
+        allLists = List.query.filter_by(user_id = currentUserId).all()
+    elif share == "true":
+        allLists = List.query.filter_by(share = True).all()
+
     allLists = [list.serialize() for list in allLists]
 
     return jsonify(allLists), 200

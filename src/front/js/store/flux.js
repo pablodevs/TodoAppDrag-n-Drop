@@ -4,8 +4,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             popup: {},
             token: localStorage.getItem('newtoken') || '',
             todoLists: [],
+            shareLists: false,
         },
         actions: {
+            setShareLists: share =>
+                setStore({
+                    shareLists: share,
+                }),
+
             // Create a new list
             addNewList: newList => {
                 const store = getStore();
@@ -45,7 +51,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 return fetch(`${process.env.BACKEND_URL}/api/list/${data.id}`, options)
                     .then(response => response.json())
-                    .then(list => actions.user.getTodoListsOfUser())
+                    .then(list => {
+                        actions.setShareLists(!store.shareLists);
+                        actions.user.getTodoListsOfUser(!store.shareLists);
+                        return list;
+                    })
                     .catch(error => console.error(error));
             },
 
@@ -280,10 +290,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                 },
 
                 // Get all TodoLists linked to the current user
-                getTodoListsOfUser: () => {
+                getTodoListsOfUser: share => {
                     const store = getStore();
                     const actions = getActions();
-                    return fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
+                    return fetch(`${process.env.BACKEND_URL}/api/user/lists/${share}`, {
                         headers: {
                             Authorization: 'Bearer ' + store.token,
                         },

@@ -12,50 +12,40 @@ export const TodoLists = () => {
     const { store, actions } = useContext(Context);
 
     const [listOfLists, setListOfLists] = useState([<li key={0}>Loading...</li>]);
-    const [share, setShare] = useState(false);
 
     useEffect(() => {
-        getLists();
-    }, []);
+        actions.user.getTodoListsOfUser(store.shareLists);
+    }, [store.shareLists]);
 
     useEffect(() => {
         if (store.todoLists.length) {
-            let newListOfLists = store.todoLists.filter(list => list.share === share);
-            if (!newListOfLists.length) {
-                setListOfLists([
-                    <li key={-1}>Todavía no tienes listas {share ? 'compartidas' : 'privadas'}</li>,
-                ]);
-            } else {
-                setListOfLists(
-                    newListOfLists.map(list => (
-                        <ListLi key={list.id} list={list} deleteList={deleteList} />
-                    ))
-                );
-            }
+            let newListOfLists = store.todoLists.filter(list => list.share === store.shareLists);
+            setListOfLists(
+                newListOfLists.map(list => (
+                    <ListLi key={list.id} list={list} deleteList={deleteList} />
+                ))
+            );
         } else {
             setListOfLists([<li key={-1}>Todavía no tienes listas.</li>]);
         }
-    }, [store.todoLists, share]);
-
-    const getLists = () => actions.user.getTodoListsOfUser();
+    }, [store.todoLists, store.shareLists]);
 
     const addList = data => {
         actions.addNewList(data).then(list => {
+            actions.setShareLists(false);
             actions.popup.setPopup(<List list={list} />);
-            getLists();
+            actions.user.getTodoListsOfUser(false);
         });
     };
 
     const deleteList = listId => {
         actions.deleteTodoList(listId).then(resp => {
             if (resp) {
-                getLists();
+                actions.user.getTodoListsOfUser(store.shareLists);
                 actions.popup.closePopup();
             }
         });
     };
-
-    const showSharedLists = share => setShare(share);
 
     return (
         <div className='todo-lists center flex-col'>
@@ -73,7 +63,7 @@ export const TodoLists = () => {
                 </IconContext.Provider>
             </button>
             <ul className='todo-lists__lists'>{listOfLists}</ul>
-            <BottomTabs showSharedLists={showSharedLists} />
+            <BottomTabs />
         </div>
     );
 };

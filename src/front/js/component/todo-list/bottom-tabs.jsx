@@ -1,20 +1,21 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FaUser, FaUserFriends } from 'react-icons/fa';
 import '../../../styles/components/bottom-tabs.scss';
+import { Context } from '../../store/appContext';
 
-export const BottomTabs = props => {
-    const [active, setActive] = useState(0);
+export const BottomTabs = () => {
+    const { store, actions } = useContext(Context);
 
     return (
         <>
             <nav className='bottom-tabs'>
                 <div className='center'>
                     <button
-                        className={'bottom-tabs__tab-container' + (active ? '' : ' active')}
+                        className={
+                            'bottom-tabs__tab-container' + (store.shareLists ? '' : ' active')
+                        }
                         onClick={() => {
-                            props.showSharedLists(false);
-                            setActive(0);
+                            actions.setShareLists(false);
                         }}
                     >
                         <FaUser />
@@ -22,10 +23,12 @@ export const BottomTabs = props => {
                 </div>
                 <div className='center'>
                     <button
-                        className={'bottom-tabs__tab-container resized' + (active ? ' active' : '')}
+                        className={
+                            'bottom-tabs__tab-container resized' +
+                            (store.shareLists ? ' active' : '')
+                        }
                         onClick={() => {
-                            props.showSharedLists(true);
-                            setActive(1);
+                            actions.setShareLists(true);
                         }}
                     >
                         <FaUserFriends />
@@ -33,7 +36,7 @@ export const BottomTabs = props => {
                 </div>
                 <div
                     className='bottom-tabs__border'
-                    style={active ? { left: 'calc(75% - 5em)' } : {}}
+                    style={store.shareLists ? { left: 'calc(75% - 5em)' } : {}}
                 ></div>
             </nav>
             <div className='svg-container'>
@@ -53,8 +56,4 @@ export const BottomTabs = props => {
             </div>
         </>
     );
-};
-
-BottomTabs.propTypes = {
-    showSharedLists: PropTypes.func.isRequired,
 };

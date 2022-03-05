@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { FaListUl, FaTrash, FaUserFriends } from 'react-icons/fa';
 import '../../../styles/components/todo-list/list-li.scss';
@@ -9,6 +9,12 @@ import { List } from './list.jsx';
 
 export const ListLi = props => {
     const { store, actions } = useContext(Context);
+
+    const [canBeDeleted, setCanBeDeleted] = useState(false);
+
+    useEffect(() => {
+        if (store.user) setCanBeDeleted(props.list.user_id === store.user.id);
+    }, [store.user]);
 
     return (
         <li className='list-li' key={props.list.id} style={{ borderColor: props.list.color }}>
@@ -40,6 +46,7 @@ export const ListLi = props => {
             <IconContext.Provider value={{ className: 'icon-delete' }}>
                 <button
                     className='btn-delete'
+                    style={canBeDeleted ? {} : { opacity: '0', pointerEvents: 'none' }}
                     onClick={() => {
                         actions.popup.setPopup(
                             <ConfirmPopup

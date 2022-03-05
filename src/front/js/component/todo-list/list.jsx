@@ -17,6 +17,7 @@ export const List = props => {
     const labelEl = useRef(null);
     const inputEl = useRef(null);
 
+    const [list, setList] = useState(props.list);
     const [listOfTodos, setListOfTodos] = useState([]);
     const [title, setTitle] = useState(props.list.name);
     const [data, setData] = useState('');
@@ -24,24 +25,29 @@ export const List = props => {
     const [editing, setEditing] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
     const [share, setShare] = useState(props.list.share);
+    const [canBeShared, setCanBeShared] = useState(false);
     const [content, setContent] = useState(<p className='list__img'>Loading...</p>);
 
     useEffect(() => {
-        let list = store.todoLists.find(element => element.id === props.list.id);
+        setCanBeShared(props.list.user_id === store.user.id);
+    }, []);
 
-        if (list.todos) {
-            if (!list.todos.length) {
+    useEffect(() => {
+        let foundList = store.todoLists.find(element => element.id === props.list.id);
+
+        if (foundList && foundList.todos) {
+            if (!foundList.todos.length) {
                 setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
             } else
                 setListOfTodos(
-                    list.todos.map(item => (
+                    foundList.todos.map(item => (
                         <Todo
                             key={item.id}
                             id={item.id}
                             task={item.task}
                             complete={item.complete}
                             list_id={item.list_id}
-                            color={props.list.color}
+                            color={list.color}
                             updateTodo={updateTodo}
                             deleteTodo={deleteTodo}
                         />
@@ -49,13 +55,13 @@ export const List = props => {
                 );
         }
 
-        if (list.name !== props.list.name) {
-            setTitle(list.name);
+        if (foundList && foundList.name !== props.list.name) {
+            setTitle(foundList.name);
         }
     }, [store.todoLists]);
 
     useEffect(() => {
-        let thisList = store.todoLists.find(list => list.id === props.list.id);
+        let thisList = store.todoLists.find(list => list.id === list.id);
         setShare(thisList.share);
     }, [store.todoLists]);
 
@@ -70,8 +76,8 @@ export const List = props => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
             titleEl.current.classList.remove('error');
             setEditing(false);
-            if (!title || title !== props.list.name) {
-                setTitle(props.list.name);
+            if (!title || title !== list.name) {
+                setTitle(list.name);
             }
         }
     };
@@ -80,9 +86,9 @@ export const List = props => {
         e.preventDefault();
 
         if (title) {
-            if (title !== props.list.name) {
+            if (title !== list.name) {
                 actions.updateTodoList({
-                    id: props.list.id,
+                    id: list.id,
                     name: title,
                 });
             }
@@ -110,18 +116,18 @@ export const List = props => {
     const handleSubmit = e => {
         e.preventDefault();
         // Agarrar el todo del back!
-        actions.addTodo(data, props.list.id);
+        actions.addTodo(data, list.id);
         setData('');
         setForm(false);
     };
 
     // Todo's functions
-    const updateTodo = todo => actions.updateTodo(todo, props.list.id);
-    const deleteTodo = todoId => actions.deleteTodo(todoId, props.list.id);
+    const updateTodo = todo => actions.updateTodo(todo, list.id);
+    const deleteTodo = todoId => actions.deleteTodo(todoId, list.id);
 
     return (
         <div className='list'>
-            <header className='list__header' style={{ backgroundColor: props.list.color }}>
+            <header className='list__header' style={{ backgroundColor: list.color }}>
                 <h1 className='list__title flex'>
                     {editing ? (
                         <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
@@ -152,19 +158,23 @@ export const List = props => {
                 </h1>
                 {editing ? (
                     ''
-                ) : (
+                ) : canBeShared ? (
                     <button
                         className={'btn-share center' + (share ? ' active' : '')}
                         ref={btnShareEl}
                         onClick={() =>
-                            actions.updateTodoList({
-                                id: props.list.id,
-                                share: !share,
-                            })
+                            actions
+                                .updateTodoList({
+                                    id: list.id,
+                                    share: !share,
+                                })
+                                .then(list => setList(list))
                         }
                     >
                         <FaUserFriends />
                     </button>
+                ) : (
+                    ''
                 )}
             </header>
             <main>
@@ -230,7 +240,7 @@ export const List = props => {
                     }}
                 >
                     <div className='flex'>
-                        <BsPlusLg style={{ backgroundColor: props.list.color }} />
+                        <BsPlusLg style={{ backgroundColor: list.color }} />
                     </div>
                 </IconContext.Provider>
             </button>
