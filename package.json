@@ -75,6 +75,7 @@
         "css-loader": "^6.6.0",
         "prop-types": "^15.6.1",
         "react": "^16.8.4",
+        "react-beautiful-dnd": "^13.1.0",
         "react-color": "^2.19.3",
         "react-dom": "^16.8.4",
         "react-icons": "^4.3.1",

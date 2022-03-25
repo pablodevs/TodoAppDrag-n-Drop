@@ -22,7 +22,8 @@ export const TodoLists = () => {
             let newListOfLists = store.todoLists.filter(list => list.share === store.shareLists);
             setListOfLists(
                 newListOfLists.map(list => (
-                    <ListLi key={list.id} list={list} deleteList={deleteList} />
+                    // <ListLi key={list.id} list={list} deleteList={deleteList} />
+                    <List key={list.id} list={list} />
                 ))
             );
         } else {
@@ -62,7 +63,8 @@ export const TodoLists = () => {
                     </div>
                 </IconContext.Provider>
             </button>
-            <ul className='todo-lists__lists'>{listOfLists}</ul>
+            {/* <ul className='todo-lists__lists'>{listOfLists}</ul> */}
+            {listOfLists}
             <BottomTabs />
         </div>
     );

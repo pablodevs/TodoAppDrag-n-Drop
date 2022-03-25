@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { BsCheck2, BsCheckCircleFill, BsCircle } from 'react-icons/bs';
 import { FaTrash } from 'react-icons/fa';
 import { MdDragIndicator } from 'react-icons/md';
@@ -52,6 +53,9 @@ export const Todo = props => {
 
     return (
         <li
+            {...props.dragHandleProps}
+            {...props.draggableProps}
+            ref={props.dragRef}
             className={
                 'todo' +
                 (props.complete ? ' todo--complete' : '') +
@@ -70,21 +74,14 @@ export const Todo = props => {
                         complete: !props.complete,
                     })
                 }
-                className={
-                    'todo__btn-check' +
-                    (props.complete ? ' todo__btn-check--complete' : '')
-                }
+                className={'todo__btn-check' + (props.complete ? ' todo__btn-check--complete' : '')}
             >
                 <div className='outline-effect'>
                     {props.complete ? <BsCheckCircleFill /> : <BsCircle />}
                 </div>
             </button>
             {editing ? (
-                <form
-                    className='todo__form'
-                    onSubmit={handleSubmit}
-                    onBlur={e => handleBlur(e)}
-                >
+                <form className='todo__form' onSubmit={handleSubmit} onBlur={e => handleBlur(e)}>
                     <input
                         className='todo__task'
                         value={data}
@@ -93,18 +90,14 @@ export const Todo = props => {
                     />
                     <button
                         className={
-                            'btn-icon btn-icon--check todo__submit' +
-                            (editing ? ' show' : '')
+                            'btn-icon btn-icon--check todo__submit' + (editing ? ' show' : '')
                         }
                     >
                         <BsCheck2 />
                     </button>
                     <button
                         type='button'
-                        className={
-                            'btn-icon todo__btn-delete' +
-                            (editing ? ' show' : '')
-                        }
+                        className={'btn-icon todo__btn-delete' + (editing ? ' show' : '')}
                         onClick={() => props.deleteTodo(props.id)}
                     >
                         <FaTrash />
@@ -115,6 +108,7 @@ export const Todo = props => {
                     {data}
                 </button>
             )}
+            {/* <button className='todo__btn-drag' {...props.dragHandleProps}> */}
             <button className='todo__btn-drag'>
                 <MdDragIndicator />
             </button>
@@ -130,4 +124,7 @@ Todo.propTypes = {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     color: PropTypes.string.isRequired,
+    draggableProps: PropTypes.object.isRequired,
+    dragHandleProps: PropTypes.object.isRequired,
+    dragRef: PropTypes.func.isRequired,
 };
