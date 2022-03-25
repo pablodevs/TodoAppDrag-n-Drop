@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
 import { BsCheck2, BsCheckCircleFill, BsCircle } from 'react-icons/bs';
 import { FaTrash } from 'react-icons/fa';
 import { MdDragIndicator } from 'react-icons/md';
@@ -52,10 +51,7 @@ export const Todo = props => {
     };
 
     return (
-        <li
-            {...props.dragHandleProps}
-            {...props.draggableProps}
-            ref={props.dragRef}
+        <div
             className={
                 'todo' +
                 (props.complete ? ' todo--complete' : '') +
@@ -108,11 +104,10 @@ export const Todo = props => {
                     {data}
                 </button>
             )}
-            {/* <button className='todo__btn-drag' {...props.dragHandleProps}> */}
-            <button className='todo__btn-drag'>
+            <button className='todo__btn-drag' {...props.dragHandleProps}>
                 <MdDragIndicator />
             </button>
-        </li>
+        </div>
     );
 };
 
@@ -124,7 +119,5 @@ Todo.propTypes = {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     color: PropTypes.string.isRequired,
-    draggableProps: PropTypes.object.isRequired,
     dragHandleProps: PropTypes.object.isRequired,
-    dragRef: PropTypes.func.isRequired,
 };

@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
 import { FaUserFriends } from 'react-icons/fa';
+import { MdDragIndicator } from 'react-icons/md';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -48,19 +49,21 @@ export const List = props => {
                             key={item.id.toString()}
                         >
                             {draggableProvided => (
-                                <Todo
-                                    draggableProps={draggableProvided.draggableProps}
-                                    dragRef={draggableProvided.innerRef}
-                                    dragHandleProps={draggableProvided.dragHandleProps} // esto es lo que decide qué zona activa el drag (las rallitas esas)
-                                    // {...draggableProvided.dragHandleProps}
-                                    id={item.id}
-                                    task={item.task}
-                                    complete={item.complete}
-                                    list_id={item.list_id}
-                                    color={list.color}
-                                    updateTodo={updateTodo}
-                                    deleteTodo={deleteTodo}
-                                />
+                                <li
+                                    {...draggableProvided.draggableProps}
+                                    ref={draggableProvided.innerRef}
+                                >
+                                    <Todo
+                                        dragHandleProps={draggableProvided.dragHandleProps} // esto es lo que decide qué zona activa el drag (los puntitos esos de la derecha)
+                                        id={item.id}
+                                        task={item.task}
+                                        complete={item.complete}
+                                        list_id={item.list_id}
+                                        color={list.color}
+                                        updateTodo={updateTodo}
+                                        deleteTodo={deleteTodo}
+                                    />
+                                </li>
                             )}
                         </Draggable>
                     ))
@@ -138,16 +141,41 @@ export const List = props => {
     const updateTodo = todo => actions.updateTodo(todo, list.id);
     const deleteTodo = todoId => actions.deleteTodo(todoId, list.id);
 
-    // Drag and Drop
-    // const onDragStart = () => {
-    //     // good times
-    //     if (window.navigator.vibrate) {
-    //       window.navigator.vibrate(100);
-    //     }
-    // };
+    // Drag & Drop
+    const reorder = (list, startIndex, endIndex) => {
+        const reorderedList = [...list];
+        const [removed] = reorderedList.splice(startIndex, 1);
+        reorderedList.splice(endIndex, 0, removed);
+
+        return reorderedList;
+    };
 
     return (
-        <DragDropContext onDragEnd={result => console.log(result)}>
+        <DragDropContext
+            onDragEnd={result => {
+                console.log(listOfTodos);
+
+                const { source, destination } = result;
+
+                console.log(`from ${source.index} to ${destination.index}`);
+
+                if (!destination) return;
+                if (
+                    source.index === destination.index &&
+                    source.droppableId === destination.droppableId
+                )
+                    return;
+
+                const newListOfTodos = reorder(listOfTodos, source.index, destination.index);
+
+                console.table(newListOfTodos);
+
+                setListOfTodos(newListOfTodos);
+            }}
+            // onDragStart={result => {
+            //     console.log(result);
+            // }}
+        >
             <div className='list'>
                 <header className='list__header' style={{ backgroundColor: list.color }}>
                     <h1 className='list__title flex'>
@@ -242,7 +270,7 @@ export const List = props => {
                         </form>
                     </div>
                     {listOfTodos.length ? (
-                        <Droppable droppableId='todos'>
+                        <Droppable droppableId='todos' direction='vertical'>
                             {droppableProvided => (
                                 <ul
                                     {...droppableProvided.droppableProps}

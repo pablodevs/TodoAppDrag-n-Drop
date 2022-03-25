@@ -9,7 +9,7 @@
     height: 100%;
     z-index: 2000;
 
-    overflow-y: auto;
+    // overflow-y: auto; // Da problemas de nesting con el Drag & Drop
     -webkit-overflow-scrolling: touch;
 
     background-color: rgba(0, 0, 0, 0.555);
@@ -54,8 +54,7 @@
 .popup-show {
     transform: translate(-50%, -50%);
     opacity: 1;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out, width 0s,
-        min-height 0s;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, width 0s, min-height 0s;
 
     width: 95%;
     min-height: 95%;
