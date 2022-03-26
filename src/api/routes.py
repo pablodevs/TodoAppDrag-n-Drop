@@ -231,7 +231,7 @@ def getAllTodos(list_id):
     
     allTodos = Todo.query.filter_by(list_id = list_id).all()
     allTodos = [todo.serialize() for todo in allTodos]
-    # allTodos = sorted(allTodos, key=lambda todo: todo["index"])
+    allTodos = sorted(allTodos, key=lambda todo: todo["index"])
 
     return jsonify(allTodos), 200
 
@@ -315,6 +315,7 @@ def reorderList(list_id):
     destinationIndex = request_body['destinationIndex']
     
     allTodos = Todo.query.filter_by(list_id = list_id).all()
+    allTodos = sorted(allTodos, key=lambda todo: todo.index)
 
     todoMoving = allTodos.pop(sourceIndex)
     allTodos.insert(destinationIndex, todoMoving)
@@ -327,4 +328,4 @@ def reorderList(list_id):
     return jsonify({"message": "Ok", "status": "success"}), 200
 
 # Para mover los completed todos a abajo, algo como:
-# allTodos = sorted(allTodos, key=lambda todo: todo["id"])
+# allTodos = sorted(allTodos, key=lambda todo: todo["complete"])

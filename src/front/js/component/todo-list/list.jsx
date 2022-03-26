@@ -142,11 +142,10 @@ export const List = props => {
         setListOfTodos(newListOfTodos);
 
         actions.reorderTodos({
-            list_id: list.id,
+            listId: list.id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
         });
-        // Enviar el movimiento y realizar el reorder en el back?
         // Crear el "manda las completadas abajo"
     };
 

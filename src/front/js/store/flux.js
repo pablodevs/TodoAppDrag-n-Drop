@@ -100,9 +100,9 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             // Drag & Drop Reorder Todos
-            reorderTodos: ({ list_id, sourceIndex, destinationIndex }) => {
+            reorderTodos: ({ listId, sourceIndex, destinationIndex }) => {
                 const store = getStore();
-                // const actions = getActions();
+                const actions = getActions();
 
                 const options = {
                     method: 'PUT',
@@ -116,9 +116,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                     },
                 };
 
-                return fetch(`${process.env.BACKEND_URL}/api/list/${list_id}/reorder`, options)
+                return fetch(`${process.env.BACKEND_URL}/api/list/${listId}/reorder`, options)
                     .then(response => response.json())
-                    .then(resp => resp)
+                    .then(resp => actions.getTodos(listId))
                     .catch(error => console.error(error));
             },
 
