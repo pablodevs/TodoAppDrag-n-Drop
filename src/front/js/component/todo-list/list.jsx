@@ -34,21 +34,13 @@ export const List = props => {
     }, []);
 
     useEffect(() => {
-        const foundList = store.todoLists.find(element => element.id === props.list.id);
+        let foundList = store.todoLists.find(element => element.id === props.list.id);
 
         if (foundList && foundList.todos) {
             if (!foundList.todos.length) {
                 setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
-            } else {
                 setListOfTodos(foundList.todos);
-                foundList.todos.forEach((todo, idx) => {
-                    if (todo.index === null)
-                        updateTodo({
-                            id: todo.id,
-                            index: idx,
-                        });
-                });
-            }
+            } else setListOfTodos(foundList.todos);
         }
 
         if (foundList && foundList.name !== props.list.name) {

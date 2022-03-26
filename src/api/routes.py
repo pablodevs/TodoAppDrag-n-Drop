@@ -207,8 +207,9 @@ def createNewTodo(list_id):
         raise APIException('User not found in data base.', status_code=404)
     
     task = request.json
+    index = len(Todo.query.filter_by(list_id = list_id).all())
 
-    newTodo = Todo(task = task, list_id = list_id)
+    newTodo = Todo(task = task, list_id = list_id, index = index)
     db.session.add(newTodo)
     db.session.commit()
 
@@ -281,19 +282,23 @@ def deleteTodo(todo_id):
         raise APIException('User not found in data base.', status_code=404)
     
     todoToDelete = Todo.query.get(todo_id)
+    list_id = todoToDelete.list_id
 
     db.session.delete(todoToDelete)
+
+    # Update indexs of the rest
+    allTodos = Todo.query.filter_by(list_id = list_id).all()
+    allTodos = sorted(allTodos, key=lambda todo: todo.index)
+
+    if (len(allTodos)):
+        for idx, todo in enumerate(allTodos):
+            if (todo.index != idx):
+                todo.index = idx
+    
     db.session.commit()
     return jsonify({"message": "La tarea ha sido eliminada correctamente.", "status": "success"}), 200
 
 # Drag & Drop: Reorder tasks
-# mylist = ['a', 'b', 'c', 'd', 'e']
-# myorder = [3, 2, 0, 1, 4]
-# mylist = [mylist[i] for i in myorder]
-# print(mylist)
-
-
-# Reordena la lista
 @api.route('/list/<int:list_id>/reorder', methods=['PUT'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
 def reorderList(list_id):
