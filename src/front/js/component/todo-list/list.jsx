@@ -5,7 +5,6 @@ import { IconContext } from 'react-icons';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
 import { FaUserFriends } from 'react-icons/fa';
-import { MdDragIndicator } from 'react-icons/md';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -35,39 +34,21 @@ export const List = props => {
     }, []);
 
     useEffect(() => {
-        let foundList = store.todoLists.find(element => element.id === props.list.id);
+        const foundList = store.todoLists.find(element => element.id === props.list.id);
 
         if (foundList && foundList.todos) {
             if (!foundList.todos.length) {
                 setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
-            } else
-                setListOfTodos(
-                    foundList.todos.map((item, idx) => (
-                        <Draggable
-                            draggableId={item.id.toString()}
-                            index={idx}
-                            key={item.id.toString()}
-                        >
-                            {draggableProvided => (
-                                <li
-                                    {...draggableProvided.draggableProps}
-                                    ref={draggableProvided.innerRef}
-                                >
-                                    <Todo
-                                        dragHandleProps={draggableProvided.dragHandleProps} // esto es lo que decide qué zona activa el drag (los puntitos esos de la derecha)
-                                        id={item.id}
-                                        task={item.task}
-                                        complete={item.complete}
-                                        list_id={item.list_id}
-                                        color={list.color}
-                                        updateTodo={updateTodo}
-                                        deleteTodo={deleteTodo}
-                                    />
-                                </li>
-                            )}
-                        </Draggable>
-                    ))
-                );
+            } else {
+                setListOfTodos(foundList.todos);
+                foundList.todos.forEach((todo, idx) => {
+                    if (todo.index === null)
+                        updateTodo({
+                            id: todo.id,
+                            index: idx,
+                        });
+                });
+            }
         }
 
         if (foundList && foundList.name !== props.list.name) {
@@ -131,17 +112,17 @@ export const List = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // Agarrar el todo del back!
+        // Agarrar el 'todo' del back!
         actions.addTodo(data, list.id);
         setData('');
         setForm(false);
     };
 
     // Todo's functions
-    const updateTodo = todo => actions.updateTodo(todo, list.id);
+    const updateTodo = todoData => actions.updateTodo(todoData, list.id);
     const deleteTodo = todoId => actions.deleteTodo(todoId, list.id);
 
-    // Drag & Drop
+    // Drag & Drop functions
     const reorder = (list, startIndex, endIndex) => {
         const reorderedList = [...list];
         const [removed] = reorderedList.splice(startIndex, 1);
@@ -150,167 +131,188 @@ export const List = props => {
         return reorderedList;
     };
 
+    const handleDragEnd = result => {
+        const { source, destination } = result;
+
+        if (!destination) return;
+        if (source.index === destination.index) return;
+
+        const newListOfTodos = reorder(listOfTodos, source.index, destination.index);
+
+        setListOfTodos(newListOfTodos);
+
+        actions.reorderTodos({
+            list_id: list.id,
+            sourceIndex: source.index,
+            destinationIndex: destination.index,
+        });
+        // Enviar el movimiento y realizar el reorder en el back?
+        // Crear el "manda las completadas abajo"
+    };
+
     return (
-        <DragDropContext
-            onDragEnd={result => {
-                console.log(listOfTodos);
-
-                const { source, destination } = result;
-
-                console.log(`from ${source.index} to ${destination.index}`);
-
-                if (!destination) return;
-                if (
-                    source.index === destination.index &&
-                    source.droppableId === destination.droppableId
-                )
-                    return;
-
-                const newListOfTodos = reorder(listOfTodos, source.index, destination.index);
-
-                console.table(newListOfTodos);
-
-                setListOfTodos(newListOfTodos);
-            }}
-            // onDragStart={result => {
-            //     console.log(result);
-            // }}
-        >
-            <div className='list'>
-                <header className='list__header' style={{ backgroundColor: list.color }}>
-                    <h1 className='list__title flex'>
-                        {editing ? (
-                            <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
-                                <input
-                                    className='input-title'
-                                    type='text'
-                                    value={title}
-                                    ref={titleEl}
-                                    onChange={e => {
-                                        titleEl.current.classList.remove('error');
-                                        setTitle(e.target.value);
-                                    }}
-                                />
-                                <button>
-                                    <BsCheck2 />
-                                </button>
-                            </form>
-                        ) : (
-                            title
-                        )}
-                        {editing ? (
-                            ''
-                        ) : (
-                            <button onClick={() => setEditing(true)}>
-                                <AiFillEdit />
-                            </button>
-                        )}
-                    </h1>
+        <div className='list'>
+            <header className='list__header' style={{ backgroundColor: list.color }}>
+                <h1 className='list__title flex'>
                     {editing ? (
-                        ''
-                    ) : canBeShared ? (
-                        <button
-                            className={'btn-share center' + (share ? ' active' : '')}
-                            ref={btnShareEl}
-                            onClick={() =>
-                                actions
-                                    .updateTodoList({
-                                        id: list.id,
-                                        share: !share,
-                                    })
-                                    .then(list => setList(list))
-                            }
-                        >
-                            <FaUserFriends />
-                        </button>
-                    ) : (
-                        ''
-                    )}
-                </header>
-                <main>
-                    <div
-                        className={'list__form-bg' + (form ? ' show-form-bg' : '')}
-                        onClick={e => {
-                            if (e.target.classList[0] === 'list__form-bg') setForm(false);
-                        }}
-                    >
-                        <form
-                            onSubmit={handleSubmit}
-                            className={'list__form' + (form ? ' show-form' : '')}
-                        >
-                            <button
-                                type='button'
-                                className='list__form__btn-close'
-                                onClick={() => {
-                                    setFirstTime(true);
-                                    setForm(false);
+                        <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
+                            <input
+                                className='input-title'
+                                type='text'
+                                value={title}
+                                ref={titleEl}
+                                onChange={e => {
+                                    titleEl.current.classList.remove('error');
+                                    setTitle(e.target.value);
                                 }}
-                            >
-                                <BsArrowLeftShort />
-                            </button>
-                            <label htmlFor='todo-input'>
-                                <input
-                                    ref={inputEl}
-                                    type='text'
-                                    id='todo-input'
-                                    value={data}
-                                    onFocus={toggleLabelEffect}
-                                    onBlur={toggleLabelEffect}
-                                    onChange={e => setData(e.target.value)}
-                                    required
-                                />
-                                <span ref={labelEl}>New task</span>
-                            </label>
-                            <button
-                                type='submit'
-                                className='btn-icon btn-icon--check list__form__submit'
-                            >
+                            />
+                            <button>
                                 <BsCheck2 />
                             </button>
                         </form>
-                    </div>
-                    {listOfTodos.length ? (
+                    ) : (
+                        title
+                    )}
+                    {editing ? (
+                        ''
+                    ) : (
+                        <button onClick={() => setEditing(true)}>
+                            <AiFillEdit />
+                        </button>
+                    )}
+                </h1>
+                {editing ? (
+                    ''
+                ) : canBeShared ? (
+                    <button
+                        className={'btn-share center' + (share ? ' active' : '')}
+                        ref={btnShareEl}
+                        onClick={() =>
+                            actions
+                                .updateTodoList({
+                                    id: list.id,
+                                    share: !share,
+                                })
+                                .then(list => setList(list))
+                        }
+                    >
+                        <FaUserFriends />
+                    </button>
+                ) : (
+                    ''
+                )}
+            </header>
+            <main>
+                <div
+                    className={'list__form-bg' + (form ? ' show-form-bg' : '')}
+                    onClick={e => {
+                        if (e.target.classList[0] === 'list__form-bg') setForm(false);
+                    }}
+                >
+                    <form
+                        onSubmit={handleSubmit}
+                        className={'list__form' + (form ? ' show-form' : '')}
+                    >
+                        <button
+                            type='button'
+                            className='list__form__btn-close'
+                            onClick={() => {
+                                setFirstTime(true);
+                                setForm(false);
+                            }}
+                        >
+                            <BsArrowLeftShort />
+                        </button>
+                        <label htmlFor='todo-input'>
+                            <input
+                                ref={inputEl}
+                                type='text'
+                                id='todo-input'
+                                value={data}
+                                onFocus={toggleLabelEffect}
+                                onBlur={toggleLabelEffect}
+                                onChange={e => setData(e.target.value)}
+                                required
+                            />
+                            <span ref={labelEl}>New task</span>
+                        </label>
+                        <button
+                            type='submit'
+                            className='btn-icon btn-icon--check list__form__submit'
+                        >
+                            <BsCheck2 />
+                        </button>
+                    </form>
+                </div>
+                {listOfTodos.length ? (
+                    <DragDropContext onDragEnd={res => handleDragEnd(res)}>
                         <Droppable droppableId='todos' direction='vertical'>
-                            {droppableProvided => (
+                            {provided => (
                                 <ul
-                                    {...droppableProvided.droppableProps}
-                                    ref={droppableProvided.innerRef}
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
                                     className='list__todos'
                                 >
-                                    {listOfTodos}
-                                    {droppableProvided.placeholder}
+                                    {listOfTodos.map((item, idx) => (
+                                        <Draggable
+                                            draggableId={item.id.toString()}
+                                            // index={item.index || idx}
+                                            index={idx}
+                                            key={item.id.toString()}
+                                        >
+                                            {provided => (
+                                                <li
+                                                    {...provided.draggableProps}
+                                                    ref={provided.innerRef}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    <Todo
+                                                        dragHandleProps={provided.dragHandleProps} // esto es lo que decide qué zona activa el drag (los puntitos esos de la derecha)
+                                                        id={item.id}
+                                                        task={item.task}
+                                                        complete={item.complete}
+                                                        list_id={item.list_id}
+                                                        color={list.color}
+                                                        updateTodo={updateTodo}
+                                                        deleteTodo={deleteTodo}
+                                                    />
+                                                </li>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
                                 </ul>
                             )}
                         </Droppable>
-                    ) : (
-                        content
-                    )}
-                </main>
-                <button
-                    className='list__btn-toggle-form'
-                    onClick={() => {
-                        setData('');
-                        setFirstTime(true);
-                        setForm(!form);
-                        if (!form) {
-                            setTimeout(() => {
-                                inputEl.current.focus();
-                            }, 300);
-                        }
+                    </DragDropContext>
+                ) : (
+                    content
+                )}
+            </main>
+            <button
+                className='list__btn-toggle-form'
+                onClick={() => {
+                    setData('');
+                    setFirstTime(true);
+                    setForm(!form);
+                    if (!form) {
+                        setTimeout(() => {
+                            inputEl.current.focus();
+                        }, 300);
+                    }
+                }}
+            >
+                <IconContext.Provider
+                    value={{
+                        className: `btn-icon btn-icon--plus ${form ? 'active' : ''}`,
                     }}
                 >
-                    <IconContext.Provider
-                        value={{
-                            className: `btn-icon btn-icon--plus ${form ? 'active' : ''}`,
-                        }}
-                    >
-                        <div className='flex'>
-                            <BsPlusLg style={{ backgroundColor: list.color }} />
-                        </div>
-                    </IconContext.Provider>
-                </button>
-            </div>
-        </DragDropContext>
+                    <div className='flex'>
+                        <BsPlusLg style={{ backgroundColor: list.color }} />
+                    </div>
+                </IconContext.Provider>
+            </button>
+        </div>
     );
 };
 

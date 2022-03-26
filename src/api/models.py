@@ -28,7 +28,7 @@ class List(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<List>'
+        return '<List %r>' % self.id
 
     def serialize(self):
         return {
@@ -43,15 +43,17 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(120), nullable=False)
     complete = db.Column(db.Boolean(), nullable=False, default=False)
+    index = db.Column(db.Integer, nullable=True)
     list_id = db.Column(db.Integer, db.ForeignKey('list.id'))
 
     def __repr__(self):
-        return '<Todo>'
+        return '<Todo %r>' % self.id
 
     def serialize(self):
         return {
             "id": self.id,
             "list_id": self.list_id,
             "task": self.task,
+            "index": self.index,
             "complete": self.complete
         }

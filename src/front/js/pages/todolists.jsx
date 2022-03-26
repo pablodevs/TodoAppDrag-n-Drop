@@ -23,7 +23,6 @@ export const TodoLists = () => {
             setListOfLists(
                 newListOfLists.map(list => (
                     <ListLi key={list.id} list={list} deleteList={deleteList} />
-                    // <List key={list.id} list={list} />
                 ))
             );
         } else {
@@ -64,7 +63,6 @@ export const TodoLists = () => {
                 </IconContext.Provider>
             </button>
             <ul className='todo-lists__lists'>{listOfLists}</ul>
-            {/* {listOfLists} */}
             <BottomTabs />
         </div>
     );

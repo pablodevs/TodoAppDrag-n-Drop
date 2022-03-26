@@ -219,7 +219,7 @@ def createNewTodo(list_id):
 @jwt_required()
 def getAllTodos(list_id):
     """
-    Get all Lists liked to current user
+    Get all Todos liked to list_id
     """
 
     currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
@@ -231,9 +231,7 @@ def getAllTodos(list_id):
     
     allTodos = Todo.query.filter_by(list_id = list_id).all()
     allTodos = [todo.serialize() for todo in allTodos]
-
-    # Esto no será lo mejor si queremos ordenar a mano con drag & drop
-    allTodos = sorted(allTodos, key=lambda todo: todo["id"])
+    # allTodos = sorted(allTodos, key=lambda todo: todo["index"])
 
     return jsonify(allTodos), 200
 
@@ -261,6 +259,8 @@ def updateTodo(todo_id):
         todo.complete = request_body['complete']
     if "task" in request_body:
         todo.task = request_body["task"]
+    if "index" in request_body:
+        todo.index = request_body["index"]
 
     db.session.commit()
     return jsonify({"message": "Todo changed!", "status": "success"}), 200
@@ -285,3 +285,46 @@ def deleteTodo(todo_id):
     db.session.delete(todoToDelete)
     db.session.commit()
     return jsonify({"message": "La tarea ha sido eliminada correctamente.", "status": "success"}), 200
+
+# Drag & Drop: Reorder tasks
+# mylist = ['a', 'b', 'c', 'd', 'e']
+# myorder = [3, 2, 0, 1, 4]
+# mylist = [mylist[i] for i in myorder]
+# print(mylist)
+
+
+# Reordena la lista
+@api.route('/list/<int:list_id>/reorder', methods=['PUT'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def reorderList(list_id):
+    """
+    Single list
+    """
+
+    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(currentUserId)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+
+    # Query body
+    request_body = request.json
+
+    sourceIndex = request_body['sourceIndex']
+    destinationIndex = request_body['destinationIndex']
+    
+    allTodos = Todo.query.filter_by(list_id = list_id).all()
+
+    todoMoving = allTodos.pop(sourceIndex)
+    allTodos.insert(destinationIndex, todoMoving)
+
+    for idx, todo in enumerate(allTodos):
+        todo.index = idx
+    
+    db.session.commit()
+
+    return jsonify({"message": "Ok", "status": "success"}), 200
+
+# Para mover los completed todos a abajo, algo como:
+# allTodos = sorted(allTodos, key=lambda todo: todo["id"])

@@ -99,6 +99,29 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .catch(error => console.error(error));
             },
 
+            // Drag & Drop Reorder Todos
+            reorderTodos: ({ list_id, sourceIndex, destinationIndex }) => {
+                const store = getStore();
+                // const actions = getActions();
+
+                const options = {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        sourceIndex: sourceIndex,
+                        destinationIndex: destinationIndex,
+                    }),
+                    headers: {
+                        Authorization: 'Bearer ' + store.token,
+                        'Content-type': 'application/json',
+                    },
+                };
+
+                return fetch(`${process.env.BACKEND_URL}/api/list/${list_id}/reorder`, options)
+                    .then(response => response.json())
+                    .then(resp => resp)
+                    .catch(error => console.error(error));
+            },
+
             // Create a new todo
             addTodo: (newTodo, listId) => {
                 const store = getStore();
@@ -295,7 +318,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const actions = getActions();
                     return fetch(`${process.env.BACKEND_URL}/api/user/lists/${share}`, {
                         headers: {
-                            Authorization: 'Bearer ' + store.token,
+                            Authorization: `Bearer ${store.token}`,
                         },
                     })
                         .then(response => response.json())
