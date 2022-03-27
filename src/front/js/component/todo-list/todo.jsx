@@ -104,9 +104,9 @@ export const Todo = props => {
                     {data}
                 </button>
             )}
-            <button className='todo__btn-drag' {...props.dragHandleProps}>
+            <div className='todo__btn-drag' {...props.dragHandleProps}>
                 <MdDragIndicator />
-            </button>
+            </div>
         </div>
     );
 };
