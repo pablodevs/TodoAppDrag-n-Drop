@@ -207,10 +207,20 @@ def createNewTodo(list_id):
         raise APIException('User not found in data base.', status_code=404)
     
     task = request.json
-    index = len(Todo.query.filter_by(list_id = list_id).all())
+    allTodos = Todo.query.filter_by(list_id = list_id).all()
+    index = len(allTodos)
 
     newTodo = Todo(task = task, list_id = list_id, index = index)
     db.session.add(newTodo)
+
+    # Update indexs of the rest in order to insert new todo at the top of the list
+    if len(allTodos):
+        allTodos = sorted(allTodos, key=lambda todo: todo.index)
+        allTodos.insert(0, newTodo)
+
+        for idx, todo in enumerate(allTodos):
+            todo.index = idx
+
     db.session.commit()
 
     return jsonify(newTodo.serialize()), 200
