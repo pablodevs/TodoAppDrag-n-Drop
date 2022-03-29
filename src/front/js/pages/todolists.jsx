@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { BsPlusLg } from 'react-icons/bs';
 import '../../styles/pages/todo-list.scss';
+import { Menu } from '../component/menu.jsx';
 import { AddList } from '../component/todo-list/add-list.jsx';
 import { ListLi } from '../component/todo-list/list-li.jsx';
 import { List } from '../component/todo-list/list.jsx';
@@ -17,14 +18,16 @@ export const TodoLists = () => {
     }, []);
 
     useEffect(() => {
-        if (store.todoLists.length) {
-            setListOfLists(
-                store.todoLists.map(list => (
-                    <ListLi key={list.id} list={list} deleteList={deleteList} />
-                ))
-            );
-        } else {
-            setListOfLists([<li key={-1}>Todavía no tienes listas.</li>]);
+        if (store.todoLists) {
+            if (store.todoLists.length) {
+                setListOfLists(
+                    store.todoLists.map(list => (
+                        <ListLi key={list.id} list={list} deleteList={deleteList} />
+                    ))
+                );
+            } else {
+                setListOfLists([<li key={-1}>Todavía no tienes listas.</li>]);
+            }
         }
     }, [store.todoLists]);
 
@@ -47,6 +50,9 @@ export const TodoLists = () => {
     return (
         <div className='todo-lists center flex-col'>
             <h1 className='todo-lists__title'>Tus Listas</h1>
+            <div className='todo-lists__menu'>
+                <Menu />
+            </div>
             <button
                 className='todo-lists__add-btn'
                 onClick={() =>

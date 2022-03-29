@@ -2,7 +2,7 @@
 
 .login {
     width: 100%;
-    min-height: 350px;
+    min-height: 430px;
 
     @include mix.mq(small) {
         width: 380px;
@@ -21,8 +21,17 @@
             margin-top: auto;
         }
     }
+    &__redirect {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0.7rem;
+        font-size: 0.95rem;
+    }
     &__message {
-        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         margin-inline: auto;
     }
 }

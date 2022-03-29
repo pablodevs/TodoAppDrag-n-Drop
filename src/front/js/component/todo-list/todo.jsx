@@ -82,6 +82,7 @@ export const Todo = props => {
                         className='todo__task'
                         value={data}
                         onChange={handleChange}
+                        autoComplete='off'
                         ref={inputEl}
                     />
                     <button

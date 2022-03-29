@@ -1,0 +1,42 @@
+.menu {
+    position: relative;
+
+    &__toggle {
+        &.active {
+            transform: rotate(90deg);
+        }
+    }
+
+    &__icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: var(--clr-dark-400);
+        box-shadow: none;
+
+        &:hover {
+            color: var(--clr-dark-500);
+            background-color: var(--clr-dark-200);
+        }
+
+        &--delete,
+        &--logout {
+            background-color: var(--clr-dark-100);
+            &:hover {
+                background-color: var(--clr-danger-200);
+            }
+        }
+    }
+    &__delete,
+    &__logout {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+    &__delete.active {
+        transform: translateY(3.5rem);
+    }
+    &__logout.active {
+        transform: translateY(6.5rem);
+    }
+}

@@ -8,6 +8,12 @@
     gap: 1.5rem;
     padding: 1.5rem 1.5rem 5rem 1.5rem;
 
+    &__menu {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.8rem;
+    }
+
     &__add-btn {
         position: fixed;
         bottom: 1.8rem;

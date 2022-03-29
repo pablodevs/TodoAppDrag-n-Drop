@@ -15,11 +15,8 @@ export const ConfirmPopup = props => {
             </h1>
             <p className='confirm-popup__message'>{props.data.message}</p>
             <div className='confirm-popup__buttons'>
-                <button
-                    className='btn-cancel'
-                    onClick={actions.popup.closePopup}
-                >
-                    Cancelar
+                <button className='btn-cancel' onClick={actions.popup.closePopup}>
+                    {props.data.cancel || 'Cancel'}
                 </button>
                 <button
                     className='btn-confirm'
