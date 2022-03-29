@@ -37,29 +37,6 @@
             border-top-left-radius: $br-global;
             border-top-right-radius: $br-global;
         }
-
-        .btn-share {
-            position: absolute;
-            top: 50%;
-            right: 4.5rem;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            font-size: 1.25em;
-            color: var(--clr-dark-100);
-
-            border-radius: 50%;
-            background-color: var(--clr-dark-500);
-            opacity: 0.5;
-            & > svg {
-                overflow: visible;
-            }
-            &.active {
-                opacity: 1;
-                outline: 2px solid var(--clr-dark-100);
-                background-color: var(--clr-primary-400);
-            }
-        }
     }
 
     &__title {

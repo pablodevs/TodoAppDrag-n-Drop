@@ -27,13 +27,6 @@ export const ListLi = props => {
                     <FaListUl />
                 </div>
                 {props.list.name}
-                {props.list.share ? (
-                    <small className='share-icon'>
-                        <FaUserFriends />
-                    </small>
-                ) : (
-                    ''
-                )}
                 {props.list.todos && props.list.todos.length ? (
                     <small className='completed-tasks'>
                         {props.list.todos.filter(element => element.complete).length}/

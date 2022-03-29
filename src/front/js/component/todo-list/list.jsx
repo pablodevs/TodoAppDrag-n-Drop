@@ -13,7 +13,6 @@ import { Todo } from './todo.jsx';
 export const List = props => {
     const { store, actions } = useContext(Context);
 
-    const btnShareEl = useRef(null);
     const titleEl = useRef(null);
     const labelEl = useRef(null);
     const inputEl = useRef(null);
@@ -25,13 +24,7 @@ export const List = props => {
     const [form, setForm] = useState(false);
     const [editing, setEditing] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
-    const [share, setShare] = useState(props.list.share);
-    const [canBeShared, setCanBeShared] = useState(false);
     const [content, setContent] = useState(<p className='list__img'>Loading...</p>);
-
-    useEffect(() => {
-        setCanBeShared(props.list.user_id === store.user.id);
-    }, []);
 
     useEffect(() => {
         let foundList = store.todoLists.find(element => element.id === props.list.id);
@@ -46,12 +39,6 @@ export const List = props => {
         if (foundList && foundList.name !== props.list.name) {
             setTitle(foundList.name);
         }
-    }, [store.todoLists]);
-
-    useEffect(() => {
-        let thisList = store.todoLists.find(list => props.list.id === list.id);
-        if (thisList) setShare(thisList.share);
-        else setShare(!share);
     }, [store.todoLists]);
 
     useEffect(() => {
@@ -172,26 +159,6 @@ export const List = props => {
                         </button>
                     )}
                 </h1>
-                {editing ? (
-                    ''
-                ) : canBeShared ? (
-                    <button
-                        className={'btn-share center' + (share ? ' active' : '')}
-                        ref={btnShareEl}
-                        onClick={() =>
-                            actions
-                                .updateTodoList({
-                                    id: list.id,
-                                    share: !share,
-                                })
-                                .then(list => setList(list))
-                        }
-                    >
-                        <FaUserFriends />
-                    </button>
-                ) : (
-                    ''
-                )}
             </header>
             <main>
                 <div
@@ -299,7 +266,11 @@ export const List = props => {
                     }}
                 >
                     <div className='flex'>
-                        <BsPlusLg style={{ backgroundColor: list.color }} />
+                        <BsPlusLg
+                            style={
+                                form ? { backgroundColor: 'red' } : { backgroundColor: list.color }
+                            }
+                        />
                     </div>
                 </IconContext.Provider>
             </button>

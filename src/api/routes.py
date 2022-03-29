@@ -139,8 +139,6 @@ def updateList(list_id):
         list.name = request_body['name']
     if "color" in request_body:
         list.color = request_body["color"]
-    if "share" in request_body:
-        list.share = request_body["share"]
 
     db.session.commit()
 
@@ -168,9 +166,9 @@ def deleteList(list_id):
     return jsonify({"message": "La lista se ha eliminado correctamente.", "status": "success"}), 200
 
 # Obtiene todas las listas (compartidas o no)
-@api.route('/user/lists/<string:share>')
+@api.route('/user/lists')
 @jwt_required()
-def getAllLists(share):
+def getAllLists():
     """
     Get all Lists liked to current user
     """
@@ -182,11 +180,7 @@ def getAllLists(share):
     if user is None:
         raise APIException('User not found in data base.', status_code=404)
     
-    if share == "false":
-        allLists = List.query.filter_by(user_id = currentUserId).all()
-    elif share == "true":
-        allLists = List.query.filter_by(share = True).all()
-
+    allLists = List.query.filter_by(user_id = currentUserId).all()
     allLists = [list.serialize() for list in allLists]
 
     return jsonify(allLists), 200

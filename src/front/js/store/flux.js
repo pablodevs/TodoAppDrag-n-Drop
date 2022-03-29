@@ -2,16 +2,10 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             popup: {},
-            token: localStorage.getItem('newtoken') || '',
+            token: localStorage.getItem('token') || '',
             todoLists: [],
-            shareLists: false,
         },
         actions: {
-            setShareLists: share =>
-                setStore({
-                    shareLists: share,
-                }),
-
             // Create a new list
             addNewList: newList => {
                 const store = getStore();
@@ -52,8 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return fetch(`${process.env.BACKEND_URL}/api/list/${data.id}`, options)
                     .then(response => response.json())
                     .then(list => {
-                        actions.setShareLists(!store.shareLists);
-                        actions.user.getTodoListsOfUser(!store.shareLists);
+                        actions.user.getTodoListsOfUser();
                         return list;
                     })
                     .catch(error => console.error(error));
@@ -174,15 +167,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 fetch(`${process.env.BACKEND_URL}/api/todo/${todoId}`, options)
                     .then(response => response.json())
-                    .then(message => {
-                        // setStore({
-                        //     message: {
-                        //         message: message.message,
-                        //         status: message.status,
-                        //     },
-                        // });
-                        actions.getTodos(listId);
-                    })
+                    .then(message => actions.getTodos(listId))
                     .catch(error => console.error(error));
             },
 
@@ -208,6 +193,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             // User functions
             user: {
+                // Create User
+                // createUser:
                 // LOGIN
                 generateToken: async (name, password) => {
                     const actions = getActions();
@@ -233,7 +220,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             throw Error(response);
                         } else {
                             setStore({ token: data.token });
-                            localStorage.setItem('newtoken', data.token);
+                            localStorage.setItem('token', data.token);
                             actions.user.getProfileData(data.token);
                             return data;
                         }
@@ -272,7 +259,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 ...store.user,
                                 id: data.id,
                                 name: data.name,
-                                profile_image_url: data.profile_image_url,
                             },
                         });
                         actions.popup.closePopup();
@@ -282,41 +268,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 },
 
-                // Set profile image
-                setProfileImage: async () => {
-                    const store = getStore();
-                    const options = {
-                        method: 'PUT',
-                        body: JSON.stringify({
-                            profile_image_url: store.randomImage,
-                        }),
-                        headers: {
-                            Authorization: 'Bearer ' + store.token,
-                            'Content-Type': 'application/json',
-                        },
-                    };
-                    try {
-                        const response = await fetch(
-                            process.env.BACKEND_URL + '/api/user',
-                            options
-                        );
-                        const user = await response.json();
-                        if (!response.ok) {
-                            throw Error(response);
-                        }
-                        setStore({
-                            user: user,
-                        });
-                    } catch (error) {
-                        console.error(error);
-                    }
-                },
-
                 // Get all TodoLists linked to the current user
-                getTodoListsOfUser: share => {
+                getTodoListsOfUser: () => {
                     const store = getStore();
                     const actions = getActions();
-                    return fetch(`${process.env.BACKEND_URL}/api/user/lists/${share}`, {
+                    return fetch(`${process.env.BACKEND_URL}/api/user/lists`, {
                         headers: {
                             Authorization: `Bearer ${store.token}`,
                         },
@@ -331,32 +287,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         })
                         .catch(error => console.error(error));
                 },
-            },
-
-            // Get images from Cloudinary by tag using admin api
-            getImagesByTag: () => {
-                let store = getStore();
-                fetch(`${process.env.BACKEND_URL}/api/images/${store.user.name}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setStore({ images: data });
-                    })
-                    .catch(error => console.error(error));
-            },
-
-            // Get a random image from the array of images
-            getRandomImage: () => {
-                let store = getStore();
-                setStore({
-                    randomImage: store.images[Math.floor(Math.random() * store.images.length)],
-                });
-            },
-
-            // Delete random image from the store
-            cleanRandomImage: () => {
-                setStore({
-                    randomImage: '',
-                });
             },
         },
     };
