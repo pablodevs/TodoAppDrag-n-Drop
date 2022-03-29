@@ -133,10 +133,10 @@
     &--plus {
         padding: 0.8rem;
         color: white;
-        background-color: var(--clr-danger-300);
+        background-color: var(--clr-primary-300);
         &:active,
         &:hover {
-            background-color: var(--clr-danger-200);
+            background-color: var(--clr-primary-200);
         }
     }
 

@@ -2,7 +2,7 @@
 
 .login {
     width: 100%;
-    min-height: 450px;
+    min-height: 350px;
 
     @include mix.mq(small) {
         width: 380px;

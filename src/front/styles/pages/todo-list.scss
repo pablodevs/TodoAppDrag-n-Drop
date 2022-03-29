@@ -1,4 +1,4 @@
-@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 .todo-lists {
     flex: 1;
@@ -10,8 +10,14 @@
 
     &__add-btn {
         position: fixed;
-        bottom: 6.5rem;
+        bottom: 1.8rem;
         right: 1.5rem;
+
+        @include mq(small) {
+            bottom: 4rem;
+            right: 50%;
+            transform: translateX(50%);
+        }
     }
 
     &__lists {

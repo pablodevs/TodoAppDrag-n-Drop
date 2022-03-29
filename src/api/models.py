@@ -5,7 +5,6 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
-    profile_image_url = db.Column(db.String(200), unique=True, nullable=True)
     password = db.Column(db.String(80), unique=False, nullable=False)
     lists = db.relationship('List', cascade="all, delete-orphan", backref='user')
 
@@ -16,14 +15,12 @@ class User(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "profile_image_url": self.profile_image_url
         }
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     color = db.Column(db.String(7), nullable=False)
-    share = db.Column(db.Boolean(), nullable=True, default=False)
     todos = db.relationship('Todo', cascade="all, delete-orphan", backref='list')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -35,7 +32,6 @@ class List(db.Model):
             "id": self.id,
             "name": self.name,
             "color": self.color,
-            "share": self.share,
             "user_id": self.user_id,
         }
 
