@@ -256,6 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 localStorage.setItem('token', data.token);
                             }
                             actions.user.getProfileData(data.token);
+                            actions.cleanMessage();
                             return data;
                         }
                     } catch (error) {

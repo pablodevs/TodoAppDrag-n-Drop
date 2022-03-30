@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { BsPlusLg } from 'react-icons/bs';
 import '../../styles/pages/todo-list.scss';
@@ -10,6 +10,8 @@ import { Context } from '../store/appContext';
 
 export const TodoLists = () => {
     const { store, actions } = useContext(Context);
+
+    const buttonEl = useRef(null);
 
     const [listOfLists, setListOfLists] = useState([<li key={0}>Loading...</li>]);
 
@@ -25,8 +27,10 @@ export const TodoLists = () => {
                         <ListLi key={list.id} list={list} deleteList={deleteList} />
                     ))
                 );
+                delete buttonEl.current.dataset.tooltip;
             } else {
-                setListOfLists([<li key={-1}>Todavía no tienes listas.</li>]);
+                setListOfLists([<li key={-1}>No lists yet</li>]);
+                buttonEl.current.dataset.tooltip = 'Add a new list!';
             }
         }
     }, [store.todoLists]);
@@ -49,12 +53,10 @@ export const TodoLists = () => {
 
     return (
         <div className='todo-lists center flex-col'>
-            <h1 className='todo-lists__title'>Tus Listas</h1>
-            <div className='todo-lists__menu'>
-                <Menu />
-            </div>
+            <h1 className='todo-lists__title'>Your todo lists</h1>
             <button
                 className='todo-lists__add-btn'
+                ref={buttonEl}
                 onClick={() =>
                     actions.popup.setPopup(<AddList addList={addList} />, true, 'medium')
                 }
@@ -66,6 +68,9 @@ export const TodoLists = () => {
                 </IconContext.Provider>
             </button>
             <ul className='todo-lists__lists'>{listOfLists}</ul>
+            <div className='todo-lists__menu'>
+                <Menu />
+            </div>
         </div>
     );
 };

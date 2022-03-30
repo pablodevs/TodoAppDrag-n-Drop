@@ -109,12 +109,12 @@ def setUserImg():
     db.session.commit()
     return jsonify(user.serialize()), 200
 
-# DELETE A USER BY ID
+# DELETE CURRENT USER
 @api.route('/user', methods=['DELETE'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
 def delete_user():
     """
-    Delete a user
+    Delete user
     """
 
     current_user_id = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)

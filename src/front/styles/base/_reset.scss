@@ -83,6 +83,11 @@ input:-webkit-autofill:focus {
     -webkit-box-shadow: inset 0 0 1000px 0px white !important;
 }
 
+/* Reset margin in forms */
+form {
+    margin: 0;
+}
+
 /* Reset buttons and anchors */
 button {
     cursor: pointer;

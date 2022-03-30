@@ -4,7 +4,6 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { IconContext } from 'react-icons';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
-import { FaUserFriends } from 'react-icons/fa';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -16,6 +15,7 @@ export const List = props => {
     const titleEl = useRef(null);
     const labelEl = useRef(null);
     const inputEl = useRef(null);
+    const buttonEl = useRef(null);
 
     const [listOfTodos, setListOfTodos] = useState([]);
     const [title, setTitle] = useState(props.list.name);
@@ -32,7 +32,11 @@ export const List = props => {
             if (!foundList.todos.length) {
                 setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
                 setListOfTodos(foundList.todos);
-            } else setListOfTodos(foundList.todos);
+                buttonEl.current.dataset.tooltip = 'Add a new task!';
+            } else {
+                setListOfTodos(foundList.todos);
+                delete buttonEl.current.dataset.tooltip;
+            }
         }
 
         if (foundList && foundList.name !== props.list.name) {
@@ -138,6 +142,7 @@ export const List = props => {
                                 type='text'
                                 value={title}
                                 ref={titleEl}
+                                autoComplete='off'
                                 onChange={e => {
                                     titleEl.current.classList.remove('error');
                                     setTitle(e.target.value);
@@ -259,6 +264,7 @@ export const List = props => {
                         }, 300);
                     }
                 }}
+                ref={buttonEl}
             >
                 <IconContext.Provider
                     value={{
