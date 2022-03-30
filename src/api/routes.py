@@ -4,10 +4,6 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 
 import os
 
-# Cloudinary
-import cloudinary
-import cloudinary.api
-import cloudinary.uploader
 from flask import Blueprint, Flask, jsonify, request, url_for
 # para la autenticación y generar el token
 from flask_jwt_extended import (create_access_token, get_jwt_identity,
@@ -18,12 +14,6 @@ from api.utils import APIException, generate_sitemap
 
 api = Blueprint('api', __name__)
 app = Flask(__name__)
-
-cloudinary.config( 
-    cloud_name = os.getenv('CLOUD_NAME'), 
-    api_key = os.getenv('API_KEY'), 
-    api_secret = os.getenv('API_SECRET') 
-)
 
 # CREATE NEW USER
 @api.route('/user', methods=['POST'])
@@ -86,29 +76,6 @@ def getUserInfo():
 
     return jsonify(user.serialize()), 200
 
-# MODIFY INFO OF USER
-@api.route('/user', methods=['PUT'])
-@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
-def setUserImg():
-    """
-    Single user
-    """
-
-    currentUserId = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
-    user = User.query.get(currentUserId)
-
-    # Data validation
-    if user is None:
-        raise APIException('User not found in data base.', status_code=404)
-
-    # Query body
-    request_body = request.json
-
-    user.profile_image_url = request_body.get("profile_image_url", None)
-
-    db.session.commit()
-    return jsonify(user.serialize()), 200
-
 # DELETE CURRENT USER
 @api.route('/user', methods=['DELETE'])
 @jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
@@ -133,13 +100,6 @@ def delete_user():
     db.session.commit()
     
     return jsonify({"message": f"The user with id {deleted_id} and name {deleted_name} has been deleted."}), 200
-
-# Obtiene todas las imágenes con el tag 'gusinette' o 'gusinet' de Cloudinary
-@api.route('/images/<string:tag>')
-def getImages(tag):
-    resourcesByTag = cloudinary.api.resources_by_tag(tag, max_results=100)["resources"]
-    images = [key["url"].replace('http', 'https') for key in resourcesByTag]
-    return jsonify(images), 200
 
 # Crea una nueva TodoList y la asocia al usuario
 @api.route('/list', methods=['POST'])
@@ -214,7 +174,7 @@ def deleteList(list_id):
     db.session.commit()
     return jsonify({"message": "La lista se ha eliminado correctamente.", "status": "success"}), 200
 
-# Obtiene todas las listas (compartidas o no)
+# Obtiene todas las listas del usuario
 @api.route('/user/lists')
 @jwt_required()
 def getAllLists():
@@ -384,6 +344,3 @@ def reorderList(list_id):
     db.session.commit()
 
     return jsonify({"message": "Ok", "status": "success"}), 200
-
-# Para mover los completed todos a abajo, algo como:
-# allTodos = sorted(allTodos, key=lambda todo: todo["complete"])
