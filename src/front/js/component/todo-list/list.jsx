@@ -4,7 +4,6 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { IconContext } from 'react-icons';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsArrowLeftShort, BsCheck2, BsPlusLg } from 'react-icons/bs';
-import { FaUserFriends } from 'react-icons/fa';
 import todoList from '../../../img/todo-list.png';
 import '../../../styles/components/popups/list.scss';
 import { Context } from '../../store/appContext';
@@ -16,8 +15,8 @@ export const List = props => {
     const titleEl = useRef(null);
     const labelEl = useRef(null);
     const inputEl = useRef(null);
+    const buttonEl = useRef(null);
 
-    const [list, setList] = useState(props.list);
     const [listOfTodos, setListOfTodos] = useState([]);
     const [title, setTitle] = useState(props.list.name);
     const [data, setData] = useState('');
@@ -33,7 +32,11 @@ export const List = props => {
             if (!foundList.todos.length) {
                 setContent(<img src={todoList} alt='empty todo list' className='list__img' />);
                 setListOfTodos(foundList.todos);
-            } else setListOfTodos(foundList.todos);
+                buttonEl.current.dataset.tooltip = 'Add a new task!';
+            } else {
+                setListOfTodos(foundList.todos);
+                delete buttonEl.current.dataset.tooltip;
+            }
         }
 
         if (foundList && foundList.name !== props.list.name) {
@@ -52,8 +55,8 @@ export const List = props => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
             titleEl.current.classList.remove('error');
             setEditing(false);
-            if (!title || title !== list.name) {
-                setTitle(list.name);
+            if (!title || title !== props.list.name) {
+                setTitle(props.list.name);
             }
         }
     };
@@ -62,9 +65,9 @@ export const List = props => {
         e.preventDefault();
 
         if (title) {
-            if (title !== list.name) {
+            if (title !== props.list.name) {
                 actions.updateTodoList({
-                    id: list.id,
+                    id: props.list.id,
                     name: title,
                 });
             }
@@ -92,14 +95,14 @@ export const List = props => {
     const handleSubmit = e => {
         e.preventDefault();
         // Agarrar el 'todo' del back!
-        actions.addTodo(data, list.id);
+        actions.addTodo(data, props.list.id);
         setData('');
         setForm(false);
     };
 
     // Todo's functions
-    const updateTodo = todoData => actions.updateTodo(todoData, list.id);
-    const deleteTodo = todoId => actions.deleteTodo(todoId, list.id);
+    const updateTodo = todoData => actions.updateTodo(todoData, props.list.id);
+    const deleteTodo = todoId => actions.deleteTodo(todoId, props.list.id);
 
     // Drag & Drop functions
     const reorder = (list, startIndex, endIndex) => {
@@ -121,7 +124,7 @@ export const List = props => {
         setListOfTodos(newListOfTodos);
 
         actions.reorderTodos({
-            listId: list.id,
+            listId: props.list.id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
         });
@@ -130,7 +133,7 @@ export const List = props => {
 
     return (
         <div className='list'>
-            <header className='list__header' style={{ backgroundColor: list.color }}>
+            <header className='list__header' style={{ backgroundColor: props.list.color }}>
                 <h1 className='list__title flex'>
                     {editing ? (
                         <form onSubmit={handleTitleSubmit} onBlur={handleBlur}>
@@ -139,6 +142,7 @@ export const List = props => {
                                 type='text'
                                 value={title}
                                 ref={titleEl}
+                                autoComplete='off'
                                 onChange={e => {
                                     titleEl.current.classList.remove('error');
                                     setTitle(e.target.value);
@@ -191,6 +195,7 @@ export const List = props => {
                                 onBlur={toggleLabelEffect}
                                 onChange={e => setData(e.target.value)}
                                 required
+                                autoComplete='off'
                             />
                             <span ref={labelEl}>New task</span>
                         </label>
@@ -230,7 +235,7 @@ export const List = props => {
                                                         task={item.task}
                                                         complete={item.complete}
                                                         list_id={item.list_id}
-                                                        color={list.color}
+                                                        color={props.list.color}
                                                         updateTodo={updateTodo}
                                                         deleteTodo={deleteTodo}
                                                     />
@@ -259,6 +264,7 @@ export const List = props => {
                         }, 300);
                     }
                 }}
+                ref={buttonEl}
             >
                 <IconContext.Provider
                     value={{
@@ -268,7 +274,9 @@ export const List = props => {
                     <div className='flex'>
                         <BsPlusLg
                             style={
-                                form ? { backgroundColor: 'red' } : { backgroundColor: list.color }
+                                form
+                                    ? { backgroundColor: 'red' }
+                                    : { backgroundColor: props.list.color }
                             }
                         />
                     </div>

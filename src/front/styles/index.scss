@@ -1,14 +1,14 @@
 /*----- Archivo principal de estilos -----*/
 
 /*---------- Imports por orden de preferencia ----------*/
-@import "base/reset";
-@import "base/fonts";
-@import "base/colors";
+@import 'base/reset';
+@import 'base/fonts';
+@import 'base/colors';
 
-@import "utils/variables";
-@import "utils/functions";
-@import "utils/mixins";
-@import "utils/helpers";
+@import 'utils/variables';
+@import 'utils/functions';
+@import 'utils/mixins';
+@import 'utils/helpers';
 
 /*---------- Colors & Font-size Root ----------*/
 :root {
@@ -49,24 +49,25 @@
     }
 }
 
-@import "layout/navbar";
-@import "layout/footer";
-@import "layout/grid";
+@import 'layout/navbar';
+@import 'layout/footer';
+@import 'layout/grid';
 
-@import "components/buttons";
-@import "components/popup";
-@import "components/cards";
-@import "components/dropdown";
-@import "components/forms";
+@import 'components/buttons';
+@import 'components/popup';
+@import 'components/tooltips';
+@import 'components/cards';
+@import 'components/dropdown';
+@import 'components/forms';
 
-@import "themes/theme";
-@import "themes/admin";
+@import 'themes/theme';
+@import 'themes/admin';
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Poppins&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Poppins&display=swap');
 
 /*---------- Estilos globales ----------*/
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 /* prettier-ignore */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, .h5, h5, .h4, .h5 {

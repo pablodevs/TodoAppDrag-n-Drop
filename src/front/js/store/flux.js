@@ -1,9 +1,10 @@
+import { Login } from '../component/login.jsx';
+
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             popup: {},
             token: localStorage.getItem('token') || '',
-            todoLists: [],
         },
         actions: {
             // Create a new list
@@ -194,10 +195,41 @@ const getState = ({ getStore, getActions, setStore }) => {
             // User functions
             user: {
                 // Create User
-                // createUser:
-                // LOGIN
-                generateToken: async (name, password) => {
+                createUser: async (name, password) => {
                     const actions = getActions();
+
+                    try {
+                        const response = await fetch(process.env.BACKEND_URL + '/api/user', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                name: name,
+                                password: password,
+                            }),
+                            headers: {
+                                'Content-type': 'application/json',
+                            },
+                        });
+                        const data = await response.json();
+                        if (!response.ok) {
+                            setStore({
+                                message: {
+                                    message: data.message,
+                                    status: 'danger',
+                                },
+                            });
+                            throw Error(response);
+                        } else {
+                            return data;
+                        }
+                    } catch (error) {
+                        return false;
+                    }
+                },
+
+                // LOGIN
+                generateToken: async (name, password, rememberMe) => {
+                    const actions = getActions();
+
                     try {
                         const response = await fetch(process.env.BACKEND_URL + '/api/token', {
                             method: 'POST',
@@ -220,8 +252,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                             throw Error(response);
                         } else {
                             setStore({ token: data.token });
-                            localStorage.setItem('token', data.token);
+                            if (rememberMe) {
+                                localStorage.setItem('token', data.token);
+                            }
                             actions.user.getProfileData(data.token);
+                            actions.cleanMessage();
                             return data;
                         }
                     } catch (error) {
@@ -233,6 +268,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 getProfileData: async token => {
                     const actions = getActions();
                     const store = getStore();
+
                     const options = {
                         method: 'GET',
                         headers: {
@@ -262,6 +298,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             },
                         });
                         actions.popup.closePopup();
+                        actions.user.getTodoListsOfUser();
                         return data;
                     } catch (error) {
                         console.error(error);
@@ -277,15 +314,62 @@ const getState = ({ getStore, getActions, setStore }) => {
                             Authorization: `Bearer ${store.token}`,
                         },
                     })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                setStore({
+                                    todoLists: [],
+                                });
+                                throw Error(response);
+                            }
+                            return response.json();
+                        })
                         .then(todoLists => {
-                            setStore({
-                                todoLists: todoLists,
-                            });
-                            todoLists.forEach(list => actions.getTodos(list.id));
-                            return todoLists.length;
+                            if (Array.isArray(todoLists)) {
+                                setStore({
+                                    todoLists: todoLists,
+                                });
+                                todoLists.forEach(list => actions.getTodos(list.id));
+                                return todoLists.length;
+                            }
                         })
                         .catch(error => console.error(error));
+                },
+
+                // Delete user
+                deleteUser: async () => {
+                    const store = getStore();
+                    try {
+                        const response = await fetch(process.env.BACKEND_URL + `/api/user`, {
+                            method: 'DELETE',
+                            headers: {
+                                Authorization: 'Bearer ' + store.token,
+                            },
+                        });
+                        const resp = await response.json();
+                        if (!response.ok) {
+                            setStore({
+                                message: {
+                                    message: resp.message,
+                                    status: 'danger',
+                                },
+                            });
+                            throw Error(response);
+                        }
+                        return resp;
+                    } catch (err) {
+                        return false;
+                    }
+                },
+
+                // Logout
+                logout: () => {
+                    localStorage.removeItem('token');
+                    setStore({
+                        token: null,
+                        user: {},
+                        todoLists: [],
+                    });
+                    return true;
                 },
             },
         },

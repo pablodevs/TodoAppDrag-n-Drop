@@ -2,12 +2,11 @@ import React, { useContext, useState } from 'react';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import '../../styles/components/popups/login.scss';
 import { Context } from '../store/appContext';
-import { Signup } from './signup.jsx';
+import { Login } from './login.jsx';
 
-export const Login = () => {
+export const Signup = () => {
     const { store, actions } = useContext(Context);
 
-    const [check, setCheck] = useState('checked');
     const [data, setData] = useState({
         name: '',
         password: '',
@@ -19,20 +18,18 @@ export const Login = () => {
             [e.target.name]: e.target.value,
         });
     };
-
-    const handleCheck = () => {
-        if (check === '') setCheck('checked');
-        else if (check === 'checked') setCheck('');
-    };
-
     const handleSubmit = e => {
         e.preventDefault();
-        actions.user.generateToken(data.name, data.password, check);
+        actions.user.createUser(data.name, data.password).then(data => {
+            if (data) {
+                actions.popup.setPopup(<Login />, false, 'medium');
+            }
+        });
     };
 
     return (
         <div className='login flex-col'>
-            <h1 className='login__title'>Sign in</h1>
+            <h1 className='login__title'>Sign up</h1>
             <form onSubmit={handleSubmit} className='login__form'>
                 <div className='input-wrapper'>
                     <input
@@ -59,28 +56,18 @@ export const Login = () => {
                     />
                     <label htmlFor='password'>Password</label>
                 </div>
-                <div className='login__remember-me'>
-                    <input
-                        type='checkbox'
-                        onChange={handleCheck}
-                        checked={check}
-                        value=''
-                        id='rememberCheck'
-                    />
-                    <label htmlFor='rememberCheck'>Remember me</label>
-                </div>
-                <button className='btn btn--primary login__form__submit'>Sign in</button>
+                <button className='btn btn--primary login__form__submit'>Register</button>
             </form>
             <div className='login__redirect'>
-                Don't have an account yet?&nbsp;
+                Already have login and password?&nbsp;
                 <button
                     className='text-primary-400'
                     onClick={() => {
                         actions.cleanMessage();
-                        actions.popup.setPopup(<Signup />, false, 'medium');
+                        actions.popup.setPopup(<Login />, false, 'medium');
                     }}
                 >
-                    Register now
+                    Sign in
                 </button>
             </div>
             {store.message && store.message.message ? (

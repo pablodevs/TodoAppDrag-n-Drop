@@ -47,8 +47,9 @@ export const ListLi = props => {
                                 data={{
                                     title: `Delete List ${props.list.name}?`,
                                     message:
-                                        'This will delete all Tasks linked to the list. Are you sure?',
-                                    confirm: 'Yes, Delete',
+                                        'This will delete all Tasks associated with the list. Are you sure?',
+                                    confirm: 'Yes, delete it',
+                                    cancel: 'No, keep it',
                                     style: 'danger',
                                 }}
                             />,

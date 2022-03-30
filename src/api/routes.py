@@ -25,6 +25,30 @@ cloudinary.config(
     api_secret = os.getenv('API_SECRET') 
 )
 
+# CREATE NEW USER
+@api.route('/user', methods=['POST'])
+def create_new_user():
+
+
+    # fetch for the user
+    name_received = request.json.get("name", None)
+
+    # Verifica que el name no exista en otro usuario
+    findUser = User.query.filter_by(name = name_received).first()
+    if findUser:
+        print("coincide?")
+        raise APIException('Username is already taken.', status_code=404)
+    else:
+        name_received = request.json.get("name", None)
+        password_received = request.json.get("password", None)
+
+        new_user = User(name = name_received, password = password_received)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+    return jsonify({"message": "Ok"}), 200
+
 # GENERATE TOKEN
 @api.route('/token', methods=['POST'])
 def generate_token():
@@ -36,7 +60,7 @@ def generate_token():
     user = User.query.filter_by(name=name_received, password=password_received).first()
     if user is None:
         # the user was not found on the database
-        return jsonify({"message": "Usuario o contraseña incorrectos.", "status": "danger"}), 401
+        return jsonify({"message": "Invalid login or password.", "status": "danger"}), 401
     
     # create a new token with the user id inside
     access_token = create_access_token(identity=user.id)
@@ -84,6 +108,31 @@ def setUserImg():
 
     db.session.commit()
     return jsonify(user.serialize()), 200
+
+# DELETE CURRENT USER
+@api.route('/user', methods=['DELETE'])
+@jwt_required() # Cuando se recive una peticion, se valida que exista ese token y que sea valido
+def delete_user():
+    """
+    Delete user
+    """
+
+    current_user_id = get_jwt_identity() # obtiene el id del usuario asociado al token (id == sub en jwt decode)
+    user = User.query.get(current_user_id)
+
+    # Data validation
+    if user is None:
+        raise APIException('User not found in data base.', status_code=404)
+
+    user_to_delete = User.query.get(current_user_id)
+
+    deleted_id = user_to_delete.id
+    deleted_name = user_to_delete.name
+
+    db.session.delete(user_to_delete)
+    db.session.commit()
+    
+    return jsonify({"message": f"The user with id {deleted_id} and name {deleted_name} has been deleted."}), 200
 
 # Obtiene todas las imágenes con el tag 'gusinette' o 'gusinet' de Cloudinary
 @api.route('/images/<string:tag>')

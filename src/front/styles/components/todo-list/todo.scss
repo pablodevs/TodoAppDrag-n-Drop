@@ -9,6 +9,7 @@
         opacity: 0.6;
         & .todo__task {
             text-decoration: line-through;
+            font-style: italic;
         }
     }
 
@@ -42,10 +43,8 @@
             outline-color: transparent;
 
             // Pulse effect
-            transition: outline-width 0.2s ease-out,
-                outline-color 0.15s ease-out 0.15s;
-            -moz-transition: outline-width 0.2s ease-out,
-                outline-color 0.15s ease-out 0.15s;
+            transition: outline-width 0.2s ease-out, outline-color 0.15s ease-out 0.15s;
+            -moz-transition: outline-width 0.2s ease-out, outline-color 0.15s ease-out 0.15s;
             & > svg {
                 color: var(--clr-secondary-400);
             }
