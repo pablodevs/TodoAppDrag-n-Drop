@@ -41,7 +41,8 @@ db.init_app(app)
 CORS(app)
 
 # add the admin
-setup_admin(app)
+if os.getenv("FLASK_ENV") != "production":
+    setup_admin(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
