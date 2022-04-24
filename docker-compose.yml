@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+    db:
+        image: postgres:14.2-alpine
+        ports:
+            - '5432:5432'
+        restart: always
+        environment:
+            - POSTGRES_DB=todoapp
+            - POSTGRES_USER=myuser
+            - POSTGRES_PASSWORD=mypassword
+        volumes:
+            - './db_data:/var/lib/postgresql/data'
+
+    back:
+        depends_on:
+            - 'db'
+        build:
+            context: .
+            dockerfile: ./src/Dockerfile
+        ports:
+            - '3001:3001'
+        restart: on-failure:10
+        environment:
+            - DATABASE_URL=postgres://myuser:mypassword@db/todoapp
+            - FLASK_APP_KEY="any key works"
+            - FLASK_APP=app.py
+            - FLASK_ENV=development
+        entrypoint: ['/usr/local/bin/entrypoint.sh']
+        # volumes:
+        #     - ./src:/app
+
+    front:
+        build: .
+        depends_on:
+            - back
+        ports:
+            - '3000:3000'
+        environment:
+            - BASENAME=/
+            - BACKEND_URL=http://localhost:3001
+        volumes:
+            - .:/app

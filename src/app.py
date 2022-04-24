@@ -26,6 +26,7 @@ app.config["JWT_SECRET_KEY"] = os.getenv('FLASK_APP_KEY')
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=365)
 jwt = JWTManager(app)
 
+
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
@@ -41,7 +42,7 @@ db.init_app(app)
 CORS(app)
 
 # add the admin
-if os.getenv("FLASK_ENV") != "production":
+if ENV != "production":
     setup_admin(app)
 
 # Add all endpoints form the API with a "api" prefix

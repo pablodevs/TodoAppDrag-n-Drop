@@ -13,7 +13,6 @@ Flask-SQLAlchemy==2.5.1
 flask-swagger==0.2.14
 greenlet==1.1.2
 gunicorn==20.1.0
-heroku==0.1.4
 idna==3.3
 importlib-metadata==4.11.1
 importlib-resources==5.4.0
@@ -21,7 +20,6 @@ itsdangerous==2.1.0
 Jinja2==3.0.3
 Mako==1.1.6
 MarkupSafe==2.1.0
-psycopg2==2.9.3
 psycopg2-binary==2.9.3
 PyJWT==2.3.0
 python-dateutil==2.8.1

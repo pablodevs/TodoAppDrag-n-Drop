@@ -1,9 +1,11 @@
 {
     "name": "pablo-template",
     "engines": {
-        "node": "16.x"
+        "node": ">=16.x"
     },
     "version": "1.0.1",
+    "proxy": "http://back:3001",
+    "private": true,
     "description": "",
     "main": "index.js",
     "scripts": {
