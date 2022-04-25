@@ -27,7 +27,7 @@ services:
             - FLASK_APP_KEY="any key works"
             - FLASK_APP=app.py
             - FLASK_ENV=development
-        entrypoint: ['/usr/local/bin/entrypoint.sh']
+        # entrypoint: ['/usr/local/bin/entrypoint.sh']
         # volumes:
         #     - ./src:/app
 
